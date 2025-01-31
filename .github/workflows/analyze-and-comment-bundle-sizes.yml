@@ -1,0 +1,30 @@
+# https://pnpm.io/ja/continuous-integration#github-actions
+name: Analyze and comment bundle sizes
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  analyze-and-comment-bundle-sizes:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: Analyze and comment bundle sizes
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm run build
+      - name: Analyze bundle sizes, then comment bundle sizes on PR
+        uses: transferwise/actions-next-bundle-analyzer@v2

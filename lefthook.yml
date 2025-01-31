@@ -10,4 +10,4 @@ pre-commit:
     build:
       run: pnpm run pages:build
     editorconfig-checker:
-      run: pnpm run editorconfig
+      run: pnpm run check:editorconfig
