@@ -1,7 +1,14 @@
-export default function Home() {
-  return (
-    <>
-      <h1>Hello World</h1>
-    </>
-  );
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Root() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/unity-sports-resort");
+  }, [router]);
+
+  return null;
 }
