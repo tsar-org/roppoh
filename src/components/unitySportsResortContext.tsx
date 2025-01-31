@@ -3,11 +3,14 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 
 export const UnitySportsResortContext = () => {
   const { unityProvider } = useUnityContext({
-    dataUrl: "/unity-sports-resort/Build/UnitySportsResort.data.unityweb",
+    dataUrl:
+      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort/build/UnitySportsResort.data.unityweb",
     frameworkUrl:
-      "/unity-sports-resort/Build/UnitySportsResort.framework.js.unityweb",
-    codeUrl: "/unity-sports-resort/Build/UnitySportsResort.wasm.unityweb",
-    loaderUrl: "/unity-sports-resort/Build/UnitySportsResort.loader.js",
+      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort/build/UnitySportsResort.framework.js.unityweb",
+    codeUrl:
+      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort/build/UnitySportsResort.wasm.unityweb",
+    loaderUrl:
+      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort/build/UnitySportsResort.loader.js",
   });
 
   return (
