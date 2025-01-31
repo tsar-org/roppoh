@@ -10,7 +10,9 @@ if (process.env.NODE_ENV === "development") {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  env: {
+    DISCORD_ID: "1329832055307243635",
+  },
 };
 
 const bundleAnalyzer = withBundleAnalyzer({
