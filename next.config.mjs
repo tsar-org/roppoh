@@ -1,4 +1,5 @@
 import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 // Here we use the @cloudflare/next-on-pages next-dev module to allow us to use bindings during local development
 // (when running the application with `next dev`), for more information see:
@@ -12,4 +13,8 @@ const nextConfig = {
   /* config options here */
 };
 
-export default nextConfig;
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default bundleAnalyzer(nextConfig);
