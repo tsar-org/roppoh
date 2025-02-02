@@ -27,10 +27,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run check:editorconfig
-      - run: pnpm run check:prettier
-      - run: pnpm next lint
       - run: pnpm run tsc
+      - run: pnpm run check:biome
+      - run: pnpm run check:next-lint
+      - run: pnpm run check:editorconfig
       - run: pnpm run pages:build
 
   analyze-and-comment-bundle-sizes:

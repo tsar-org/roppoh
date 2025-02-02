@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
 import { UnitySportsResortContext } from "@/components/unitySportsResortContext";
 import { useDiscordSDK } from "@/hooks/useDiscordSDK";
+import { Suspense, useEffect } from "react";
 
 export default function UnitySportsResort() {
   const discordId = process.env.DISCORD_ID as string;
