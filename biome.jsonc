@@ -7,7 +7,7 @@
   },
   "files": {
     "include": ["**/*"],
-    "ignore": [".next", ".vercel", ".wrangler", "node_modules"]
+    "ignore": [".next", ".vercel", ".wrangler", "node_modules", "public"]
   },
   "formatter": {
     "enabled": true,
