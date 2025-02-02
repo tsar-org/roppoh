@@ -1,13 +1,10 @@
 "use client";
 
+import UnitySportsResort from "@/app/unity-sports-resort/_components/unitySportsResort";
 import Loading from "@/components/Loading";
 import PageTransition from "@/components/pageTransition";
 import { useDiscordSDK } from "@/hooks/useDiscordSDK";
-import { Suspense, lazy, useEffect } from "react";
-
-const UnitySportsResort = lazy(
-  () => import("@/app/unity-sports-resort/_components/unitySportsResort"),
-);
+import { Suspense, useEffect } from "react";
 
 export default function UnitySportsResortPage() {
   const discordId = process.env.DISCORD_ID as string;
