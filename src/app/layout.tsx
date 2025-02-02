@@ -1,3 +1,4 @@
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
 export default function RootLayout({
@@ -6,8 +7,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body>{children}</body>
+    <html lang="ja" suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

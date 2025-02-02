@@ -1,7 +1,7 @@
 "use client";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
-export const UnitySportsResortContext = () => {
+export const UnitySportsResort = () => {
   const { unityProvider } = useUnityContext({
     dataUrl:
       "https://roppoh-assets.tsar-bmb.org/unity-sports-resort/build/UnitySportsResort.data.unityweb",
