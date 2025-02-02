@@ -1,10 +1,10 @@
 "use client";
 
-import { UnitySportsResortContext } from "@/components/unitySportsResortContext";
+import { UnitySportsResort } from "@/app/unity-sports-resort/_components/unitySportsResort";
 import { useDiscordSDK } from "@/hooks/useDiscordSDK";
 import { Suspense, useEffect } from "react";
 
-export default function UnitySportsResort() {
+export default function UnitySportsResortPage() {
   const discordId = process.env.DISCORD_ID as string;
 
   const { setupDiscordSDK } = useDiscordSDK(discordId);
@@ -16,7 +16,7 @@ export default function UnitySportsResort() {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-        <UnitySportsResortContext />
+        <UnitySportsResort />
       </Suspense>
     </>
   );
