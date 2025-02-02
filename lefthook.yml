@@ -1,12 +1,14 @@
 pre-commit:
   parallel: true
   commands:
-    prettier:
-      run: pnpm run check:prettier
-    lint:
-      run: pnpm next lint
     tsc:
       run: pnpm run tsc
+    format:
+      stage_fixed: true
+      run: pnpm run format
+    next-lint:
+      stage_fixed: true
+      run: pnpm fix:next-lint
     build:
       run: pnpm run pages:build
     editorconfig-checker:
