@@ -2,4 +2,7 @@
 
 interface CloudflareEnv {
   NODE_VERSION: "22";
+  NODE_ENV: string;
+  DISCORD_ID: string;
+  DISCORD_SECRET: string;
 }

@@ -23,6 +23,7 @@
     "bundle-analyze": "ANALYZE=true pnpm run build"
   },
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.9.0",
     "next": "15.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
