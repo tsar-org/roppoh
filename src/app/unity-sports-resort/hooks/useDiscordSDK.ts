@@ -1,3 +1,4 @@
+import { apiClient } from "@/lib/apiClient";
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 
 interface useDiscordSDKInterface {
@@ -18,18 +19,18 @@ export function useDiscordSDK(discordClientId: string): useDiscordSDKInterface {
   };
 
   const fetchAccessToken = async (code: string) => {
-    const response = await fetch("/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code }),
+    const response = await apiClient.api.token.$post({
+      json: { code },
     });
 
-    const responseBody = (await response.json()) as { access_token: string };
-    const accessToken = responseBody.access_token as string;
+    if (response.status !== 200) {
+      console.error("Failed to fetch access token", response);
+      throw new Error("Failed to fetch access token");
+    }
 
-    return accessToken;
+    const body = await response.json();
+
+    return body.access_token;
   };
 
   const setupDiscordSDK = async () => {

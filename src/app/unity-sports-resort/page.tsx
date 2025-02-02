@@ -1,9 +1,9 @@
 "use client";
 
 import UnitySportsResort from "@/app/unity-sports-resort/_components/unitySportsResort";
+import { useDiscordSDK } from "@/app/unity-sports-resort/hooks/useDiscordSDK";
 import Loading from "@/components/Loading";
 import PageTransition from "@/components/pageTransition";
-import { useDiscordSDK } from "@/hooks/useDiscordSDK";
 import { Suspense, useEffect } from "react";
 
 export default function UnitySportsResortPage() {

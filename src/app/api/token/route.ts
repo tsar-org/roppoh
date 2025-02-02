@@ -1,15 +1,37 @@
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { type NextRequest, NextResponse } from "next/server";
+import { vValidator } from "@hono/valibot-validator";
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
+import * as v from "valibot";
 
 export const runtime = "edge";
 
-export async function POST(req: NextRequest) {
-  try {
-    const requestBody = (await req.json()) as { code: string };
-    const code = requestBody.code;
-    if (!code) {
-      return NextResponse.json({ error: "Invalid code" }, { status: 400 });
+const tokenApi = new Hono().basePath("/api");
+
+export const POST = handle(tokenApi);
+
+const requestBodySchema = v.object({
+  code: v.string(),
+});
+
+const discordTokenResponseSchema = v.object({
+  access_token: v.string(),
+  expires_in: v.number(),
+  refresh_token: v.string(),
+  scope: v.string(),
+  token_type: v.string(),
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const postTokenApiRoute = tokenApi.post(
+  "/token",
+  vValidator("json", requestBodySchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ message: "Bad Request" }, 400);
     }
+  }),
+  async (c) => {
+    const code = c.req.valid("json").code;
 
     const env = getRequestContext().env;
 
@@ -26,20 +48,49 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    const accessToken = (
-      (await response.json()) as {
-        access_token: string;
-      }
-    ).access_token;
+    if (400 <= response.status && response.status < 500) {
+      return c.json(
+        {
+          message: "Bad Request",
+          error: "catch status code over 400 and under 500",
+        },
+        400,
+      );
+    }
 
-    return NextResponse.json({
-      access_token: accessToken,
-    });
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 },
+    if (500 <= response.status || !response.ok) {
+      return c.json(
+        {
+          message: "Internal Server Error",
+          error: "catch status code over 500 or not 200",
+        },
+        500,
+      );
+    }
+
+    // discord response validation
+    const safeDiscordTokenResponseBody = v.safeParse(
+      discordTokenResponseSchema,
+      await response.json(),
     );
-  }
-}
+
+    if (!safeDiscordTokenResponseBody.success) {
+      return c.json(
+        {
+          message: "Internal Server Error",
+          error: "discord response validation failed",
+        },
+        500,
+      );
+    }
+
+    return c.json(
+      {
+        access_token: safeDiscordTokenResponseBody.output.access_token,
+      },
+      200,
+    );
+  },
+);
+
+export type postTokenApiRouteType = typeof postTokenApiRoute;
