@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "my-next-app",
+  "name": "roppoh",
   "compatibility_date": "2025-01-29",
   "main": "./server.ts",
   "assets": {
