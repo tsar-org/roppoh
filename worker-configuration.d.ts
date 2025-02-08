@@ -2,7 +2,7 @@
 
 interface Env {
   NODE_VERSION: "22";
-  NODE_ENV: string;
+  APP_URL: string;
   DISCORD_ID: string;
   DISCORD_SECRET: string;
 }

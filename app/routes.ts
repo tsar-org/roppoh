@@ -3,6 +3,7 @@ import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adap
 
 export default remixRoutesOptionAdapter((defineRoutes) => {
   return defineRoutes((route) => {
-    route("/", "routes/index.tsx", { index: true });
+    route("/", "pages/index/page.tsx", { index: true });
+    route("/action/set-theme", "api/action.set-theme.ts");
   });
 }) satisfies RouteConfig;
