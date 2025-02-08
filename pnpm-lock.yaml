@@ -87,6 +87,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.5.1)
+      editorconfig-checker:
+        specifier: ^6.0.1
+        version: 6.0.1
       eslint:
         specifier: ^8.38.0
         version: 8.57.1
@@ -1791,6 +1794,11 @@ packages:
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  editorconfig-checker@6.0.1:
+    resolution: {integrity: sha512-9qhGMJNBSDx+V2w7u8eh47AOMFe+9KWG6hzEG3nlB/7SATo0O65jOrqWbcutrToZh2ojtaGlLhQ9kVocWxwsrw==}
+    engines: {node: '>=20.11.0'}
+    hasBin: true
 
   electron-to-chromium@1.5.92:
     resolution: {integrity: sha512-BeHgmNobs05N1HMmMZ7YIuHfYBGlq/UmvlsTgg+fsbFs9xVMj+xJHFg19GN04+9Q+r8Xnh9LXqaYIyEWElnNgQ==}
@@ -4920,6 +4928,8 @@ snapshots:
       stream-shift: 1.0.3
 
   eastasianwidth@0.2.0: {}
+
+  editorconfig-checker@6.0.1: {}
 
   electron-to-chromium@1.5.92: {}
 

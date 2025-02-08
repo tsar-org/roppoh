@@ -6,10 +6,7 @@ pre-commit:
     format:
       stage_fixed: true
       run: pnpm run format
-    next-lint:
-      stage_fixed: true
-      run: pnpm fix:next-lint
     build:
-      run: pnpm run pages:build
+      run: pnpm run build
     editorconfig-checker:
       run: pnpm run check:editorconfig
