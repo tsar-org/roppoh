@@ -1,0 +1,40 @@
+name: staging-deploy
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  staging-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: staging-deploy
+    if: contains(github.event.pull_request.labels.*.name, 'staging')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - name: deploy
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ vars.CF_ACCOUNT_ID }}
+          environment: staging
+          packageManager: pnpm
+          secrets: |
+            NODE_ENV
+        env:
+          NODE_ENV: production
+      - id: comment
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: 'Deployment is complete. You can preview the changes at ${{ env.DEPLOYMENT_URL }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT_URL: "https://roppoh.stg.tsar-bmb.org/"
