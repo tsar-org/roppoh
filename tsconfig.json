@@ -32,7 +32,7 @@
       "@/*": ["./app/*"]
     },
     "rootDirs": [".", "./.react-router/types"],
-
+    "verbatimModuleSyntax": true,
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
   }

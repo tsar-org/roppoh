@@ -23,9 +23,6 @@ importers:
       '@react-router/node':
         specifier: ^7.1.5
         version: 7.1.5(react-router@7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
-      '@react-router/remix-routes-option-adapter':
-        specifier: ^7.1.5
-        version: 7.1.5(@react-router/dev@7.1.5(@types/node@20.17.16)(lightningcss@1.29.1)(react-router@7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@5.4.14(@types/node@20.17.16)(lightningcss@1.29.1))(wrangler@3.107.2(@cloudflare/workers-types@4.20250129.0)))(typescript@5.7.3)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -50,6 +47,9 @@ importers:
       react-router:
         specifier: ^7.1.5
         version: 7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-unity-webgl:
+        specifier: ^9.7.0
+        version: 9.7.0(react@18.3.1)
       remix-themes:
         specifier: ^2.0.4
         version: 2.0.4(react-router@7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -1201,16 +1201,6 @@ packages:
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react-router: 7.1.5
-      typescript: ^5.1.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
-  '@react-router/remix-routes-option-adapter@7.1.5':
-    resolution: {integrity: sha512-iszgbGh5NewSr1xwK/ULcJ2/jkFyKZppzeil8AY8CNDGjaav/L/cVuSG+jkqK3wnSCudjhQyMkVwER2sCWRLUg==}
-    engines: {node: '>=20.0.0'}
-    peerDependencies:
-      '@react-router/dev': ^7.1.5
       typescript: ^5.1.0
     peerDependenciesMeta:
       typescript:
@@ -2855,6 +2845,11 @@ packages:
       '@types/react':
         optional: true
 
+  react-unity-webgl@9.7.0:
+    resolution: {integrity: sha512-j+Q/kfqpOt803G2xf4bn2N2REjmZGilG7kx3FQcOOUnCUvV+moP+TeY1w2HgsiYPZjLuzqw8Hx35KtlTWlHBwA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
   react@18.3.1:
     resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
@@ -4362,12 +4357,6 @@ snapshots:
       source-map-support: 0.5.21
       stream-slice: 0.1.2
       undici: 6.21.1
-    optionalDependencies:
-      typescript: 5.7.3
-
-  '@react-router/remix-routes-option-adapter@7.1.5(@react-router/dev@7.1.5(@types/node@20.17.16)(lightningcss@1.29.1)(react-router@7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@5.4.14(@types/node@20.17.16)(lightningcss@1.29.1))(wrangler@3.107.2(@cloudflare/workers-types@4.20250129.0)))(typescript@5.7.3)':
-    dependencies:
-      '@react-router/dev': 7.1.5(@types/node@20.17.16)(lightningcss@1.29.1)(react-router@7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@5.4.14(@types/node@20.17.16)(lightningcss@1.29.1))(wrangler@3.107.2(@cloudflare/workers-types@4.20250129.0))
     optionalDependencies:
       typescript: 5.7.3
 
@@ -6150,6 +6139,10 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.18
+
+  react-unity-webgl@9.7.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   react@18.3.1:
     dependencies:
