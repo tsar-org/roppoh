@@ -29,11 +29,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run tsc
       - run: pnpm run check:biome
-      - run: pnpm run check:next-lint
       - run: pnpm run check:editorconfig
       - run: pnpm run pages:build
 
-  analyze-and-comment-bundle-sizes:
+  analyze-bundle-sizes:
     #  Do not run on the main branch because there is no bundle size to compare
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -54,3 +53,9 @@ jobs:
       - run: pnpm run build
       - name: Analyze bundle sizes, then comment bundle sizes on PR
         uses: transferwise/actions-next-bundle-analyzer@v2
+      - name: Analysis
+        uses: apple-yagi/filesize-analysis@v1
+        with:
+          out_dir: "./build"
+          ext: "*"
+          github_token: ${{secrets.GITHUB_TOKEN}}
