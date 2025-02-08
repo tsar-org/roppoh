@@ -1,4 +1,3 @@
-"use client";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
 export default function UnitySportsResort() {

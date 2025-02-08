@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+import { Link } from "react-router";
 
 export const UnitySportsResortCard = () => {
   return (
@@ -26,7 +26,7 @@ export const UnitySportsResortCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Link href="/unity-sports-resort">
+        <Link to="/unity-sports-resort">
           <Button className="w-full">play</Button>
         </Link>
       </CardContent>

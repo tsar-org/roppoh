@@ -7,7 +7,15 @@
   },
   "files": {
     "include": ["**/*"],
-    "ignore": [".next", ".vercel", ".wrangler", "node_modules", "public"]
+    "ignore": [
+      ".next",
+      ".vercel",
+      ".wrangler",
+      "node_modules",
+      "public",
+      "build",
+      ".react-router"
+    ]
   },
   "formatter": {
     "enabled": true,

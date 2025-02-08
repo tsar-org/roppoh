@@ -1,10 +1,7 @@
-"use client";
-
-import { ToggleThemeButton } from "@/app/_components/state/toggleThemeButton";
-import { UnitySportsResortCard } from "@/app/_components/state/unitySportsResortCard";
-import { TsarOrganizationLink } from "@/app/_components/ui/tsarOrganizationLink";
-import PageTransition from "@/components/pageTransition";
-import Image from "next/image";
+import PageTransition from "@/components/PageTransition";
+import { ToggleThemeButton } from "@/components/ToggleThemeButton";
+import { UnitySportsResortCard } from "@/pages/index/components/state/unitySportsResortCard";
+import { TsarOrganizationLink } from "@/pages/index/components/ui/tsarOrganizationLink";
 
 export default function TopPage() {
   return (
@@ -31,11 +28,9 @@ export default function TopPage() {
         </div>
 
         <div className="relative hidden bg-muted lg:block">
-          <Image
+          <img
             src="/tsar-icon.png"
-            alt="Image"
-            layout="fill"
-            objectFit="cover"
+            alt="tsar-org-icon"
             className="absolute inset-0 size-full dark:brightness-[0.2] dark:grayscale"
           />
         </div>
