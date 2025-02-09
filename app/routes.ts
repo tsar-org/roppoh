@@ -20,8 +20,8 @@ export default [
   index("./pages/index/page.tsx"),
 
   // remix-theme
-  route("/action/set-theme", "api/action.set-theme.ts"),
+  route("/action/set-theme", "api/theme.ts"),
 
-  // unity-sports-resort
   route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
+  route("/login", "./pages/login/page.tsx"),
 ] satisfies RouteConfig;

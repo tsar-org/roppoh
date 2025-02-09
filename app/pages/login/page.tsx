@@ -1,9 +1,15 @@
 import PageTransition from "@/components/PageTransition";
 import { ToggleThemeButton } from "@/components/ToggleThemeButton";
 import { TsarOrganizationLink } from "@/components/TsarOrganizationLink";
-import { UnitySportsResortCard } from "@/pages/index/components/state/unitySportsResortCard";
+import { Button } from "@/components/ui/button";
+import { Theme, useTheme } from "remix-themes";
+
+import discordMarkBlack from "./assets/discord-mark-black.svg";
+import discordMarkWhite from "./assets/discord-mark-white.svg";
 
 export default function TopPage() {
+  const [theme] = useTheme();
+
   return (
     <PageTransition>
       <div className="grid min-h-svh lg:grid-cols-2">
@@ -21,9 +27,22 @@ export default function TopPage() {
               </p>
             </div>
 
-            <div className="flex w-full max-w-md flex-col justify-center">
-              <UnitySportsResortCard />
-            </div>
+            <Button className="w-sm">
+              {theme === Theme.LIGHT ? (
+                <img
+                  src={discordMarkWhite}
+                  alt="discord-mark-white"
+                  width={20}
+                />
+              ) : (
+                <img
+                  src={discordMarkBlack}
+                  alt="discord-mark-white"
+                  width={20}
+                />
+              )}
+              Login with Discord
+            </Button>
           </div>
         </div>
 
