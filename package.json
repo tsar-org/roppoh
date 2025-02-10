@@ -2,25 +2,20 @@
   "name": "roppoh",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": "22",
-    "pnpm": "9.15",
-    "npm": "please_use_pnpm_instead"
-  },
   "scripts": {
     "prepare": "lefthook install",
     "dev": "react-router dev",
     "build": "react-router build",
     "start": "wrangler dev",
-    "preview": "pnpm run build && wrangler dev",
-    "deploy": "pnpm run build && wrangler deploy",
+    "preview": "bun run build && wrangler dev",
+    "deploy": "bun run build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "tsc": "react-router typegen && tsc",
     "typegen": "wrangler types",
-    "format": "pnpm biome check --fix --unsafe",
+    "format": "bun biome check --fix --unsafe",
     "fix:next-lint": "next lint --fix",
     "check:next-lint": "next lint",
-    "check:biome": "pnpm biome check",
+    "check:biome": "bun biome check",
     "check:editorconfig": "editorconfig-checker",
     "pre-commit": "lefthook run pre-commit --all-files"
   },
@@ -48,6 +43,7 @@
     "@cloudflare/workers-types": "^4.20250129.0",
     "@react-router/dev": "^7.0.0",
     "@tailwindcss/postcss": "^4.0.3",
+    "@types/node": "^22.13.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
@@ -67,6 +63,5 @@
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1",
     "wrangler": "3.107.2"
-  },
-  "packageManager": "pnpm@9.15.4"
+  }
 }
