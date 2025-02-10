@@ -1,4 +1,3 @@
-# https://pnpm.io/ja/continuous-integration#github-actions
 name: ci
 on:
   push:
@@ -17,17 +16,20 @@ jobs:
     name: ci
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-          cache: "pnpm"
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run tsc
-      - run: pnpm run check:biome
-      - run: pnpm run check:editorconfig
-      - run: pnpm run build
+          bun-version: latest
+      - name: restore node modules cache
+        id: restore-node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run tsc
+      - run: bun run check:biome
+      - run: bun run check:editorconfig
+      - run: bun run build
 
   analyze-bundle-sizes:
     #  Do not run on the main branch because there is no bundle size to compare
@@ -37,14 +39,17 @@ jobs:
     name: Analyze and comment bundle sizes
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-          cache: "pnpm"
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+          bun-version: latest
+      - name: restore node modules cache
+        id: restore-node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run build
       - name: Analysis
         uses: apple-yagi/filesize-analysis@v1
         with:

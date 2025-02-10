@@ -11,14 +11,17 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'staging')
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+          bun-version: latest
+      - name: restore node modules cache
+        id: restore-node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
+      - run: bun install --frozen-lockfile
+      - run: bun run build
       - name: deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
@@ -26,7 +29,7 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ vars.CF_ACCOUNT_ID }}
           environment: staging
-          packageManager: pnpm
+          packageManager: bun
           secrets: |
             NODE_ENV
         env:

@@ -2,11 +2,11 @@ pre-commit:
   parallel: true
   commands:
     tsc:
-      run: pnpm run tsc
+      run: bun run tsc
     format:
       stage_fixed: true
-      run: pnpm run format
+      run: bun run format
     build:
-      run: pnpm run build
+      run: bun run build
     editorconfig-checker:
-      run: pnpm run check:editorconfig
+      run: bun run check:editorconfig
