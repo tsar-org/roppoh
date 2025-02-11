@@ -2,6 +2,7 @@ import PageTransition from "@/components/PageTransition";
 import { ToggleThemeButton } from "@/components/ToggleThemeButton";
 import { TsarOrganizationLink } from "@/components/TsarOrganizationLink";
 import { Button } from "@/components/ui/button";
+import { useFetcher } from "react-router";
 import { Theme, useTheme } from "remix-themes";
 
 import discordMarkBlack from "./assets/discord-mark-black.svg";
@@ -9,6 +10,7 @@ import discordMarkWhite from "./assets/discord-mark-white.svg";
 
 export default function TopPage() {
   const [theme] = useTheme();
+  const fetcher = useFetcher();
 
   return (
     <PageTransition>
@@ -27,22 +29,24 @@ export default function TopPage() {
               </p>
             </div>
 
-            <Button className="w-sm">
-              {theme === Theme.LIGHT ? (
-                <img
-                  src={discordMarkWhite}
-                  alt="discord-mark-white"
-                  width={20}
-                />
-              ) : (
-                <img
-                  src={discordMarkBlack}
-                  alt="discord-mark-white"
-                  width={20}
-                />
-              )}
-              Login with Discord
-            </Button>
+            <fetcher.Form method="post" action="/api/login">
+              <Button className="w-sm">
+                {theme === Theme.LIGHT ? (
+                  <img
+                    src={discordMarkWhite}
+                    alt="discord-mark-white"
+                    width={20}
+                  />
+                ) : (
+                  <img
+                    src={discordMarkBlack}
+                    alt="discord-mark-white"
+                    width={20}
+                  />
+                )}
+                Login with Discord
+              </Button>
+            </fetcher.Form>
           </div>
         </div>
 
