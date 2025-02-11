@@ -3,4 +3,5 @@
 interface Env {
   BUN_VERSION: "1.2.2";
   DISCORD_SECRET: string;
+  DISCORD_REDIRECT_URL: string;
 }

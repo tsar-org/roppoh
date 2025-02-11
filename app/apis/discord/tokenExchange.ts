@@ -31,7 +31,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       client_secret: env.DISCORD_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: clientSideEnv.DISCORD_REDIRECT_URL,
+      redirect_uri: env.DISCORD_REDIRECT_URL,
     });
   } catch (error) {
     console.error(error);
