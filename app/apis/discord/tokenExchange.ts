@@ -34,6 +34,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       redirect_uri: clientSideEnv.DISCORD_REDIRECT_URL,
     });
   } catch (error) {
+    console.error(error);
     return redirect("/login");
   }
 

@@ -11,7 +11,6 @@ export const useDiscordUser = (token: string) => {
   const fetcher = async (_url: string, token: string) => {
     const client = discordApiClient(token);
     const user = await client.oauth2.getCurrentAuthorizationInformation();
-    console.log("user", user);
     return user;
   };
 
@@ -27,7 +26,6 @@ export const useIsGuildMember = (guildId: string, token: string) => {
   const fetcher = async (_url: string, token: string, guildId: string) => {
     const client = discordApiClient(token);
     const guilds = await client.users.getGuilds();
-    console.log("guilds", guilds);
 
     return guilds.some((guild) => guild.id === guildId);
   };

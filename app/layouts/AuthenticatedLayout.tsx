@@ -13,6 +13,7 @@ export async function loader({ request }: Route.ClientLoaderArgs) {
 
   const safeToken = v.safeParse(tokenCookieSchema, token);
   if (!safeToken.success) {
+    console.log("Token cookie is invalid");
     return redirect("/login");
   }
 
