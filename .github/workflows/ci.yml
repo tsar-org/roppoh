@@ -49,10 +49,10 @@ jobs:
           path: ${{ github.workspace }}/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
       - run: bun install --frozen-lockfile
-      - run: bun run build
       - name: Analysis
         uses: apple-yagi/filesize-analysis@v1
         with:
           out_dir: "./build"
           ext: "js|css|unityweb|png|ico"
+          build_cmd: "bun run build"
           github_token: ${{secrets.GITHUB_TOKEN}}
