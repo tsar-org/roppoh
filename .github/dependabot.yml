@@ -6,6 +6,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: '⬆️ '
+      prefix-development: '⬆️ '
     pull-request-branch-name:
       separator: "/"
     labels:
@@ -16,6 +19,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: '⬆️ '
+      prefix-development: '⬆️ '
     pull-request-branch-name:
       separator: "/"
     labels:
