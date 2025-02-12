@@ -7,12 +7,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
-import type { LinksFunction, LoaderFunctionArgs } from "react-router";
+import type { LinksFunction } from "react-router";
 import {
   PreventFlashOnWrongTheme,
   ThemeProvider,
   useTheme,
 } from "remix-themes";
+import type { Route } from "./+types/root";
 import { themeSessionResolver } from "./sessions.server";
 
 import "./tailwind.css";
@@ -20,7 +21,7 @@ import "./tailwind.css";
 export const links: LinksFunction = () => [];
 
 // Return the theme from the session storage using the loader
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request);
   return {
     theme: getTheme(),

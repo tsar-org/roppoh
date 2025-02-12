@@ -1,21 +1,16 @@
 import { createCookieSessionStorage } from "react-router";
 import { createThemeSessionResolver } from "remix-themes";
 
-// You can default to 'development' if process.env.NODE_ENV is not set
-const isProduction = process.env.NODE_ENV === "production";
-
-const sessionStorage = createCookieSessionStorage({
+const themeSessionStorage = createCookieSessionStorage({
   cookie: {
     name: "theme",
     path: "/",
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "strict",
     secrets: ["s3cr3t"],
-    // Set domain and secure only if in production
-    ...(isProduction
-      ? { domain: "your-production-domain.com", secure: true }
-      : {}),
+    secure: true,
   },
 });
 
-export const themeSessionResolver = createThemeSessionResolver(sessionStorage);
+export const themeSessionResolver =
+  createThemeSessionResolver(themeSessionStorage);

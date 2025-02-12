@@ -1,27 +1,22 @@
-// import type { RouteConfig } from "@react-router/dev/routes";
-// import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
-
-// export default remixRoutesOptionAdapter((defineRoutes) => {
-//   return defineRoutes((route) => {
-//     route("/", "pages/index/page.tsx", { index: true });
-//     route("/action/set-theme", "api/action.set-theme.ts");
-//   });
-// }) satisfies RouteConfig;
-
 import {
   type RouteConfig,
   index,
+  layout,
   route,
-  // layout,
-  // prefix,
 } from "@react-router/dev/routes";
 
 export default [
-  index("./pages/index/page.tsx"),
+  // api
+  route("/action/set-theme", "apis/theme.ts"),
+  route("/api/login", "apis/discord/login.ts"),
+  route("/api/toke-exchange", "apis/discord/tokenExchange.ts"),
 
-  // remix-theme
-  route("/action/set-theme", "api/action.set-theme.ts"),
+  // pages
+  route("/login", "./pages/login/page.tsx"),
 
-  // unity-sports-resort
-  route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
+  // auth required pages
+  layout("./layouts/AuthenticatedLayout.tsx", [
+    index("./pages/index/page.tsx"),
+    route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
+  ]),
 ] satisfies RouteConfig;
