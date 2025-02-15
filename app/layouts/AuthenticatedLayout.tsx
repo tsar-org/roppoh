@@ -63,7 +63,7 @@ export default function AuthenticatedLayout() {
           revalidateIfStale: false,
         }}
       >
-        <Outlet />
+        <Outlet context={discordUser.user} />
       </SWRConfig>
     </>
   );
