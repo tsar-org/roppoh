@@ -15,7 +15,7 @@
         "@radix-ui/react-tooltip": "^1.1.8",
         "@react-router/cloudflare": "^7.4.1",
         "@react-router/fs-routes": "^7.3.0",
-        "@react-router/node": "^7.3.0",
+        "@react-router/node": "^7.5.1",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "framer-motion": "^12.5.0",
@@ -372,7 +372,7 @@
 
     "@react-router/fs-routes": ["@react-router/fs-routes@7.3.0", "", { "dependencies": { "minimatch": "^9.0.0" }, "peerDependencies": { "@react-router/dev": "^7.3.0", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-GJiNer1o8qg3me1bSLUQV4jQPtL6d429qPLzEZEvC9W8Vcvgv+v3svzdVDgiXrZ4l2loUZy4sooyPJ/U3Oyfkw=="],
 
-    "@react-router/node": ["@react-router/node@7.3.0", "", { "dependencies": { "@mjackson/node-fetch-server": "^0.2.0", "source-map-support": "^0.5.21", "stream-slice": "^0.1.2", "undici": "^6.19.2" }, "peerDependencies": { "react-router": "7.3.0", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-Vhww6DH0cVusO2yGhZuKmboGvFHuYOeIYEW0gpf0gFshbU0tR7MNAnOZS2Cud48hxVUSrEtgl0Kbs5BN+RQKJg=="],
+    "@react-router/node": ["@react-router/node@7.5.1", "", { "dependencies": { "@mjackson/node-fetch-server": "^0.2.0", "source-map-support": "^0.5.21", "stream-slice": "^0.1.2", "undici": "^6.19.2" }, "peerDependencies": { "react-router": "7.5.1", "typescript": "^5.1.0" }, "optionalPeers": ["typescript"] }, "sha512-A7HoNAN3ic2fgbGu9jqVZGgk6Pnpwo6MVKvfpneyz5cLJrB3xZlUeNGJ5mZ4T+dVRMAL0yEjxXhDOWZO7P/vSg=="],
 
     "@rollup/rollup-android-arm-eabi": ["@rollup/rollup-android-arm-eabi@4.34.6", "", { "os": "android", "cpu": "arm" }, "sha512-+GcCXtOQoWuC7hhX1P00LqjjIiS/iOouHXhMdiDSnq/1DGTox4SpUvO52Xm+div6+106r+TcvOeo/cxvyEyTgg=="],
 
