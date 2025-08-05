@@ -56,7 +56,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
-    "@typescript-eslint/parser": "^6.7.4",
+    "@typescript-eslint/parser": "^8.39.0",
     "autoprefixer": "^10.4.21",
     "editorconfig-checker": "^6.0.1",
     "lefthook": "^1.11.3",
