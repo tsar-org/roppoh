@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+    <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
       <HtmlWrapper>{children}</HtmlWrapper>
     </ThemeProvider>
   );
@@ -47,7 +47,7 @@ function HtmlWrapper({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <PreventFlashOnWrongTheme
-          ssrTheme={Boolean(useLoaderData<{ theme: string }>().theme)}
+          ssrTheme={Boolean(useLoaderData<{ theme: string }>()?.theme)}
         />
         <Links />
       </head>
