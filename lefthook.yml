@@ -8,3 +8,6 @@ pre-commit:
       run: bun run format
     build:
       run: bun run build
+    cf-typegen:
+      stage_fixed: true
+      run: bun wrangler types

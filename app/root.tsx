@@ -33,12 +33,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
-      <HtmlWrapper>{children}</HtmlWrapper>
+      <HtmlWrapper theme={data?.theme || undefined}>{children}</HtmlWrapper>
     </ThemeProvider>
   );
 }
 
-function HtmlWrapper({ children }: { children: React.ReactNode }) {
+function HtmlWrapper({
+  children,
+  theme: ssrTheme,
+}: { children: React.ReactNode; theme?: string }) {
   const [theme] = useTheme();
   return (
     <html lang="en" className={clsx(theme)}>
@@ -46,9 +49,7 @@ function HtmlWrapper({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
-        <PreventFlashOnWrongTheme
-          ssrTheme={Boolean(useLoaderData<{ theme: string }>()?.theme)}
-        />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(ssrTheme)} />
         <Links />
       </head>
       <body suppressHydrationWarning>
