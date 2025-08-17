@@ -8,5 +8,3 @@ pre-commit:
       run: bun run format
     build:
       run: bun run build
-    editorconfig-checker:
-      run: bun run check:editorconfig

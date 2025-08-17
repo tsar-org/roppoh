@@ -1,16 +1,28 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "roppoh",
-  "compatibility_date": "2025-01-29",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2025-05-07",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
   "main": "./server.ts",
   "assets": {
     "directory": "./build/client"
   },
+  "d1_databases": [
+    {
+      "binding": "ROPPOH_AUTH_DB",
+      "database_name": "roppoh-auth",
+      "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
+      "migrations_dir": "./app/database/migrations"
+    }
+  ],
   "observability": {
     "enabled": true
   },
-  "vars": {
-    "BUN_VERSION": "1.2.2"
+  "vars": {},
+  "dev": {
+    "port": 3000
   }
 }

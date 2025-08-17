@@ -13,15 +13,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import type { APIUser } from "@discordjs/core/http-only";
+import { authClient } from "@/lib/betterAuth/auth.client";
+import { useDiscordUser } from "@/lib/swr/discrod";
 import { ChevronsUpDown, LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
 
-export function UserNavigation({
-  user,
-}: {
-  user: APIUser;
-}) {
+export function UserNavigation() {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
+  const { user } = useDiscordUser();
 
   return (
     <SidebarMenu>
@@ -74,7 +74,17 @@ export function UserNavigation({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      navigate("/login");
+                    },
+                  },
+                });
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

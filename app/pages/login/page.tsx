@@ -2,15 +2,19 @@ import PageTransition from "@/components/PageTransition";
 import { ToggleThemeButton } from "@/components/ToggleThemeButton";
 import { TsarOrganizationLink } from "@/components/TsarOrganizationLink";
 import { Button } from "@/components/ui/button";
-import { useFetcher } from "react-router";
+import { authClient } from "@/lib/betterAuth/auth.client";
 import { Theme, useTheme } from "remix-themes";
-
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
 
 export default function TopPage() {
   const [theme] = useTheme();
-  const fetcher = useFetcher();
+  const signIn = async () => {
+    await authClient.signIn.social({
+      provider: "discord",
+      scopes: ["identify", "guilds"],
+    });
+  };
 
   return (
     <PageTransition>
@@ -28,25 +32,22 @@ export default function TopPage() {
                 Roppoh is discord activity hosting server
               </p>
             </div>
-
-            <fetcher.Form method="post" action="/api/login">
-              <Button className="w-sm">
-                {theme === Theme.LIGHT ? (
-                  <img
-                    src={discordMarkWhite}
-                    alt="discord-mark-white"
-                    width={20}
-                  />
-                ) : (
-                  <img
-                    src={discordMarkBlack}
-                    alt="discord-mark-white"
-                    width={20}
-                  />
-                )}
-                Login with Discord
-              </Button>
-            </fetcher.Form>
+            <Button onClick={signIn} className="w-sm">
+              {theme === Theme.LIGHT ? (
+                <img
+                  src={discordMarkWhite}
+                  alt="discord-mark-white"
+                  width={20}
+                />
+              ) : (
+                <img
+                  src={discordMarkBlack}
+                  alt="discord-mark-white"
+                  width={20}
+                />
+              )}
+              Login with Discord
+            </Button>
           </div>
         </div>
 

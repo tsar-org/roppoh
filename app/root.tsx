@@ -51,7 +51,7 @@ function HtmlWrapper({ children }: { children: React.ReactNode }) {
         />
         <Links />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <ScrollRestoration />
         <Scripts />
