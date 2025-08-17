@@ -1,21 +1,30 @@
 import { auth } from "@/lib/betterAuth/auth.server";
+import { createLogger } from "@/lib/pino/logger.server";
 import { useIsGuildMember } from "@/lib/swr/discrod";
 import { Outlet, data } from "react-router";
 import type { Route } from "./+types/GuildAuthorizedLayout";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const accessToken = await auth.api.getAccessToken({
-    body: { providerId: "discord" },
-    headers: request.headers,
-  });
+  try {
+    const accessToken = await auth.api.getAccessToken({
+      body: { providerId: "discord" },
+      headers: request.headers,
+    });
 
-  return data(
-    {
-      accessToken: accessToken.accessToken,
-      guild_id: context.cloudflare.env.TSAR_GUILD_ID,
-    },
-    { headers: { "Cache-Control": "max-age=300" } },
-  );
+    return data(
+      {
+        accessToken: accessToken.accessToken,
+        guild_id: context.cloudflare.env.TSAR_GUILD_ID,
+      },
+      { headers: { "Cache-Control": "max-age=300" } },
+    );
+  } catch (error) {
+    const logger = createLogger({
+      moduleName: `${GuildAuthorizedLayout.name}.loader`,
+    });
+    logger.error(error, "Failed to get access token");
+    throw error;
+  }
 }
 
 /**
@@ -26,16 +35,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function GuildAuthorizedLayout({
   loaderData,
 }: Route.ComponentProps) {
-  const {
-    isMember,
-    isLoading: isLoadingGuildMember,
-    isError,
-  } = useIsGuildMember({
+  const { isMember, isLoading, isError } = useIsGuildMember({
     guildId: loaderData.guild_id,
     token: loaderData.accessToken,
   });
 
-  if (isLoadingGuildMember) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

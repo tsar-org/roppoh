@@ -21,7 +21,10 @@
   "observability": {
     "enabled": true
   },
-  "vars": {},
+  "vars": {
+    "DISCORD_CLIENT_ID": "1320047030717911111",
+    "TSAR_GUILD_ID": "695466655152734228"
+  },
   "dev": {
     "port": 3000
   }
