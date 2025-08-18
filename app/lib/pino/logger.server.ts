@@ -5,8 +5,6 @@ const logger = pino({
   level: "info",
 });
 
-export const createLogger = ({
-  moduleName,
-}: { moduleName: string }): Logger => {
-  return logger.child({ module: moduleName });
+export const createLogger = (): Logger => {
+  return logger;
 };

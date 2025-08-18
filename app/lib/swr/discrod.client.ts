@@ -1,7 +1,13 @@
+import { API } from "@discordjs/core/http-only";
+import { REST } from "@discordjs/rest";
 import useSWR from "swr";
 import useSWRImmutable from "swr/immutable";
 import { authClient } from "../betterAuth/auth.client";
-import { createDiscordCClient } from "../discordjs/client";
+
+const createDiscordApiClient = ({ token }: { token: string }) => {
+  const rest = new REST({ authPrefix: "Bearer" }).setToken(token);
+  return new API(rest);
+};
 
 export const useDiscordUser = () => {
   const fetcher = async () => {
@@ -12,7 +18,7 @@ export const useDiscordUser = () => {
       throw new Error("Failed to fetch Discord access token");
     }
 
-    const client = createDiscordCClient({
+    const client = createDiscordApiClient({
       token: accessToken.data.accessToken,
     });
     const info = await client.oauth2.getCurrentAuthorizationInformation();
@@ -42,7 +48,7 @@ export const useIsGuildMember = ({
     guildId: string;
     token: string;
   }) => {
-    const client = createDiscordCClient({ token });
+    const client = createDiscordApiClient({ token });
     const guilds = await client.users.getGuilds();
 
     return guilds.some((guild) => guild.id === guildId);

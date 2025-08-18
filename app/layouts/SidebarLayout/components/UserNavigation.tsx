@@ -14,7 +14,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/betterAuth/auth.client";
-import { useDiscordUser } from "@/lib/swr/discrod";
+import { useDiscordUser } from "@/lib/swr/discrod.client";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 

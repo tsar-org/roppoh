@@ -1,28 +1,42 @@
-import { auth } from "@/lib/betterAuth/auth.server";
-import { createLogger } from "@/lib/pino/logger.server";
-import { useIsGuildMember } from "@/lib/swr/discrod";
+import { API } from "@discordjs/core/http-only";
+import { REST } from "@discordjs/rest";
+import type { ResponseLike } from "@discordjs/rest";
 import { Outlet, data } from "react-router";
+import type { RequestInit } from "undici";
 import type { Route } from "./+types/GuildAuthorizedLayout";
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
   try {
-    const accessToken = await auth.api.getAccessToken({
+    // get discord access token
+    const accessToken = await ctx.dep.betterAuth.api.getAccessToken({
       body: { providerId: "discord" },
-      headers: request.headers,
+      headers: req.headers,
     });
 
+    // get user guilds
+    const rest = new REST({
+      authPrefix: "Bearer",
+      makeRequest: (url: string, init: RequestInit) =>
+        globalThis.fetch(
+          url,
+          init as globalThis.RequestInit,
+        ) as Promise<ResponseLike>,
+    }).setToken(accessToken.accessToken);
+
+    const client = new API(rest);
+    const guilds = await client.users.getGuilds();
+
+    // check if user is in the specified guild
+    const isMember = guilds.some(
+      (guild) => guild.id === ctx.cf.env.TSAR_GUILD_ID,
+    );
+
     return data(
-      {
-        accessToken: accessToken.accessToken,
-        guild_id: context.cloudflare.env.TSAR_GUILD_ID,
-      },
-      { headers: { "Cache-Control": "max-age=300" } },
+      { isMember: isMember },
+      { headers: { "Cache-Control": "max-age=300" } }, // Cache for 5 minutes
     );
   } catch (error) {
-    const logger = createLogger({
-      moduleName: `${GuildAuthorizedLayout.name}.loader`,
-    });
-    logger.error(error, "Failed to get access token");
+    ctx.dep.logger.error(error, "Failed to get access token");
     throw error;
   }
 }
@@ -35,21 +49,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function GuildAuthorizedLayout({
   loaderData,
 }: Route.ComponentProps) {
-  const { isMember, isLoading, isError } = useIsGuildMember({
-    guildId: loaderData.guild_id,
-    token: loaderData.accessToken,
-  });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    console.error("Error checking guild membership:", isError);
-    return <div>Error: {isError.toString()}</div>;
-  }
-
-  if (!isMember) {
+  if (!loaderData.isMember) {
     return <div>You are not a member of this guild.</div>;
   }
 

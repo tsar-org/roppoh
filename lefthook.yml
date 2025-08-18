@@ -10,4 +10,4 @@ pre-commit:
       run: bun run build
     cf-typegen:
       stage_fixed: true
-      run: bun wrangler types
+      run: bun wrangler types --strict-vars=false

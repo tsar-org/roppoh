@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Gamepad, Server } from "lucide-react";
 import { Outlet } from "react-router";
+import type { Route } from "./+types/Layout";
 import { ContentNavigation } from "./components/ContentNavigation";
 import { UserNavigation } from "./components/UserNavigation";
 import { GuildSwitcher } from "./components/ui/TeamSwitcher";
@@ -45,6 +46,8 @@ const data = {
     },
   ],
 };
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {}
 
 export default function SidebarLayout() {
   return (
