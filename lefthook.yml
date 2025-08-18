@@ -8,5 +8,6 @@ pre-commit:
       run: bun run format
     build:
       run: bun run build
-    editorconfig-checker:
-      run: bun run check:editorconfig
+    cf-typegen:
+      stage_fixed: true
+      run: bun wrangler types --strict-vars=false

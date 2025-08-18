@@ -7,9 +7,9 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import type { RESTGetAPIOAuth2CurrentAuthorizationResult } from "@discordjs/core/http-only";
 import { Gamepad, Server } from "lucide-react";
-import { Outlet, useOutletContext } from "react-router";
+import { Outlet } from "react-router";
+import type { Route } from "./+types/Layout";
 import { ContentNavigation } from "./components/ContentNavigation";
 import { UserNavigation } from "./components/UserNavigation";
 import { GuildSwitcher } from "./components/ui/TeamSwitcher";
@@ -47,9 +47,9 @@ const data = {
   ],
 };
 
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {}
+
 export default function SidebarLayout() {
-  const authResult =
-    useOutletContext<RESTGetAPIOAuth2CurrentAuthorizationResult>();
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -60,7 +60,7 @@ export default function SidebarLayout() {
           <ContentNavigation items={data.ContentNavigation} />
         </SidebarContent>
         <SidebarFooter>
-          {authResult.user && <UserNavigation user={authResult.user} />}
+          <UserNavigation />
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>

@@ -8,17 +8,18 @@ import {
 export default [
   // api
   route("/action/set-theme", "apis/theme.ts"),
-  route("/api/login", "apis/discord/login.ts"),
-  route("/api/toke-exchange", "apis/discord/tokenExchange.ts"),
+  route("/api/auth/*", "apis/auth.ts"),
 
   // pages
   route("/login", "./pages/login/page.tsx"),
 
   // auth required pages
   layout("./layouts/AuthenticatedLayout.tsx", [
-    layout("./layouts/SidebarLayout/Layout.tsx", [
-      index("./pages/index/page.tsx"),
+    layout("./layouts/GuildAuthorizedLayout.tsx", [
+      layout("./layouts/SidebarLayout/Layout.tsx", [
+        index("./pages/index/page.tsx"),
+      ]),
+      route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
     ]),
-    route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
   ]),
 ] satisfies RouteConfig;

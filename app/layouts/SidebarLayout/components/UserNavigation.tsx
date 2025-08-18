@@ -13,15 +13,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import type { APIUser } from "@discordjs/core/http-only";
+import { authClient } from "@/lib/betterAuth/auth.client";
 import { ChevronsUpDown, LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
 
-export function UserNavigation({
-  user,
-}: {
-  user: APIUser;
-}) {
+export function UserNavigation() {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
+  const { data } = authClient.useSession();
 
   return (
     <SidebarMenu>
@@ -34,16 +33,18 @@ export function UserNavigation({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
-                  alt={`${user?.username}-icon`}
+                  src={data?.user.image || ""}
+                  alt={`${data?.user.name}-icon`}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {user?.username}
+                  {data?.user.name}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.username}</span>
-                <span className="truncate text-xs">{user?.email}</span>
+                <span className="truncate font-semibold">
+                  {data?.user.name}
+                </span>
+                <span className="truncate text-xs">{data?.user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -58,23 +59,33 @@ export function UserNavigation({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
-                    alt={`${user?.username}-icon`}
+                    src={data?.user.image || ""}
+                    alt={`${data?.user.name}-icon`}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {user?.username}
+                    {data?.user.name}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
-                    {user?.username}
+                    {data?.user.name}
                   </span>
-                  <span className="truncate text-xs">{user?.email}</span>
+                  <span className="truncate text-xs">{data?.user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      navigate("/login");
+                    },
+                  },
+                });
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

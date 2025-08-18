@@ -1,30 +1,20 @@
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
-import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { getLoadContext } from "./load-context";
-
-declare module "react-router" {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
 
 export default defineConfig({
+  server: {
+    port: 3000,
+  },
   plugins: [
-    cloudflareDevProxy({ getLoadContext }),
+    cloudflare({
+      viteEnvironment: { name: "ssr" },
+      configPath: "./wrangler.json",
+    }),
     reactRouter(),
+    tailwindcss(),
     tsconfigPaths(),
   ],
-  ssr: {
-    resolve: {
-      conditions: ["workerd", "worker", "browser"],
-    },
-  },
-  resolve: {
-    mainFields: ["browser", "module", "main"],
-  },
-  build: {
-    minify: true,
-  },
 });
