@@ -26,16 +26,11 @@ jobs:
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
+          command: deploy --config ./build/server/wrangler.json
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ vars.CF_ACCOUNT_ID }}
           environment: staging
           packageManager: bun
-          secrets: |
-            NODE_ENV
-            DISCORD_REDIRECT_URL
-        env:
-          NODE_ENV: production
-          DISCORD_REDIRECT_URL: https://roppoh.stg.tsar-bmb.org/api/toke-exchange
       - id: comment
         uses: thollander/actions-comment-pull-request@v3
         with:
