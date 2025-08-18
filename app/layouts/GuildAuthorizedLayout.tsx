@@ -1,8 +1,5 @@
-import { API } from "@discordjs/core/http-only";
-import { REST } from "@discordjs/rest";
-import type { ResponseLike } from "@discordjs/rest";
+import { createDiscordApiClient } from "@/lib/discordjs/client.server";
 import { Outlet, data } from "react-router";
-import type { RequestInit } from "undici";
 import type { Route } from "./+types/GuildAuthorizedLayout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
@@ -14,16 +11,7 @@ export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
     });
 
     // get user guilds
-    const rest = new REST({
-      authPrefix: "Bearer",
-      makeRequest: (url: string, init: RequestInit) =>
-        globalThis.fetch(
-          url,
-          init as globalThis.RequestInit,
-        ) as Promise<ResponseLike>,
-    }).setToken(accessToken.accessToken);
-
-    const client = new API(rest);
+    const client = createDiscordApiClient({ token: accessToken.accessToken });
     const guilds = await client.users.getGuilds();
 
     // check if user is in the specified guild
