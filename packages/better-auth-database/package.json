@@ -1,0 +1,31 @@
+{
+  "name": "@roppoh/better-auth-database",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:type": "tsc --noEmit",
+    "migration:generate": "cli generate --output src/migrations/00000000000000_better_auth_schema.sql --yes",
+    "migration": "cli migrate --yes",
+    "schema:generate": "drizzle-kit pull"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts",
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^12.2.0",
+    "drizzle-kit": "^0.31.4",
+    "@better-auth/cli": "^1.3.7"
+  },
+  "peerDependencies": {
+    "typescript": "catalog:",
+    "better-auth": "catalog:"
+  }
+}

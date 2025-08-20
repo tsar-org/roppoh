@@ -1,27 +1,16 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "files": {
+    "include": ["**/*"],
+    "ignore": ["worker-configuration.d.ts"]
+  },
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
-  },
-  "files": {
-    "include": ["**/*"],
-    "ignore": [
-      ".react-router",
-      ".wrangler",
-      "build",
-      "node_modules",
-      "public",
-      "worker-configuration.d.ts"
-    ]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space"
-  },
-  "organizeImports": {
-    "enabled": true
   },
   "linter": {
     "enabled": true,
@@ -32,13 +21,23 @@
       },
       "nursery": {
         "useSortedClasses": "error"
+      },
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["error", "warn", "info"]
+          }
+        }
       }
     }
   },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
   "javascript": {
-    "formatter": {
-      "quoteStyle": "double"
-    },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }

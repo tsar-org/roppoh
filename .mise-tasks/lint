@@ -1,0 +1,9 @@
+#\!/usr/bin/env bash
+
+cd "$MISE_ORIGINAL_CWD"
+
+turbo check:type
+
+turbo cf-typegen
+
+turbo build

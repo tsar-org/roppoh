@@ -7,8 +7,8 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: '⬆️ '
-      prefix-development: '⬆️ '
+      prefix: "⬆️ "
+      prefix-development: "⬆️ "
     pull-request-branch-name:
       separator: "/"
     labels:
@@ -20,8 +20,8 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: '⬆️ '
-      prefix-development: '⬆️ '
+      prefix: "⬆️ "
+      prefix-development: "⬆️ "
     pull-request-branch-name:
       separator: "/"
     labels:

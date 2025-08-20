@@ -4,10 +4,7 @@ on:
     branches:
       - main
   pull_request:
-
-permissions:
-  contents: write
-  pull-requests: write
+  workflow_dispatch:
 
 jobs:
   ci:
@@ -16,16 +13,9 @@ jobs:
     name: ci
     steps:
       - uses: actions/checkout@v5
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - name: restore node modules cache
-        id: restore-node-modules-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
-      - run: bun install --frozen-lockfile
-      - run: bun run tsc
-      - run: bun run check:biome
-      - run: bun run build
+      - uses: ./.github/actions/setup-bun-turbo
+      - uses: dprint/check@v2.3
+      - run: bunx biome format
+      - run: bunx biome lint
+      - run: bun turbo check:type
+      - run: bun turbo build

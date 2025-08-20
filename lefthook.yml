@@ -1,13 +1,18 @@
 pre-commit:
   parallel: true
   commands:
-    tsc:
-      run: bun run tsc
+    install:
+      run: bun install --frozen-lockfile
     format:
       stage_fixed: true
-      run: bun run format
+      run: bunx biome check --fix --unsafe
     build:
-      run: bun run build
+      run: turbo build
+    type:
+      run: turbo check:type
     cf-typegen:
       stage_fixed: true
-      run: bun wrangler types --strict-vars=false
+      run: turbo cf-typegen
+    dprint:
+      stage_fixed: true
+      run: dprint fmt

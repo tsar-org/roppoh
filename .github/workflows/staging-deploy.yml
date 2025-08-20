@@ -11,16 +11,7 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'staging')
     steps:
       - uses: actions/checkout@v5
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - name: restore node modules cache
-        id: restore-node-modules-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lock') }}
-      - run: bun install --frozen-lockfile
+      - uses: ./.github/actions/setup-bun-turbo
       - run: bun run build
       - name: deploy
         id: deploy
@@ -34,7 +25,7 @@ jobs:
       - id: comment
         uses: thollander/actions-comment-pull-request@v3
         with:
-          message: 'Deployment is complete. You can preview the changes at ${{ env.DEPLOYMENT_URL }}'
+          message: "Deployment is complete. You can preview the changes at ${{ env.DEPLOYMENT_URL }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOYMENT_URL: "https://roppoh.stg.tsar-bmb.org/"

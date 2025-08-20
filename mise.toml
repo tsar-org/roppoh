@@ -1,0 +1,8 @@
+[tools]
+bun = "latest"
+dprint = "latest"
+lefthook = "latest"
+"npm:turbo" = "latest"
+
+[settings]
+npm.bun = true
