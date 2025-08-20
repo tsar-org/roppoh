@@ -8,4 +8,4 @@ bun install --frozen-lockfile
 
 lefthook install
 
-turbo build
+cd apps/roppoh && bun react-router typegen

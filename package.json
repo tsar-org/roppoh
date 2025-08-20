@@ -1,21 +1,26 @@
 {
   "name": "roppoh",
-  "type": "module",
-  "private": true,
-  "packageManager": "bun@1.2.0",
+  "scripts": {
+    "check:knip": "knip-bun --cache --cache-location=.knip --strict"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "knip": "catalog:",
     "turbo": "latest"
   },
   "peerDependencies": {
     "typescript": "catalog:"
   },
+  "packageManager": "bun@1.2.0",
+  "private": true,
+  "type": "module",
   "workspaces": {
     "packages": ["apps/*", "packages/*"],
     "catalog": {
       "typescript": "latest",
       "better-auth": "1.3.7",
-      "drizzle-orm": "^0.44.4"
+      "drizzle-orm": "^0.44.4",
+      "knip": "^5.62.0"
     }
   }
 }

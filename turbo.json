@@ -1,6 +1,11 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
+    "check:knip": {
+      "cache": true,
+      "inputs": ["**/*.{ts,tsx}", "package.json", ".knip.jsonc"],
+      "outputs": []
+    },
     "check:type": {
       "cache": true,
       "inputs": ["**/*.{ts,tsx}", "package.json", "tsconfig.json"],

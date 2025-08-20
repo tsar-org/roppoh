@@ -13,6 +13,9 @@ dist
 # @turbo
 .turbo
 
+# knip
+.knip
+
 # sqlite
 *.sqlite
 
