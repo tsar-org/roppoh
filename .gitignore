@@ -1,14 +1,20 @@
 # node
 node_modules
+build
+dist
 
 # wrangler
-/.wrangler
-/build
-.env
+.wrangler
 .dev.vars
 
 # @react-router
 .react-router
+
+# @turbo
+.turbo
+
+# sqlite
+*.sqlite
 
 # Mac
 .DS_Store

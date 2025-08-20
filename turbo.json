@@ -1,0 +1,23 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "check:type": {
+      "cache": true,
+      "inputs": ["**/*.{ts,tsx}", "package.json", "tsconfig.json"],
+      "outputs": [],
+      "dependsOn": ["^build"]
+    },
+    "cf-typegen": {
+      "cache": true,
+      "inputs": ["**/*.{ts,tsx}", "wrangler.jsonc", "package.json", ".dev.vars"],
+      "outputs": ["worker-configuration.d.ts"],
+      "dependsOn": ["^build"]
+    },
+    "build": {
+      "cache": true,
+      "inputs": ["**/*.{ts,tsx}", "package.json", "tsconfig.json"],
+      "outputs": ["dist/**", "build/**"],
+      "dependsOn": ["^build"]
+    }
+  }
+}

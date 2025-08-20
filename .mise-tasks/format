@@ -1,0 +1,7 @@
+#\!/usr/bin/env bash
+
+cd "$MISE_ORIGINAL_CWD"
+
+dprint fmt
+
+bun biome check --fix --unsafe

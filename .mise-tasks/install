@@ -1,0 +1,11 @@
+#\!/usr/bin/env bash
+#MISE description="Setup project environment"
+#MISE depends=["clear-cache"]
+
+cd "$MISE_ORIGINAL_CWD"
+
+bun install --frozen-lockfile
+
+lefthook install
+
+turbo build

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="run development server"
+
+cd "$MISE_ORIGINAL_CWD"
+
+cd apps/roppoh && bun run dev

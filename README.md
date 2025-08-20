@@ -1,16 +1,11 @@
 # roppoh
 
-## Tech Stack & Frameworks
+## Setup Instructions
 
-- typescript
-- nextjs
-- tailwind css
-- cloudflare pages
-- eslint
-- prettier
-- lefthook
-- editorconfig
+### Prerequisites
 
-## Requirement
+- [mise](https://mise.jdx.dev/) - Development tool version manager
 
-- pnpm@9.15
+### Installation
+
+1.
