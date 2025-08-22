@@ -1,5 +1,5 @@
 import { Outlet, redirect } from "react-router";
-import type { Route } from "../AuthenticatedLayout/+types/layout";
+import type { Route } from "./+types/layout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
   try {
