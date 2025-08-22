@@ -12,7 +12,7 @@
       "binding": "ROPPOH_AUTH_DB",
       "database_name": "roppoh-auth",
       "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
-      "migrations_dir": "./app/database/migrations"
+      "migrations_dir": "../../packages/better-auth-database/src/migrations"
     }
   ],
   "observability": {

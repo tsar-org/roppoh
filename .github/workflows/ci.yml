@@ -18,4 +18,5 @@ jobs:
       - run: bunx biome format
       - run: bunx biome lint
       - run: bun turbo check:type
+      - run: bun knip
       - run: bun turbo build

@@ -3,4 +3,7 @@
 
 cd "$MISE_ORIGINAL_CWD"
 
-cd apps/roppoh && bun run dev
+cd apps/roppoh
+bun run migration
+bun run dev
+

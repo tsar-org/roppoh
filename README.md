@@ -8,4 +8,14 @@
 
 ### Installation
 
-1.
+1. install dev tools
+
+```sh
+mise install
+```
+
+1. install project dependency
+
+```sh
+mise tasks run install
+```
