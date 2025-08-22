@@ -14,7 +14,7 @@
 mise install
 ```
 
-1. instal project dependency
+1. install project dependency
 
 ```sh
 mise tasks run install
