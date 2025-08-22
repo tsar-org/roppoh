@@ -1,6 +1,6 @@
 import { createDiscordApiClient } from "@/lib/discordjs/client.server";
 import { Outlet, data } from "react-router";
-import type { Route } from "../GuildAuthorizedLayout/+types/layout";
+import type { Route } from "./+types/layout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
   try {
