@@ -1,10 +1,8 @@
 {
   "name": "roppoh",
-  "scripts": {
-    "check:knip": "knip-bun --cache --cache-location=.knip --strict"
-  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/node": "catalog:",
     "knip": "catalog:",
     "turbo": "latest"
   },
@@ -20,7 +18,8 @@
       "typescript": "latest",
       "better-auth": "1.3.7",
       "drizzle-orm": "^0.44.4",
-      "knip": "^5.62.0"
+      "knip": "^5.62.0",
+      "@types/node": "^24.3.0"
     }
   }
 }

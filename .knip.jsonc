@@ -3,13 +3,13 @@
   "entry": [],
   "project": [],
   "ignore": [],
-  "ignoreBinaries": [],
+  "ignoreBinaries": [".*"],
   "ignoreDependencies": [],
   "bun": { "config": ["package.json"] },
-
   "workspaces": {
     ".": {
-      "biome": { "config": ["biome.jsonc"] }
+      "ignoreDependencies": ["@biomejs/biome"],
+      "biome": { "config": "biome.jsonc" }
     },
     "apps/roppoh": {
       "entry": [],
@@ -26,10 +26,11 @@
           "server.ts"
         ]
       },
-      "vite": { "config": ["vite.config.ts"] }
+      "vite": { "config": ["vite.config.ts"] },
+      "ignoreDependencies": ["tailwindcss-animate"]
     },
     "packages/better-auth-database": {
-      "entry": ["src/index.ts", "src/auth.ts"],
+      "entry": ["src/auth.ts"],
       "ignore": [
         // generated code
         "src/relations.ts"

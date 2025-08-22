@@ -17,4 +17,4 @@ pre-commit:
       stage_fixed: true
       run: dprint fmt
     knip:
-      run: bun run check:knip
+      run: bun knip
