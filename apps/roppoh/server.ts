@@ -1,5 +1,5 @@
-import { type DependencyContainer, dependencyInjection } from "@/di.server";
 import { createRequestHandler } from "react-router";
+import { type DependencyContainer, dependencyInjection } from "@/di.server";
 
 declare module "react-router" {
   export interface AppLoadContext {
@@ -19,6 +19,6 @@ const requestHandler = createRequestHandler(
 export default {
   async fetch(request, env, ctx) {
     const dep = dependencyInjection({ env });
-    return requestHandler(request, { cf: { env, ctx }, dep });
+    return requestHandler(request, { cf: { ctx, env }, dep });
   },
 } satisfies ExportedHandler<Env>;

@@ -4,4 +4,4 @@ cd "$MISE_ORIGINAL_CWD"
 
 dprint fmt
 
-bun biome check --fix --unsafe
+bunx biome check --fix --unsafe

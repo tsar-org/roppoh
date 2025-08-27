@@ -1,21 +1,21 @@
 {
   "mcpServers": {
     "context7": {
-      "type": "stdio",
+      "args": ["-y", "@upstash/context7-mcp"],
       "command": "bunx",
-      "args": ["-y", "@upstash/context7-mcp"]
-    },
-    "sequential-thinking": {
-      "command": "bunx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "type": "stdio"
     },
     "git": {
-      "command": "uvx",
-      "args": ["mcp-server-git"]
+      "args": ["mcp-server-git"],
+      "command": "uvx"
     },
     "playwright": {
-      "command": "bunx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["@playwright/mcp@latest"],
+      "command": "bunx"
+    },
+    "sequential-thinking": {
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "command": "bunx"
     }
   }
 }

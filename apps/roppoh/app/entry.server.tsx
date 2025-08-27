@@ -17,7 +17,6 @@ export default async function handleRequest(
     <ServerRouter context={routerContext} url={request.url} />,
     {
       onError(error: unknown) {
-        // biome-ignore lint/style/noParameterAssign: This is generated code
         responseStatusCode = 500;
         // Log streaming rendering errors from inside the shell.  Don't log
         // errors encountered during initial shell rendering since they'll

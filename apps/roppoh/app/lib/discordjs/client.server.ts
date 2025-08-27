@@ -1,11 +1,14 @@
 import { API } from "@discordjs/core/http-only";
-import { REST } from "@discordjs/rest";
 import type { RESTOptions, ResponseLike } from "@discordjs/rest";
+import { REST } from "@discordjs/rest";
 
 const restOption: Partial<RESTOptions> = {
   authPrefix: "Bearer",
   makeRequest: (url, init) =>
-    globalThis.fetch(url, init as globalThis.RequestInit) as Promise<ResponseLike>,
+    globalThis.fetch(
+      url,
+      init as globalThis.RequestInit,
+    ) as Promise<ResponseLike>,
 };
 
 export const createDiscordApiClient = ({ token }: { token: string }) => {

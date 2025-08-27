@@ -1,6 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export const UnitySportsResortCard = () => {
   return (
@@ -10,10 +16,10 @@ export const UnitySportsResortCard = () => {
         <CardDescription>
           Author:{" "}
           <a
-            href="https://github.com/s1gnsgrfu"
-            target="_blank"
             className="underline underline-offset-4"
+            href="https://github.com/s1gnsgrfu"
             rel="noreferrer"
+            target="_blank"
           >
             @s1gnsgrfu
           </a>

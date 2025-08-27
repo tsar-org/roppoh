@@ -6,31 +6,17 @@ import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  server: {
-    port: 3000,
-  },
   plugins: [
     VitePWA({
-      registerType: "autoUpdate",
-      strategies: "generateSW",
       base: "/",
-      scope: "/",
-      includeAssets: ["favicon.ico", "icons/tsar-icon.png"],
-      outDir: "build/client",
       devOptions: {
         enabled: true,
-        type: "module",
         navigateFallback: "index.html",
         suppressWarnings: true,
+        type: "module",
       },
-      workbox: {
-        globDirectory: "build/client",
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-      },
+      includeAssets: ["favicon.ico", "icons/tsar-icon.png"],
       manifest: {
-        name: "roppoh",
-        short_name: "roppoh",
-        theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
         icons: [
@@ -45,14 +31,28 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+        name: "roppoh",
+        short_name: "roppoh",
+        theme_color: "#ffffff",
+      },
+      outDir: "build/client",
+      registerType: "autoUpdate",
+      scope: "/",
+      strategies: "generateSW",
+      workbox: {
+        globDirectory: "build/client",
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
     }),
     cloudflare({
-      viteEnvironment: { name: "ssr" },
       configPath: "./wrangler.jsonc",
+      viteEnvironment: { name: "ssr" },
     }),
     reactRouter(),
     tailwindcss(),
     tsconfigPaths(),
   ],
+  server: {
+    port: 3000,
+  },
 });

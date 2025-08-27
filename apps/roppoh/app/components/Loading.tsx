@@ -8,16 +8,16 @@ export default function Loading() {
       {displayText.map((char, index) => {
         return (
           <motion.div
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.5,
-              delay: index * 0.1,
-              repeat: Number.POSITIVE_INFINITY,
-              repeatType: "reverse",
-              repeatDelay: 1,
-            }}
+            initial={{ opacity: 0 }}
             key={`${char}-${index.toString()}`}
+            transition={{
+              delay: index * 0.1,
+              duration: 0.5,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatDelay: 1,
+              repeatType: "reverse",
+            }}
           >
             {char}
           </motion.div>

@@ -6,13 +6,17 @@ export type BetterAuthInstance = ReturnType<typeof betterAuth>;
 /**
  * CloudFlare Workers環境では、global scopeで環境変数を参照できないため、envを引数として受け取る
  */
-export const createBetterAuthInstance = ({ env }: { env: Cloudflare.Env }): BetterAuthInstance => {
+export const createBetterAuthInstance = ({
+  env,
+}: {
+  env: Cloudflare.Env;
+}): BetterAuthInstance => {
   return betterAuth({
-    database: createD1Database(env.ROPPOH_AUTH_DB),
-    secret: env.BETTER_AUTH_SECRET,
     advanced: {
       useSecureCookies: false,
     },
+    database: createD1Database(env.ROPPOH_AUTH_DB),
+    secret: env.BETTER_AUTH_SECRET,
     session: {
       // FYI: https://www.better-auth.com/docs/guides/optimizing-for-performance
       cookieCache: {
