@@ -16,3 +16,17 @@ startTransition(() => {
     </StrictMode>,
   );
 });
+
+// Register service worker for PWA
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const { registerSW } = await import("virtual:pwa-register");
+      registerSW({
+        immediate: true,
+        onRegistered(r: ServiceWorkerRegistration | undefined) {},
+        onRegisterError() {},
+      });
+    } catch (error) {}
+  });
+}

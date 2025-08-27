@@ -7,7 +7,7 @@ import { themeSessionResolver } from "./sessions.server";
 
 import "./tailwind.css";
 
-export const links: LinksFunction = () => [];
+export const links: LinksFunction = () => [{ rel: "manifest", href: "/manifest.webmanifest" }];
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {
