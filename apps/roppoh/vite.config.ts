@@ -15,7 +15,7 @@ export default defineConfig({
       strategies: "generateSW",
       base: "/",
       scope: "/",
-      includeAssets: ["favicon.ico", "tsar-icon.png"],
+      includeAssets: ["favicon.ico", "icons/tsar-icon.png"],
       outDir: "build/client",
       devOptions: {
         enabled: true,
@@ -36,12 +36,12 @@ export default defineConfig({
         icons: [
           {
             sizes: "192x192",
-            src: "tsar-icon.png",
+            src: "icons/tsar-192x192.png",
             type: "image/png",
           },
           {
             sizes: "512x512",
-            src: "tsar-icon.png",
+            src: "icons/tsar-512x512.png",
             type: "image/png",
           },
         ],

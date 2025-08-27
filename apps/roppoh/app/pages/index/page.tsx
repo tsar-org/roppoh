@@ -29,7 +29,7 @@ export default function TopPage() {
 
         <div className="relative hidden bg-muted lg:block">
           <img
-            src="/tsar-icon.png"
+            src="/icons/tsar-icon.png"
             alt="tsar-org-icon"
             className="absolute inset-0 size-full dark:brightness-[0.2] dark:grayscale"
           />
