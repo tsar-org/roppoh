@@ -13,12 +13,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       strategies: "generateSW",
-      outDir: "build",
+      outDir: "build/client",
       devOptions: { enabled: true },
-      workbox: {
-        globDirectory: "build/client",
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
-      },
       manifest: {
         name: "roppoh",
         icons: [
