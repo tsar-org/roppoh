@@ -28,7 +28,7 @@ export function GuildSwitcher() {
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src="/tsar-icon.png" alt="tsar-icon" />
+                  <AvatarImage src="/icons/tsar-icon.png" alt="tsar-icon" />
                   <AvatarFallback className="rounded-lg">TSAR</AvatarFallback>
                 </Avatar>
               </div>
