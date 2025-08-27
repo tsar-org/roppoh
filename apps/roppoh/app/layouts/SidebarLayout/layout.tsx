@@ -1,3 +1,5 @@
+import { Gamepad, Server } from "lucide-react";
+import { Outlet } from "react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -7,8 +9,6 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Gamepad, Server } from "lucide-react";
-import { Outlet } from "react-router";
 import type { Route } from "./+types/layout";
 import { ContentNavigation } from "./components/ContentNavigation";
 import { UserNavigation } from "./components/UserNavigation";
@@ -17,8 +17,6 @@ import { GuildSwitcher } from "./components/ui/TeamSwitcher";
 const data = {
   ContentNavigation: [
     {
-      title: "Playground",
-      url: "#",
       icon: Gamepad,
       isActive: true,
       items: [
@@ -27,10 +25,10 @@ const data = {
           url: "/unity-sports-resort",
         },
       ],
+      title: "Playground",
+      url: "#",
     },
     {
-      title: "Servers",
-      url: "#",
       icon: Server,
       isActive: true,
       items: [
@@ -43,11 +41,13 @@ const data = {
           url: "#",
         },
       ],
+      title: "Servers",
+      url: "#",
     },
   ],
 };
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {}
+export async function clientLoader({}: Route.ClientLoaderArgs) {}
 
 export default function SidebarLayout() {
   return (

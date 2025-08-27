@@ -1,9 +1,9 @@
+import { Theme, useTheme } from "remix-themes";
 import PageTransition from "@/components/PageTransition";
 import { ToggleThemeButton } from "@/components/ToggleThemeButton";
 import { TsarOrganizationLink } from "@/components/TsarOrganizationLink";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/betterAuth/auth.client";
-import { Theme, useTheme } from "remix-themes";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
 
@@ -32,11 +32,19 @@ export default function TopPage() {
                 Roppoh is discord activity hosting server
               </p>
             </div>
-            <Button onClick={signIn} className="w-sm">
+            <Button className="w-sm" onClick={signIn}>
               {theme === Theme.LIGHT ? (
-                <img src={discordMarkWhite} alt="discord-mark-white" width={20} />
+                <img
+                  alt="discord-mark-white"
+                  src={discordMarkWhite}
+                  width={20}
+                />
               ) : (
-                <img src={discordMarkBlack} alt="discord-mark-white" width={20} />
+                <img
+                  alt="discord-mark-white"
+                  src={discordMarkBlack}
+                  width={20}
+                />
               )}
               Login with Discord
             </Button>
@@ -45,9 +53,9 @@ export default function TopPage() {
 
         <div className="relative hidden bg-muted lg:block">
           <img
-            src="/icons/tsar-icon.png"
             alt="tsar-org-icon"
             className="absolute inset-0 size-full dark:brightness-[0.2] dark:grayscale"
+            src="/icons/tsar-icon.png"
           />
         </div>
       </div>

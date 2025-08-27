@@ -9,8 +9,8 @@ export const sessionRelations = relations(session, ({ one }) => ({
 }));
 
 export const userRelations = relations(user, ({ many }) => ({
-  sessions: many(session),
   accounts: many(account),
+  sessions: many(session),
 }));
 
 export const accountRelations = relations(account, ({ one }) => ({

@@ -1,45 +1,45 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "organizeImports": {
-    "enabled": true
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
   },
   "files": {
-    "include": ["**/*"],
-    "ignore": ["worker-configuration.d.ts"]
+    "includes": ["**/*", "!**/bun.lock", "!**/worker-configuration.d.ts"]
   },
-  "vcs": {
+  "formatter": {
     "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
+    "expand": "auto",
+    "indentStyle": "space",
+    "lineWidth": 80
+  },
+  "javascript": {
+    "parser": { "unsafeParameterDecoratorsEnabled": true }
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
       "correctness": {
+        "noEmptyPattern": "off",
         "noUnusedImports": "error"
       },
-      "nursery": {
-        "useSortedClasses": "error"
-      },
+      "nursery": { "useSortedClasses": "error" },
+      "recommended": true,
       "suspicious": {
         "noConsole": {
           "level": "error",
-          "options": {
-            "allow": ["error", "warn", "info"]
-          }
-        }
+          "options": { "allow": ["error", "warn", "info"] }
+        },
+        "noUnknownAtRules": "off"
       }
     }
   },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "lineWidth": 100
-  },
-  "javascript": {
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
-  }
+  "root": true,
+  "vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true }
 }

@@ -1,13 +1,26 @@
 import clsx from "clsx";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
 import type { LinksFunction } from "react-router";
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes";
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from "react-router";
+import {
+  PreventFlashOnWrongTheme,
+  ThemeProvider,
+  useTheme,
+} from "remix-themes";
 import type { Route } from "./+types/root";
 import { themeSessionResolver } from "./sessions.server";
 
 import "./tailwind.css";
 
-export const links: LinksFunction = () => [{ rel: "manifest", href: "/manifest.webmanifest" }];
+export const links: LinksFunction = () => [
+  { href: "/manifest.webmanifest", rel: "manifest" },
+];
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {
@@ -27,13 +40,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function HtmlWrapper({ children, theme: ssrTheme }: { children: React.ReactNode; theme?: string }) {
+function HtmlWrapper({
+  children,
+  theme: ssrTheme,
+}: {
+  children: React.ReactNode;
+  theme?: string;
+}) {
   const [theme] = useTheme();
   return (
-    <html lang="en" className={clsx(theme)}>
+    <html className={clsx(theme)} lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <Meta />
         <PreventFlashOnWrongTheme ssrTheme={Boolean(ssrTheme)} />
         <Links />

@@ -1,19 +1,19 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+  "bun": { "config": ["package.json"] },
   "entry": [],
-  "project": [],
   "ignore": [],
   "ignoreBinaries": [".*"],
   "ignoreDependencies": [],
-  "bun": { "config": ["package.json"] },
+  "project": [],
   "workspaces": {
     ".": {
-      "ignoreDependencies": ["@biomejs/biome"],
-      "biome": { "config": "biome.jsonc" }
+      "biome": { "config": "biome.jsonc" },
+      "ignoreDependencies": ["@biomejs/biome"]
     },
     "apps/roppoh": {
       "entry": [],
-      "wrangler": { "config": ["wrangler.jsonc"] },
+      "ignoreDependencies": ["tailwindcss-animate"],
       "react-router": {
         "config": ["react-router.config.ts", "vite.config.ts"]
       },
@@ -27,7 +27,7 @@
         ]
       },
       "vite": { "config": ["vite.config.ts"] },
-      "ignoreDependencies": ["tailwindcss-animate"]
+      "wrangler": { "config": ["wrangler.jsonc"] }
     },
     "packages/better-auth-database": {
       "entry": ["src/auth.ts"],

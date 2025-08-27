@@ -1,14 +1,4 @@
 {
-  "name": "@roppoh/roppoh",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "react-router dev",
-    "check:type": "react-router typegen && tsc --noEmit",
-    "cf-typegen": "wrangler types  --strict-vars=false",
-    "build": "react-router build",
-    "migration": "wrangler d1 migrations apply roppoh-auth --local"
-  },
   "dependencies": {
     "@discordjs/core": "^2.2.0",
     "@discordjs/rest": "^2.5.1",
@@ -49,7 +39,17 @@
     "wrangler": "^4.29.0",
     "zod": "^4.0.17"
   },
+  "name": "@roppoh/roppoh",
   "peerDependencies": {
     "typescript": "catalog:"
-  }
+  },
+  "private": true,
+  "scripts": {
+    "build": "react-router build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "check:type": "react-router typegen && tsc --noEmit",
+    "dev": "react-router dev",
+    "migration": "wrangler d1 migrations apply roppoh-auth --local"
+  },
+  "type": "module"
 }

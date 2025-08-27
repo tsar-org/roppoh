@@ -1,7 +1,11 @@
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { Link } from "react-router";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -33,10 +37,10 @@ export const ContentNavigation = ({
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
-            key={item.title}
             asChild
-            defaultOpen={item.isActive}
             className="group/collapsible"
+            defaultOpen={item.isActive}
+            key={item.title}
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
