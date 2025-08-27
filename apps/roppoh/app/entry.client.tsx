@@ -21,12 +21,12 @@ startTransition(() => {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
-      const { registerSW } = await import("virtual:pwa-register");
-      registerSW({
-        immediate: true,
-        onRegistered(r: ServiceWorkerRegistration | undefined) {},
-        onRegisterError() {},
-      });
-    } catch (error) {}
+      const registration = await navigator.serviceWorker.register("/sw.js");
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.log("SW Registered:", registration);
+    } catch (error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.log("SW registration error:", error);
+    }
   });
 }
