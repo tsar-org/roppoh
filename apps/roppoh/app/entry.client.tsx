@@ -22,10 +22,10 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       const registration = await navigator.serviceWorker.register("/sw.js");
-      // biome-ignore lint/suspicious/noConsole: <explanation>
+      // biome-ignore lint/suspicious/noConsole: PWA service worker registration logging
       console.log("SW Registered:", registration);
     } catch (error) {
-      // biome-ignore lint/suspicious/noConsole: <explanation>
+      // biome-ignore lint/suspicious/noConsole: PWA service worker registration logging
       console.log("SW registration error:", error);
     }
   });
