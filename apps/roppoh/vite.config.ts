@@ -13,10 +13,26 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       strategies: "generateSW",
+      base: "/",
+      scope: "/",
+      includeAssets: ["favicon.ico", "tsar-icon.png"],
       outDir: "build/client",
-      devOptions: { enabled: true },
+      devOptions: {
+        enabled: true,
+        type: "module",
+        navigateFallback: "index.html",
+        suppressWarnings: true,
+      },
+      workbox: {
+        globDirectory: "build/client",
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+      },
       manifest: {
         name: "roppoh",
+        short_name: "roppoh",
+        theme_color: "#ffffff",
+        background_color: "#ffffff",
+        display: "standalone",
         icons: [
           {
             sizes: "192x192",
