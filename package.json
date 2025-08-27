@@ -1,7 +1,7 @@
 {
   "name": "roppoh",
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.2.2",
     "@types/node": "catalog:",
     "knip": "catalog:",
     "turbo": "latest"
