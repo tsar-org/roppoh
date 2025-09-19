@@ -1,5 +1,6 @@
 [tools]
-bun = "latest"
+bun = "1.2.0"
+node = "22.16.0"
 dprint = "latest"
 lefthook = "latest"
 "npm:turbo" = "latest"
