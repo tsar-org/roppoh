@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
   "bun": { "config": ["package.json"] },
   "entry": [],
-  "ignore": [],
+  "ignore": ["./coolify/**"],
   "ignoreBinaries": [".*"],
   "ignoreDependencies": [],
   "project": [],
@@ -34,6 +34,9 @@
         // generated code
         "src/relations.ts"
       ]
+    },
+    "packages/coolify-client": {
+      "ignore": ["fix-numeric-types.ts", "orval.config.ts"]
     }
   }
 }
