@@ -24,6 +24,7 @@
   },
   "linter": {
     "enabled": true,
+    "includes": ["!apps/tanstack/src/shadcn/**", "!**/routeTree.gen.ts"],
     "rules": {
       "correctness": {
         "noEmptyPattern": "off",
