@@ -11,21 +11,19 @@
       "biome": { "config": "biome.jsonc" },
       "ignoreDependencies": ["@biomejs/biome"]
     },
-    "apps/roppoh": {
-      "entry": [],
-      "ignoreDependencies": ["tailwindcss-animate"],
-      "react-router": {
-        "config": ["react-router.config.ts", "vite.config.ts"]
-      },
-      "remix": {
-        "entry": [
-          "app/root.tsx",
-          "app/entry.{client,server}.tsx",
-          "app/pages/**/page.tsx",
-          "app/layouts/**/layout.tsx",
-          "server.ts"
-        ]
-      },
+    "apps/tanstack": {
+      "entry": ["src/**.tsx", "src/**/index.tsx"],
+      "ignore": [
+        "src/routeTree.gen.ts",
+        "src/shadcn/**",
+        "src/components/loading.tsx"
+      ],
+      "ignoreDependencies": [
+        "jsdom",
+        "tailwindcss",
+        "web-vitals",
+        "tw-animate-css"
+      ],
       "vite": { "config": ["vite.config.ts"] },
       "wrangler": { "config": ["wrangler.jsonc"] }
     },
