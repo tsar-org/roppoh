@@ -36,7 +36,12 @@
         "src/shadcn/**",
         "src/components/loading.tsx"
       ],
-      "ignoreDependencies": ["jsdom", "tailwindcss", "web-vitals"],
+      "ignoreDependencies": [
+        "jsdom",
+        "tailwindcss",
+        "web-vitals",
+        "tw-animate-css"
+      ],
       "vite": { "config": ["vite.config.ts"] },
       "wrangler": { "config": ["wrangler.jsonc"] }
     },
