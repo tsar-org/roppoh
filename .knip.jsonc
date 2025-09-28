@@ -12,7 +12,7 @@
       "ignoreDependencies": ["@biomejs/biome"]
     },
     "apps/tanstack": {
-      "entry": ["src/**.tsx", "src/**/index.tsx"],
+      "entry": ["src/**.tsx", "src/**/index.tsx", "src/types/**/*.d.ts"],
       "ignore": [
         "src/routeTree.gen.ts",
         "src/shadcn/**",
@@ -24,6 +24,7 @@
         "web-vitals",
         "tw-animate-css"
       ],
+      "ignoreUnresolved": ["@/utils/di.server"],
       "vite": { "config": ["vite.config.ts"] },
       "wrangler": { "config": ["wrangler.jsonc"] }
     },

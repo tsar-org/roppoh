@@ -2,9 +2,7 @@ import { env } from "cloudflare:workers";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
-import { createBetterAuthInstance } from "@/libs/better-auth/auth.server";
 import { createDiscordApiClient } from "@/libs/discordjs/client.server";
-import { createLogger } from "@/libs/pino/logger.server";
 
 /**
  * Check users discord guild
@@ -12,13 +10,11 @@ import { createLogger } from "@/libs/pino/logger.server";
  * - if user dose not joined tsar guilds, then redirect /login
  */
 export const checkDiscordGuild = createServerFn({ method: "GET" }).handler(
-  async () => {
+  async ({ context }) => {
     try {
-      const request = getRequest();
-      const headers = request.headers;
-      const auth = createBetterAuthInstance({ env });
+      const headers = getRequest().headers;
 
-      const accessToken = await auth.api.getAccessToken({
+      const accessToken = await context.deps.betterAuth.api.getAccessToken({
         body: { providerId: "discord" },
         headers: headers,
       });
@@ -31,8 +27,7 @@ export const checkDiscordGuild = createServerFn({ method: "GET" }).handler(
       const isMember = guilds.some((guild) => guild.id === env.TSAR_GUILD_ID);
       if (!isMember) throw redirect({ to: "/login" });
     } catch (error) {
-      const logger = createLogger();
-      logger.error(error, "failed to check auth: ");
+      context.deps.logger.error(error, "failed to check users discord guilds");
       throw redirect({ to: "/login" });
     }
   },

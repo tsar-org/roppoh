@@ -51,7 +51,10 @@ const config = defineConfig({
     }),
     viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      server: { entry: "./entry.server.ts" },
+      srcDirectory: "src",
+    }),
     viteReact(),
   ],
   server: { port: 3000 },

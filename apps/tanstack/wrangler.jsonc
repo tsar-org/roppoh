@@ -15,7 +15,7 @@
     }
   ],
   "dev": { "port": 3000 },
-  "main": "@tanstack/react-start/server-entry",
+  "main": "./src/entry.server.ts",
   "name": "roppoh",
   "observability": { "enabled": true },
   "vars": {

@@ -1,7 +1,7 @@
 import { createD1Database } from "@roppoh/better-auth-database";
 import { betterAuth } from "better-auth";
 
-type BetterAuthInstance = ReturnType<typeof betterAuth>;
+export type BetterAuthInstance = ReturnType<typeof betterAuth>;
 
 export const createBetterAuthInstance = ({
   env,
