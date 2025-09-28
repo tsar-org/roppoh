@@ -29,6 +29,17 @@
       "vite": { "config": ["vite.config.ts"] },
       "wrangler": { "config": ["wrangler.jsonc"] }
     },
+    "apps/tanstack": {
+      "entry": ["src/**.tsx", "src/**/index.tsx"],
+      "ignore": [
+        "src/routeTree.gen.ts",
+        "src/shadcn/**",
+        "src/components/loading.tsx"
+      ],
+      "ignoreDependencies": ["jsdom", "tailwindcss", "web-vitals"],
+      "vite": { "config": ["vite.config.ts"] },
+      "wrangler": { "config": ["wrangler.jsonc"] }
+    },
     "packages/better-auth-database": {
       "entry": ["src/auth.ts"],
       "ignore": [

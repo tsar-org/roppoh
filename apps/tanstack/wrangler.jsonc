@@ -1,0 +1,25 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "assets": { "directory": "./build/client" },
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
+  "d1_databases": [
+    {
+      "binding": "ROPPOH_AUTH_DB",
+      "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
+      "database_name": "roppoh-auth",
+      "migrations_dir": "../../packages/better-auth-database/src/migrations"
+    }
+  ],
+  "dev": { "port": 3000 },
+  "main": "@tanstack/react-start/server-entry",
+  "name": "tanstack",
+  "observability": { "enabled": true },
+  "vars": {
+    "DISCORD_CLIENT_ID": "1320047030717911111",
+    "TSAR_GUILD_ID": "695466655152734228"
+  }
+}
