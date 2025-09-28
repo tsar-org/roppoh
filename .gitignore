@@ -7,9 +7,6 @@ dist
 .wrangler
 .dev.vars
 
-# @react-router
-.react-router
-
 # @turbo
 .turbo
 
