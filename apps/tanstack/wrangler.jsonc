@@ -16,7 +16,7 @@
   ],
   "dev": { "port": 3000 },
   "main": "@tanstack/react-start/server-entry",
-  "name": "tanstack",
+  "name": "roppoh",
   "observability": { "enabled": true },
   "vars": {
     "DISCORD_CLIENT_ID": "1320047030717911111",
