@@ -2,8 +2,8 @@
 #MISE description="Setup project environment"
 #MISE depends=["clear-cache"]
 
+mise install
+
 bun install --frozen-lockfile
 
 lefthook install
-
-cd apps/roppoh && bun react-router typegen

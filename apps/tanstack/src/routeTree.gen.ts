@@ -8,121 +8,120 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexIndexRouteImport } from "./routes/_index/index";
-import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth.$";
-import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as UnitySportsResortIndexRouteImport } from "./routes/unity-sports-resort/index";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnitySportsResortIndexRouteImport } from './routes/unity-sports-resort/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as IndexIndexRouteImport } from './routes/_index/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const UnitySportsResortIndexRoute = UnitySportsResortIndexRouteImport.update({
+  id: '/unity-sports-resort/',
+  path: '/unity-sports-resort/',
   getParentRoute: () => rootRouteImport,
-  id: "/unity-sports-resort/",
-  path: "/unity-sports-resort/",
-} as any);
+} as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
-  id: "/login/",
-  path: "/login/",
-} as any);
+} as any)
 const IndexIndexRoute = IndexIndexRouteImport.update({
+  id: '/_index/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-  id: "/_index/",
-  path: "/",
-} as any);
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
-  id: "/api/auth/$",
-  path: "/api/auth/$",
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexIndexRoute;
-  "/login": typeof LoginIndexRoute;
-  "/unity-sports-resort": typeof UnitySportsResortIndexRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
+  '/': typeof IndexIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/unity-sports-resort': typeof UnitySportsResortIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexIndexRoute;
-  "/login": typeof LoginIndexRoute;
-  "/unity-sports-resort": typeof UnitySportsResortIndexRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
+  '/': typeof IndexIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/unity-sports-resort': typeof UnitySportsResortIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/_index/": typeof IndexIndexRoute;
-  "/login/": typeof LoginIndexRoute;
-  "/unity-sports-resort/": typeof UnitySportsResortIndexRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
+  __root__: typeof rootRouteImport
+  '/_index/': typeof IndexIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/unity-sports-resort/': typeof UnitySportsResortIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/login" | "/unity-sports-resort" | "/api/auth/$";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/unity-sports-resort" | "/api/auth/$";
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login' | '/unity-sports-resort' | '/api/auth/$'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/login' | '/unity-sports-resort' | '/api/auth/$'
   id:
-    | "__root__"
-    | "/_index/"
-    | "/login/"
-    | "/unity-sports-resort/"
-    | "/api/auth/$";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/_index/'
+    | '/login/'
+    | '/unity-sports-resort/'
+    | '/api/auth/$'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexIndexRoute: typeof IndexIndexRoute;
-  LoginIndexRoute: typeof LoginIndexRoute;
-  UnitySportsResortIndexRoute: typeof UnitySportsResortIndexRoute;
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
+  IndexIndexRoute: typeof IndexIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  UnitySportsResortIndexRoute: typeof UnitySportsResortIndexRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/unity-sports-resort/": {
-      id: "/unity-sports-resort/";
-      path: "/unity-sports-resort";
-      fullPath: "/unity-sports-resort";
-      preLoaderRoute: typeof UnitySportsResortIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/login/": {
-      id: "/login/";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_index/": {
-      id: "/_index/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/auth/$": {
-      id: "/api/auth/$";
-      path: "/api/auth/$";
-      fullPath: "/api/auth/$";
-      preLoaderRoute: typeof ApiAuthSplatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/unity-sports-resort/': {
+      id: '/unity-sports-resort/'
+      path: '/unity-sports-resort'
+      fullPath: '/unity-sports-resort'
+      preLoaderRoute: typeof UnitySportsResortIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_index/': {
+      id: '/_index/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
   IndexIndexRoute: IndexIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   UnitySportsResortIndexRoute: UnitySportsResortIndexRoute,
-};
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { createStart } from "@tanstack/react-start";
-import type { getRouter } from "./router.tsx";
-
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }
