@@ -1,14 +1,14 @@
 import { Moon, Sun } from "lucide-react";
 import { Theme, useTheme } from "remix-themes";
-import { Button } from "./ui/button";
+import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/shadcn/components/ui/dropdown-menu";
 
-export const ToggleThemeButton = () => {
+export function ToggleThemeButton() {
   const [, setTheme] = useTheme();
 
   return (
@@ -30,4 +30,4 @@ export const ToggleThemeButton = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

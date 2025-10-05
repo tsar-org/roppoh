@@ -13,6 +13,7 @@
     },
     "apps/roppoh": {
       "entry": [],
+      "ignore": ["app/shadcn/**"],
       "ignoreDependencies": ["tailwindcss-animate"],
       "react-router": {
         "config": ["react-router.config.ts", "vite.config.ts"]

@@ -1,6 +1,11 @@
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { authClient } from "@/libs/betterAuth/auth.client";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/shadcn/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,14 +13,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shadcn/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { authClient } from "@/lib/betterAuth/auth.client";
+} from "@/shadcn/components/ui/sidebar";
 
 export function UserNavigation() {
   const { isMobile } = useSidebar();
