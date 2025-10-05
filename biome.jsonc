@@ -11,7 +11,13 @@
     }
   },
   "files": {
-    "includes": ["**/*", "!**/bun.lock", "!**/worker-configuration.d.ts"]
+    "includes": [
+      "**/*",
+      "!**/bun.lock",
+      "!**/worker-configuration.d.ts",
+      "!**/routeTree.gen.ts",
+      "!coolify"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -20,26 +26,37 @@
     "lineWidth": 80
   },
   "javascript": {
-    "parser": { "unsafeParameterDecoratorsEnabled": true }
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   },
   "linter": {
     "enabled": true,
+    "includes": ["!apps/tanstack/src/shadcn/**", "!packages/coolify-client/**"],
     "rules": {
       "correctness": {
         "noEmptyPattern": "off",
         "noUnusedImports": "error"
       },
-      "nursery": { "useSortedClasses": "error" },
+      "nursery": {
+        "useSortedClasses": "error"
+      },
       "recommended": true,
       "suspicious": {
         "noConsole": {
           "level": "error",
-          "options": { "allow": ["error", "warn", "info"] }
+          "options": {
+            "allow": ["error", "warn", "info"]
+          }
         },
         "noUnknownAtRules": "off"
       }
     }
   },
   "root": true,
-  "vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true }
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
 }
