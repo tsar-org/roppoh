@@ -1,0 +1,3 @@
+[submodule "coolify"]
+	path = coolify
+	url = https://github.com/coollabsio/coolify.git
