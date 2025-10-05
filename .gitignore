@@ -24,3 +24,6 @@ dist
 
 # vscode
 .vscode/settings.json
+
+# mise
+mise.local.toml

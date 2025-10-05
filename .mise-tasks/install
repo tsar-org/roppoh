@@ -2,7 +2,7 @@
 #MISE description="Setup project environment"
 #MISE depends=["clear-cache"]
 
-cd "$MISE_ORIGINAL_CWD"
+mise install
 
 bun install --frozen-lockfile
 
