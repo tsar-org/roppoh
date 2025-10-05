@@ -7,3 +7,5 @@ mise install
 bun install --frozen-lockfile
 
 lefthook install
+
+cd apps/roppoh && bun react-router typegen
