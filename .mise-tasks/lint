@@ -1,8 +1,8 @@
 #\!/usr/bin/env bash
 
-turbo check:type
-
 turbo cf-typegen
+
+turbo check:type
 
 turbo build
 

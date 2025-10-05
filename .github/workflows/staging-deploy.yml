@@ -13,17 +13,16 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
       - run: bun turbo build
-        working-directory: ./apps/tanstack
       - name: deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          command: deploy --config ./dist/server/wrangler.json
+          command: deploy --config ./build/server/wrangler.json
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ vars.CF_ACCOUNT_ID }}
           environment: staging
           packageManager: bun
-          workingDirectory: ./apps/tanstack
+          workingDirectory: ./apps/roppoh
       - id: comment
         uses: thollander/actions-comment-pull-request@v3
         with:
