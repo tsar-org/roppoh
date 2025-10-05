@@ -32,7 +32,7 @@ export default function TopPage() {
                 Roppoh is discord activity hosting server
               </p>
             </div>
-            <Button className="w-sm" onClick={signIn}>
+            <Button className="w-sm cursor-pointer" onClick={signIn}>
               {theme === Theme.LIGHT ? (
                 <img
                   alt="discord-mark-white"
