@@ -7,6 +7,9 @@ dist
 .wrangler
 .dev.vars
 
+# @react-router
+.react-router
+
 # @turbo
 .turbo
 
@@ -21,10 +24,6 @@ dist
 
 # vscode
 .vscode/settings.json
-
-# tanstack start
-dev-dist
-.tanstack
 
 # mise
 mise.local.toml
