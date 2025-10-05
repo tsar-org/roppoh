@@ -8,18 +8,29 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   CreateDatabaseClickhouseBodies,
@@ -79,7 +90,7 @@ export type listDatabasesResponse =
   | listDatabasesResponseError;
 
 export const getListDatabasesUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases`;
+  return `/api/coolify/databases`;
 };
 
 export const listDatabases = async (
@@ -101,7 +112,179 @@ export const listDatabases = async (
 };
 
 export const getListDatabasesQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/databases`] as const;
+  return [`/api/coolify/databases`] as const;
+};
+
+export const getListDatabasesInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listDatabases>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof listDatabases>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListDatabasesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listDatabases>>> = ({
+    signal,
+  }) => listDatabases({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listDatabases>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListDatabasesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listDatabases>>
+>;
+export type ListDatabasesInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListDatabasesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listDatabases>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listDatabases>>,
+          TError,
+          Awaited<ReturnType<typeof listDatabases>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListDatabasesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listDatabases>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listDatabases>>,
+          TError,
+          Awaited<ReturnType<typeof listDatabases>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListDatabasesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listDatabases>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListDatabasesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listDatabases>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListDatabasesInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List
+ */
+export const prefetchListDatabasesInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListDatabasesInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListDatabasesQueryOptions = <
@@ -121,7 +304,12 @@ export const getListDatabasesQueryOptions = <
     signal,
   }) => listDatabases({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof listDatabases>>,
     TError,
     TData
@@ -222,6 +410,158 @@ export function useListDatabases<
 }
 
 /**
+ * @summary List
+ */
+export const prefetchListDatabasesQuery = async <
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof listDatabases>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListDatabasesQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListDatabasesSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof listDatabases>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListDatabasesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listDatabases>>> = ({
+    signal,
+  }) => listDatabases({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listDatabases>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListDatabasesSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listDatabases>>
+>;
+export type ListDatabasesSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListDatabasesSuspense<
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListDatabasesSuspense<
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListDatabasesSuspense<
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListDatabasesSuspense<
+  TData = Awaited<ReturnType<typeof listDatabases>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listDatabases>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListDatabasesSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Get database by UUID.
  * @summary Get
  */
@@ -261,7 +601,7 @@ export type getDatabaseByUuidResponse =
   | getDatabaseByUuidResponseError;
 
 export const getGetDatabaseByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/databases/${uuid}`;
+  return `/api/coolify/databases/${uuid}`;
 };
 
 export const getDatabaseByUuid = async (
@@ -284,7 +624,189 @@ export const getDatabaseByUuid = async (
 };
 
 export const getGetDatabaseByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/databases/${uuid}`] as const;
+  return [`/api/coolify/databases/${uuid}`] as const;
+};
+
+export const getGetDatabaseByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDatabaseByUuid>>
+  > = ({ signal }) => getDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetDatabaseByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDatabaseByUuid>>
+>;
+export type GetDatabaseByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetDatabaseByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get
+ */
+export const prefetchGetDatabaseByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetDatabaseByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetDatabaseByUuidQueryOptions = <
@@ -315,6 +837,7 @@ export const getGetDatabaseByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getDatabaseByUuid>>,
@@ -440,6 +963,171 @@ export function useGetDatabaseByUuid<
 }
 
 /**
+ * @summary Get
+ */
+export const prefetchGetDatabaseByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetDatabaseByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetDatabaseByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getDatabaseByUuid>>
+  > = ({ signal }) => getDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetDatabaseByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getDatabaseByUuid>>
+>;
+export type GetDatabaseByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetDatabaseByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Delete database by UUID.
  * @summary Delete
  */
@@ -494,8 +1182,8 @@ export const getDeleteDatabaseByUuidUrl = (
   const stringifiedParams = normalizedParams.toString();
 
   return stringifiedParams.length > 0
-    ? `https://coolify.tsar-bmb.org/databases/${uuid}?${stringifiedParams}`
-    : `https://coolify.tsar-bmb.org/databases/${uuid}`;
+    ? `/api/coolify/databases/${uuid}?${stringifiedParams}`
+    : `/api/coolify/databases/${uuid}`;
 };
 
 export const deleteDatabaseByUuid = async (
@@ -635,7 +1323,7 @@ export type updateDatabaseByUuidResponse =
   | updateDatabaseByUuidResponseError;
 
 export const getUpdateDatabaseByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/databases/${uuid}`;
+  return `/api/coolify/databases/${uuid}`;
 };
 
 export const updateDatabaseByUuid = async (
@@ -771,7 +1459,7 @@ export type createDatabasePostgresqlResponse =
   | createDatabasePostgresqlResponseError;
 
 export const getCreateDatabasePostgresqlUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/postgresql`;
+  return `/api/coolify/databases/postgresql`;
 };
 
 export const createDatabasePostgresql = async (
@@ -906,7 +1594,7 @@ export type createDatabaseClickhouseResponse =
   | createDatabaseClickhouseResponseError;
 
 export const getCreateDatabaseClickhouseUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/clickhouse`;
+  return `/api/coolify/databases/clickhouse`;
 };
 
 export const createDatabaseClickhouse = async (
@@ -1041,7 +1729,7 @@ export type createDatabaseDragonflyResponse =
   | createDatabaseDragonflyResponseError;
 
 export const getCreateDatabaseDragonflyUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/dragonfly`;
+  return `/api/coolify/databases/dragonfly`;
 };
 
 export const createDatabaseDragonfly = async (
@@ -1175,7 +1863,7 @@ export type createDatabaseRedisResponse =
   | createDatabaseRedisResponseError;
 
 export const getCreateDatabaseRedisUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/redis`;
+  return `/api/coolify/databases/redis`;
 };
 
 export const createDatabaseRedis = async (
@@ -1309,7 +1997,7 @@ export type createDatabaseKeydbResponse =
   | createDatabaseKeydbResponseError;
 
 export const getCreateDatabaseKeydbUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/keydb`;
+  return `/api/coolify/databases/keydb`;
 };
 
 export const createDatabaseKeydb = async (
@@ -1443,7 +2131,7 @@ export type createDatabaseMariadbResponse =
   | createDatabaseMariadbResponseError;
 
 export const getCreateDatabaseMariadbUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/mariadb`;
+  return `/api/coolify/databases/mariadb`;
 };
 
 export const createDatabaseMariadb = async (
@@ -1577,7 +2265,7 @@ export type createDatabaseMysqlResponse =
   | createDatabaseMysqlResponseError;
 
 export const getCreateDatabaseMysqlUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/mysql`;
+  return `/api/coolify/databases/mysql`;
 };
 
 export const createDatabaseMysql = async (
@@ -1711,7 +2399,7 @@ export type createDatabaseMongodbResponse =
   | createDatabaseMongodbResponseError;
 
 export const getCreateDatabaseMongodbUrl = () => {
-  return `https://coolify.tsar-bmb.org/databases/mongodb`;
+  return `/api/coolify/databases/mongodb`;
 };
 
 export const createDatabaseMongodb = async (
@@ -1851,7 +2539,7 @@ export type startDatabaseByUuidResponse =
   | startDatabaseByUuidResponseError;
 
 export const getStartDatabaseByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/databases/${uuid}/start`;
+  return `/api/coolify/databases/${uuid}/start`;
 };
 
 export const startDatabaseByUuid = async (
@@ -1876,7 +2564,196 @@ export const startDatabaseByUuid = async (
 };
 
 export const getStartDatabaseByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/databases/${uuid}/start`] as const;
+  return [`/api/coolify/databases/${uuid}/start`] as const;
+};
+
+export const getStartDatabaseByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof startDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStartDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof startDatabaseByUuid>>
+  > = ({ signal }) => startDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof startDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StartDatabaseByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof startDatabaseByUuid>>
+>;
+export type StartDatabaseByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof startDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof startDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Start
+ */
+
+export function useStartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStartDatabaseByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Start
+ */
+export const prefetchStartDatabaseByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStartDatabaseByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getStartDatabaseByUuidQueryOptions = <
@@ -1908,6 +2785,7 @@ export const getStartDatabaseByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof startDatabaseByUuid>>,
@@ -2033,6 +2911,175 @@ export function useStartDatabaseByUuid<
 }
 
 /**
+ * @summary Start
+ */
+export const prefetchStartDatabaseByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStartDatabaseByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getStartDatabaseByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStartDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof startDatabaseByUuid>>
+  > = ({ signal }) => startDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof startDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StartDatabaseByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof startDatabaseByUuid>>
+>;
+export type StartDatabaseByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Start
+ */
+
+export function useStartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStartDatabaseByUuidSuspenseQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Stop database. `Post` request is also accepted.
  * @summary Stop
  */
@@ -2073,7 +3120,7 @@ export type stopDatabaseByUuidResponse =
   | stopDatabaseByUuidResponseError;
 
 export const getStopDatabaseByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/databases/${uuid}/stop`;
+  return `/api/coolify/databases/${uuid}/stop`;
 };
 
 export const stopDatabaseByUuid = async (
@@ -2096,7 +3143,190 @@ export const stopDatabaseByUuid = async (
 };
 
 export const getStopDatabaseByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/databases/${uuid}/stop`] as const;
+  return [`/api/coolify/databases/${uuid}/stop`] as const;
+};
+
+export const getStopDatabaseByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof stopDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStopDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof stopDatabaseByUuid>>
+  > = ({ signal }) => stopDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StopDatabaseByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof stopDatabaseByUuid>>
+>;
+export type StopDatabaseByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStopDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof stopDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof stopDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Stop
+ */
+
+export function useStopDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStopDatabaseByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Stop
+ */
+export const prefetchStopDatabaseByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStopDatabaseByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getStopDatabaseByUuidQueryOptions = <
@@ -2128,6 +3358,7 @@ export const getStopDatabaseByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof stopDatabaseByUuid>>,
@@ -2253,6 +3484,172 @@ export function useStopDatabaseByUuid<
 }
 
 /**
+ * @summary Stop
+ */
+export const prefetchStopDatabaseByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStopDatabaseByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getStopDatabaseByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStopDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof stopDatabaseByUuid>>
+  > = ({ signal }) => stopDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StopDatabaseByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof stopDatabaseByUuid>>
+>;
+export type StopDatabaseByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStopDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Stop
+ */
+
+export function useStopDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStopDatabaseByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Restart database. `Post` request is also accepted.
  * @summary Restart
  */
@@ -2293,7 +3690,7 @@ export type restartDatabaseByUuidResponse =
   | restartDatabaseByUuidResponseError;
 
 export const getRestartDatabaseByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/databases/${uuid}/restart`;
+  return `/api/coolify/databases/${uuid}/restart`;
 };
 
 export const restartDatabaseByUuid = async (
@@ -2318,7 +3715,196 @@ export const restartDatabaseByUuid = async (
 };
 
 export const getRestartDatabaseByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/databases/${uuid}/restart`] as const;
+  return [`/api/coolify/databases/${uuid}/restart`] as const;
+};
+
+export const getRestartDatabaseByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof restartDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRestartDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof restartDatabaseByUuid>>
+  > = ({ signal }) => restartDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RestartDatabaseByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof restartDatabaseByUuid>>
+>;
+export type RestartDatabaseByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useRestartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof restartDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof restartDatabaseByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Restart
+ */
+
+export function useRestartDatabaseByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartDatabaseByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getRestartDatabaseByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Restart
+ */
+export const prefetchRestartDatabaseByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getRestartDatabaseByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getRestartDatabaseByUuidQueryOptions = <
@@ -2350,6 +3936,7 @@ export const getRestartDatabaseByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof restartDatabaseByUuid>>,
@@ -2468,6 +4055,175 @@ export function useRestartDatabaseByUuid<
     TData,
     TError
   > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Restart
+ */
+export const prefetchRestartDatabaseByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getRestartDatabaseByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getRestartDatabaseByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRestartDatabaseByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof restartDatabaseByUuid>>
+  > = ({ signal }) => restartDatabaseByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RestartDatabaseByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof restartDatabaseByUuid>>
+>;
+export type RestartDatabaseByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useRestartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Restart
+ */
+
+export function useRestartDatabaseByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartDatabaseByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getRestartDatabaseByUuidSuspenseQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

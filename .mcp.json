@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "cloudflare": {
+      "type": "sse",
+      "url": "https://docs.mcp.cloudflare.com/sse"
+    },
     "context7": {
       "args": ["-y", "@upstash/context7-mcp"],
       "command": "bunx",
@@ -19,6 +23,10 @@
     },
     "sequential-thinking": {
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "command": "bunx"
+    },
+    "shadcn": {
+      "args": ["shadcn@latest", "mcp"],
       "command": "bunx"
     }
   }

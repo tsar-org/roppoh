@@ -10,18 +10,22 @@ export default {
     },
     output: {
       baseUrl: {
-        baseUrl: "https://coolify.tsar-bmb.org",
+        // baseUrl: "https://coolify.tsar-bmb.org",
+        baseUrl: "/api/coolify",
+        // baseUrl: "http://192.168.123.123:8000/api/v1",
         getBaseUrlFromSpecification: false,
       },
+      biome: true,
       clean: true,
       client: "react-query",
       fileExtension: ".gen.ts",
+      headers: true,
       httpClient: "fetch",
       indexFiles: true,
-      mock: {
-        indexMockFiles: true,
-        type: "msw",
-      },
+      // mock: {
+      //   indexMockFiles: true,
+      //   type: "msw",
+      // },
       mode: "tags-split",
       namingConvention: "kebab-case",
       override: {
@@ -39,6 +43,16 @@ export default {
             itemSuffix: "Schema",
             suffix: "DTO",
           },
+        },
+        query: {
+          options: {
+            staleTime: 10000,
+          },
+          signal: true,
+          useInfinite: true,
+          usePrefetch: true,
+          useQuery: true,
+          useSuspenseQuery: true,
         },
       },
       schemas: "./model",

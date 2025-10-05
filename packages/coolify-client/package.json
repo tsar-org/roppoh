@@ -8,12 +8,7 @@
     "orval": "^7.12.2"
   },
   "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./msw": {
-      "default": "./src/index.msw.gen.ts"
-    }
+    ".": { "default": "./src/index.ts" }
   },
   "main": "./src/index.ts",
   "name": "@roppoh/coolify-client",

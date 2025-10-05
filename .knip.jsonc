@@ -12,7 +12,11 @@
       "ignoreDependencies": ["@biomejs/biome"]
     },
     "apps/tanstack": {
-      "entry": ["src/**.tsx", "src/**/index.tsx", "src/types/**/*.d.ts"],
+      "entry": [
+        "src/routes/__root.tsx",
+        "src/routes/**/index.tsx",
+        "src/types/**/*.d.ts"
+      ],
       "ignore": [
         "src/routeTree.gen.ts",
         "src/shadcn/**",

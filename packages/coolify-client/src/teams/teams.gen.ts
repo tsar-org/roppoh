@@ -8,15 +8,25 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   NHttp400Response,
@@ -64,7 +74,7 @@ export type listTeamsResponse =
   | listTeamsResponseError;
 
 export const getListTeamsUrl = () => {
-  return `https://coolify.tsar-bmb.org/teams`;
+  return `/api/coolify/teams`;
 };
 
 export const listTeams = async (
@@ -86,7 +96,177 @@ export const listTeams = async (
 };
 
 export const getListTeamsQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/teams`] as const;
+  return [`/api/coolify/teams`] as const;
+};
+
+export const getListTeamsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listTeams>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof listTeams>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListTeamsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listTeams>>> = ({
+    signal,
+  }) => listTeams({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listTeams>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListTeamsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listTeams>>
+>;
+export type ListTeamsInfiniteQueryError = NHttp400Response | NHttp401Response;
+
+export function useListTeamsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listTeams>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listTeams>>,
+          TError,
+          Awaited<ReturnType<typeof listTeams>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListTeamsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listTeams>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listTeams>>,
+          TError,
+          Awaited<ReturnType<typeof listTeams>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListTeamsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listTeams>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListTeamsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listTeams>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListTeamsInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List
+ */
+export const prefetchListTeamsInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListTeamsInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListTeamsQueryOptions = <
@@ -106,11 +286,14 @@ export const getListTeamsQueryOptions = <
     signal,
   }) => listTeams({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof listTeams>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof listTeams>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type ListTeamsQueryResult = NonNullable<
@@ -207,6 +390,156 @@ export function useListTeams<
 }
 
 /**
+ * @summary List
+ */
+export const prefetchListTeamsQuery = async <
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof listTeams>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListTeamsQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListTeamsSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof listTeams>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListTeamsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listTeams>>> = ({
+    signal,
+  }) => listTeams({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listTeams>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListTeamsSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listTeams>>
+>;
+export type ListTeamsSuspenseQueryError = NHttp400Response | NHttp401Response;
+
+export function useListTeamsSuspense<
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListTeamsSuspense<
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListTeamsSuspense<
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListTeamsSuspense<
+  TData = Awaited<ReturnType<typeof listTeams>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listTeams>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListTeamsSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Get team by TeamId.
  * @summary Get
  */
@@ -246,7 +579,7 @@ export type getTeamByIdResponse =
   | getTeamByIdResponseError;
 
 export const getGetTeamByIdUrl = (id: number) => {
-  return `https://coolify.tsar-bmb.org/teams/${id}`;
+  return `/api/coolify/teams/${id}`;
 };
 
 export const getTeamById = async (
@@ -269,7 +602,189 @@ export const getTeamById = async (
 };
 
 export const getGetTeamByIdQueryKey = (id?: number) => {
-  return [`https://coolify.tsar-bmb.org/teams/${id}`] as const;
+  return [`/api/coolify/teams/${id}`] as const;
+};
+
+export const getGetTeamByIdInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getTeamById>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetTeamByIdQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTeamById>>> = ({
+    signal,
+  }) => getTeamById(id, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!id,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getTeamById>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamByIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamById>>
+>;
+export type GetTeamByIdInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetTeamByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getTeamById>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamById>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamById>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getTeamById>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeamById>>,
+          TError,
+          Awaited<ReturnType<typeof getTeamById>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getTeamById>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetTeamByIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getTeamById>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamByIdInfiniteQueryOptions(id, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get
+ */
+export const prefetchGetTeamByIdInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetTeamByIdInfiniteQueryOptions(id, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetTeamByIdQueryOptions = <
@@ -296,6 +811,7 @@ export const getGetTeamByIdQueryOptions = <
     enabled: !!id,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getTeamById>>,
@@ -405,6 +921,167 @@ export function useGetTeamById<
 }
 
 /**
+ * @summary Get
+ */
+export const prefetchGetTeamByIdQuery = async <
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  id: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeamById>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetTeamByIdQueryOptions(id, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetTeamByIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetTeamByIdQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTeamById>>> = ({
+    signal,
+  }) => getTeamById(id, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getTeamById>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetTeamByIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamById>>
+>;
+export type GetTeamByIdSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetTeamByIdSuspense<
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamByIdSuspense<
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeamByIdSuspense<
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetTeamByIdSuspense<
+  TData = Awaited<ReturnType<typeof getTeamById>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getTeamById>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamByIdSuspenseQueryOptions(id, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Get members by TeamId.
  * @summary Members
  */
@@ -445,7 +1122,7 @@ export type getMembersByTeamIdResponse =
   | getMembersByTeamIdResponseError;
 
 export const getGetMembersByTeamIdUrl = (id: number) => {
-  return `https://coolify.tsar-bmb.org/teams/${id}/members`;
+  return `/api/coolify/teams/${id}/members`;
 };
 
 export const getMembersByTeamId = async (
@@ -468,7 +1145,189 @@ export const getMembersByTeamId = async (
 };
 
 export const getGetMembersByTeamIdQueryKey = (id?: number) => {
-  return [`https://coolify.tsar-bmb.org/teams/${id}/members`] as const;
+  return [`/api/coolify/teams/${id}/members`] as const;
+};
+
+export const getGetMembersByTeamIdInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getMembersByTeamId>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetMembersByTeamIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMembersByTeamId>>
+  > = ({ signal }) => getMembersByTeamId(id, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!id,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getMembersByTeamId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetMembersByTeamIdInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMembersByTeamId>>
+>;
+export type GetMembersByTeamIdInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetMembersByTeamIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getMembersByTeamId>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMembersByTeamId>>,
+          TError,
+          Awaited<ReturnType<typeof getMembersByTeamId>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMembersByTeamIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getMembersByTeamId>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMembersByTeamId>>,
+          TError,
+          Awaited<ReturnType<typeof getMembersByTeamId>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMembersByTeamIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getMembersByTeamId>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Members
+ */
+
+export function useGetMembersByTeamIdInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getMembersByTeamId>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetMembersByTeamIdInfiniteQueryOptions(id, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Members
+ */
+export const prefetchGetMembersByTeamIdInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  id: number,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetMembersByTeamIdInfiniteQueryOptions(id, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetMembersByTeamIdQueryOptions = <
@@ -499,6 +1358,7 @@ export const getGetMembersByTeamIdQueryOptions = <
     enabled: !!id,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getMembersByTeamId>>,
@@ -624,6 +1484,171 @@ export function useGetMembersByTeamId<
 }
 
 /**
+ * @summary Members
+ */
+export const prefetchGetMembersByTeamIdQuery = async <
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  id: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetMembersByTeamIdQueryOptions(id, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetMembersByTeamIdSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetMembersByTeamIdQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getMembersByTeamId>>
+  > = ({ signal }) => getMembersByTeamId(id, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getMembersByTeamId>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetMembersByTeamIdSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMembersByTeamId>>
+>;
+export type GetMembersByTeamIdSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetMembersByTeamIdSuspense<
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMembersByTeamIdSuspense<
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetMembersByTeamIdSuspense<
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Members
+ */
+
+export function useGetMembersByTeamIdSuspense<
+  TData = Awaited<ReturnType<typeof getMembersByTeamId>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  id: number,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getMembersByTeamId>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetMembersByTeamIdSuspenseQueryOptions(id, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Get currently authenticated team.
  * @summary Authenticated Team
  */
@@ -657,7 +1682,7 @@ export type getCurrentTeamResponse =
   | getCurrentTeamResponseError;
 
 export const getGetCurrentTeamUrl = () => {
-  return `https://coolify.tsar-bmb.org/teams/current`;
+  return `/api/coolify/teams/current`;
 };
 
 export const getCurrentTeam = async (
@@ -679,7 +1704,179 @@ export const getCurrentTeam = async (
 };
 
 export const getGetCurrentTeamQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/teams/current`] as const;
+  return [`/api/coolify/teams/current`] as const;
+};
+
+export const getGetCurrentTeamInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeam>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getCurrentTeam>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCurrentTeamQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentTeam>>> = ({
+    signal,
+  }) => getCurrentTeam({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getCurrentTeam>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCurrentTeamInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCurrentTeam>>
+>;
+export type GetCurrentTeamInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useGetCurrentTeamInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeam>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentTeam>>,
+          TError,
+          Awaited<ReturnType<typeof getCurrentTeam>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeam>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentTeam>>,
+          TError,
+          Awaited<ReturnType<typeof getCurrentTeam>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeam>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Authenticated Team
+ */
+
+export function useGetCurrentTeamInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeam>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetCurrentTeamInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Authenticated Team
+ */
+export const prefetchGetCurrentTeamInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetCurrentTeamInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetCurrentTeamQueryOptions = <
@@ -699,7 +1896,12 @@ export const getGetCurrentTeamQueryOptions = <
     signal,
   }) => getCurrentTeam({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof getCurrentTeam>>,
     TError,
     TData
@@ -800,6 +2002,158 @@ export function useGetCurrentTeam<
 }
 
 /**
+ * @summary Authenticated Team
+ */
+export const prefetchGetCurrentTeamQuery = async <
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getCurrentTeam>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetCurrentTeamQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetCurrentTeamSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getCurrentTeam>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCurrentTeamQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentTeam>>> = ({
+    signal,
+  }) => getCurrentTeam({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getCurrentTeam>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCurrentTeamSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCurrentTeam>>
+>;
+export type GetCurrentTeamSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useGetCurrentTeamSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Authenticated Team
+ */
+
+export function useGetCurrentTeamSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeam>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeam>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetCurrentTeamSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Get currently authenticated team members.
  * @summary Authenticated Team Members
  */
@@ -834,7 +2188,7 @@ export type getCurrentTeamMembersResponse =
   | getCurrentTeamMembersResponseError;
 
 export const getGetCurrentTeamMembersUrl = () => {
-  return `https://coolify.tsar-bmb.org/teams/current/members`;
+  return `/api/coolify/teams/current/members`;
 };
 
 export const getCurrentTeamMembers = async (
@@ -858,7 +2212,179 @@ export const getCurrentTeamMembers = async (
 };
 
 export const getGetCurrentTeamMembersQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/teams/current/members`] as const;
+  return [`/api/coolify/teams/current/members`] as const;
+};
+
+export const getGetCurrentTeamMembersInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeamMembers>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCurrentTeamMembersQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getCurrentTeamMembers>>
+  > = ({ signal }) => getCurrentTeamMembers({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCurrentTeamMembersInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCurrentTeamMembers>>
+>;
+export type GetCurrentTeamMembersInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useGetCurrentTeamMembersInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeamMembers>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+          TError,
+          Awaited<ReturnType<typeof getCurrentTeamMembers>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamMembersInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeamMembers>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+          TError,
+          Awaited<ReturnType<typeof getCurrentTeamMembers>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamMembersInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeamMembers>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Authenticated Team Members
+ */
+
+export function useGetCurrentTeamMembersInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getCurrentTeamMembers>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetCurrentTeamMembersInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Authenticated Team Members
+ */
+export const prefetchGetCurrentTeamMembersInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetCurrentTeamMembersInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetCurrentTeamMembersQueryOptions = <
@@ -882,7 +2408,12 @@ export const getGetCurrentTeamMembersQueryOptions = <
     Awaited<ReturnType<typeof getCurrentTeamMembers>>
   > = ({ signal }) => getCurrentTeamMembers({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof getCurrentTeamMembers>>,
     TError,
     TData
@@ -994,6 +2525,162 @@ export function useGetCurrentTeamMembers<
     TData,
     TError
   > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Authenticated Team Members
+ */
+export const prefetchGetCurrentTeamMembersQuery = async <
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetCurrentTeamMembersQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetCurrentTeamMembersSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCurrentTeamMembersQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getCurrentTeamMembers>>
+  > = ({ signal }) => getCurrentTeamMembers({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCurrentTeamMembersSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCurrentTeamMembers>>
+>;
+export type GetCurrentTeamMembersSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useGetCurrentTeamMembersSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamMembersSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentTeamMembersSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Authenticated Team Members
+ */
+
+export function useGetCurrentTeamMembersSuspense<
+  TData = Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getCurrentTeamMembers>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetCurrentTeamMembersSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

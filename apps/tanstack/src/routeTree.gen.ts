@@ -10,13 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnitySportsResortIndexRouteImport } from './routes/unity-sports-resort/index'
+import { Route as ServerIndexRouteImport } from './routes/server/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as IndexIndexRouteImport } from './routes/_index/index'
+import { Route as ApiDokploySplatRouteImport } from './routes/api/dokploy.$'
+import { Route as ApiCoolifySplatRouteImport } from './routes/api/coolify.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const UnitySportsResortIndexRoute = UnitySportsResortIndexRouteImport.update({
   id: '/unity-sports-resort/',
   path: '/unity-sports-resort/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServerIndexRoute = ServerIndexRouteImport.update({
+  id: '/server/',
+  path: '/server/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -29,6 +37,16 @@ const IndexIndexRoute = IndexIndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDokploySplatRoute = ApiDokploySplatRouteImport.update({
+  id: '/api/dokploy/$',
+  path: '/api/dokploy/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCoolifySplatRoute = ApiCoolifySplatRouteImport.update({
+  id: '/api/coolify/$',
+  path: '/api/coolify/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -38,40 +56,69 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexIndexRoute
   '/login': typeof LoginIndexRoute
+  '/server': typeof ServerIndexRoute
   '/unity-sports-resort': typeof UnitySportsResortIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/coolify/$': typeof ApiCoolifySplatRoute
+  '/api/dokploy/$': typeof ApiDokploySplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexIndexRoute
   '/login': typeof LoginIndexRoute
+  '/server': typeof ServerIndexRoute
   '/unity-sports-resort': typeof UnitySportsResortIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/coolify/$': typeof ApiCoolifySplatRoute
+  '/api/dokploy/$': typeof ApiDokploySplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_index/': typeof IndexIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/server/': typeof ServerIndexRoute
   '/unity-sports-resort/': typeof UnitySportsResortIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/coolify/$': typeof ApiCoolifySplatRoute
+  '/api/dokploy/$': typeof ApiDokploySplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/unity-sports-resort' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/server'
+    | '/unity-sports-resort'
+    | '/api/auth/$'
+    | '/api/coolify/$'
+    | '/api/dokploy/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/unity-sports-resort' | '/api/auth/$'
+  to:
+    | '/'
+    | '/login'
+    | '/server'
+    | '/unity-sports-resort'
+    | '/api/auth/$'
+    | '/api/coolify/$'
+    | '/api/dokploy/$'
   id:
     | '__root__'
     | '/_index/'
     | '/login/'
+    | '/server/'
     | '/unity-sports-resort/'
     | '/api/auth/$'
+    | '/api/coolify/$'
+    | '/api/dokploy/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexIndexRoute: typeof IndexIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  ServerIndexRoute: typeof ServerIndexRoute
   UnitySportsResortIndexRoute: typeof UnitySportsResortIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiCoolifySplatRoute: typeof ApiCoolifySplatRoute
+  ApiDokploySplatRoute: typeof ApiDokploySplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -81,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/unity-sports-resort'
       fullPath: '/unity-sports-resort'
       preLoaderRoute: typeof UnitySportsResortIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/server/': {
+      id: '/server/'
+      path: '/server'
+      fullPath: '/server'
+      preLoaderRoute: typeof ServerIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -97,6 +151,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/dokploy/$': {
+      id: '/api/dokploy/$'
+      path: '/api/dokploy/$'
+      fullPath: '/api/dokploy/$'
+      preLoaderRoute: typeof ApiDokploySplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/coolify/$': {
+      id: '/api/coolify/$'
+      path: '/api/coolify/$'
+      fullPath: '/api/coolify/$'
+      preLoaderRoute: typeof ApiCoolifySplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -110,8 +178,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexIndexRoute: IndexIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  ServerIndexRoute: ServerIndexRoute,
   UnitySportsResortIndexRoute: UnitySportsResortIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiCoolifySplatRoute: ApiCoolifySplatRoute,
+  ApiDokploySplatRoute: ApiDokploySplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

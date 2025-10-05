@@ -4,6 +4,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarInset,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
@@ -48,7 +49,7 @@ const data = {
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
+      <Sidebar collapsible="icon" variant="inset">
         <SidebarHeader>
           <GuildSwitcher />
         </SidebarHeader>
@@ -60,10 +61,9 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-      <main className="h-full w-full">
-        <SidebarTrigger />
-        {children}
-      </main>
+      <SidebarInset>
+        <main className="h-full w-full">{children}</main>
+      </SidebarInset>
     </SidebarProvider>
   );
 };
