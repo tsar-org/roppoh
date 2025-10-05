@@ -14,7 +14,7 @@ export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
     return;
   } catch (error) {
     ctx.dep.logger.error(error, "Failed to get session");
-    throw error;
+    return redirect("/login");
   }
 }
 

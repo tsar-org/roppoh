@@ -47,7 +47,7 @@
     "build": "react-router build",
     "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "react-router typegen && tsc --noEmit",
-    "dev": "react-router dev",
+    "dev": "bun run migration && bun react-router dev",
     "migration": "wrangler d1 migrations apply roppoh-auth --local"
   },
   "type": "module"
