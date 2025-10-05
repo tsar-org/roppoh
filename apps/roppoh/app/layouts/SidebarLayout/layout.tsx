@@ -8,11 +8,11 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/shadcn/components/ui/sidebar";
 import type { Route } from "./+types/layout";
 import { ContentNavigation } from "./components/ContentNavigation";
+import { GuildSwitcher } from "./components/TeamSwitcher";
 import { UserNavigation } from "./components/UserNavigation";
-import { GuildSwitcher } from "./components/ui/TeamSwitcher";
 
 const data = {
   ContentNavigation: [

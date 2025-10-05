@@ -1,6 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react";
 
-export const TsarOrganizationLink = () => {
+export function TsarOrganizationLink() {
   return (
     <a
       className="flex items-center gap-2 font-medium"
@@ -14,4 +14,4 @@ export const TsarOrganizationLink = () => {
       tsar-org
     </a>
   );
-};
+}
