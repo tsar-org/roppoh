@@ -8,18 +8,29 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   CreateEnvByServiceUuid201,
@@ -84,7 +95,7 @@ export type listServicesResponse =
   | listServicesResponseError;
 
 export const getListServicesUrl = () => {
-  return `https://coolify.tsar-bmb.org/services`;
+  return `http://localhost:3000/api/coolify/services`;
 };
 
 export const listServices = async (
@@ -97,6 +108,8 @@ export const listServices = async (
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
+  console.log("body: ", body);
+
   const data: listServicesResponse["data"] = body ? JSON.parse(body) : {};
   return {
     data,
@@ -106,7 +119,179 @@ export const listServices = async (
 };
 
 export const getListServicesQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/services`] as const;
+  return [`/api/coolify/services`] as const;
+};
+
+export const getListServicesInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listServices>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof listServices>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListServicesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listServices>>> = ({
+    signal,
+  }) => listServices({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listServices>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListServicesInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listServices>>
+>;
+export type ListServicesInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListServicesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listServices>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listServices>>,
+          TError,
+          Awaited<ReturnType<typeof listServices>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListServicesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listServices>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listServices>>,
+          TError,
+          Awaited<ReturnType<typeof listServices>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListServicesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listServices>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListServicesInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listServices>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListServicesInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List
+ */
+export const prefetchListServicesInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListServicesInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListServicesQueryOptions = <
@@ -126,7 +311,12 @@ export const getListServicesQueryOptions = <
     signal,
   }) => listServices({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof listServices>>,
     TError,
     TData
@@ -227,6 +417,158 @@ export function useListServices<
 }
 
 /**
+ * @summary List
+ */
+export const prefetchListServicesQuery = async <
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof listServices>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListServicesQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListServicesSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof listServices>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListServicesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listServices>>> = ({
+    signal,
+  }) => listServices({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listServices>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListServicesSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listServices>>
+>;
+export type ListServicesSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListServicesSuspense<
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListServicesSuspense<
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListServicesSuspense<
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListServicesSuspense<
+  TData = Awaited<ReturnType<typeof listServices>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listServices>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListServicesSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Create a one-click / custom service
  * @summary Create service
  */
@@ -260,7 +602,7 @@ export type createServiceResponse =
   | createServiceResponseError;
 
 export const getCreateServiceUrl = () => {
-  return `https://coolify.tsar-bmb.org/services`;
+  return `/api/coolify/services`;
 };
 
 export const createService = async (
@@ -395,7 +737,7 @@ export type getServiceByUuidResponse =
   | getServiceByUuidResponseError;
 
 export const getGetServiceByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}`;
+  return `/api/coolify/services/${uuid}`;
 };
 
 export const getServiceByUuid = async (
@@ -418,7 +760,189 @@ export const getServiceByUuid = async (
 };
 
 export const getGetServiceByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/services/${uuid}`] as const;
+  return [`/api/coolify/services/${uuid}`] as const;
+};
+
+export const getGetServiceByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getServiceByUuid>>
+  > = ({ signal }) => getServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetServiceByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getServiceByUuid>>
+>;
+export type GetServiceByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get
+ */
+export const prefetchGetServiceByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetServiceByUuidQueryOptions = <
@@ -449,6 +973,7 @@ export const getGetServiceByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getServiceByUuid>>,
@@ -574,6 +1099,171 @@ export function useGetServiceByUuid<
 }
 
 /**
+ * @summary Get
+ */
+export const prefetchGetServiceByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetServiceByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetServiceByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getServiceByUuid>>
+  > = ({ signal }) => getServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetServiceByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getServiceByUuid>>
+>;
+export type GetServiceByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetServiceByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Delete service by UUID.
  * @summary Delete
  */
@@ -628,8 +1318,8 @@ export const getDeleteServiceByUuidUrl = (
   const stringifiedParams = normalizedParams.toString();
 
   return stringifiedParams.length > 0
-    ? `https://coolify.tsar-bmb.org/services/${uuid}?${stringifiedParams}`
-    : `https://coolify.tsar-bmb.org/services/${uuid}`;
+    ? `/api/coolify/services/${uuid}?${stringifiedParams}`
+    : `/api/coolify/services/${uuid}`;
 };
 
 export const deleteServiceByUuid = async (
@@ -769,7 +1459,7 @@ export type updateServiceByUuidResponse =
   | updateServiceByUuidResponseError;
 
 export const getUpdateServiceByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}`;
+  return `/api/coolify/services/${uuid}`;
 };
 
 export const updateServiceByUuid = async (
@@ -911,7 +1601,7 @@ export type listEnvsByServiceUuidResponse =
   | listEnvsByServiceUuidResponseError;
 
 export const getListEnvsByServiceUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/envs`;
+  return `/api/coolify/services/${uuid}/envs`;
 };
 
 export const listEnvsByServiceUuid = async (
@@ -936,7 +1626,196 @@ export const listEnvsByServiceUuid = async (
 };
 
 export const getListEnvsByServiceUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/services/${uuid}/envs`] as const;
+  return [`/api/coolify/services/${uuid}/envs`] as const;
+};
+
+export const getListEnvsByServiceUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listEnvsByServiceUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getListEnvsByServiceUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+  > = ({ signal }) => listEnvsByServiceUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListEnvsByServiceUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+>;
+export type ListEnvsByServiceUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useListEnvsByServiceUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listEnvsByServiceUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+          TError,
+          Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListEnvsByServiceUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listEnvsByServiceUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+          TError,
+          Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListEnvsByServiceUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listEnvsByServiceUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List Envs
+ */
+
+export function useListEnvsByServiceUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listEnvsByServiceUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListEnvsByServiceUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List Envs
+ */
+export const prefetchListEnvsByServiceUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListEnvsByServiceUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListEnvsByServiceUuidQueryOptions = <
@@ -968,6 +1847,7 @@ export const getListEnvsByServiceUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
@@ -1093,6 +1973,175 @@ export function useListEnvsByServiceUuid<
 }
 
 /**
+ * @summary List Envs
+ */
+export const prefetchListEnvsByServiceUuidQuery = async <
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListEnvsByServiceUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListEnvsByServiceUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getListEnvsByServiceUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+  > = ({ signal }) => listEnvsByServiceUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListEnvsByServiceUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listEnvsByServiceUuid>>
+>;
+export type ListEnvsByServiceUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useListEnvsByServiceUuidSuspense<
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListEnvsByServiceUuidSuspense<
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListEnvsByServiceUuidSuspense<
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List Envs
+ */
+
+export function useListEnvsByServiceUuidSuspense<
+  TData = Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listEnvsByServiceUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListEnvsByServiceUuidSuspenseQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Create env by service UUID.
  * @summary Create Env
  */
@@ -1133,7 +2182,7 @@ export type createEnvByServiceUuidResponse =
   | createEnvByServiceUuidResponseError;
 
 export const getCreateEnvByServiceUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/envs`;
+  return `/api/coolify/services/${uuid}/envs`;
 };
 
 export const createEnvByServiceUuid = async (
@@ -1275,7 +2324,7 @@ export type updateEnvByServiceUuidResponse =
   | updateEnvByServiceUuidResponseError;
 
 export const getUpdateEnvByServiceUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/envs`;
+  return `/api/coolify/services/${uuid}/envs`;
 };
 
 export const updateEnvByServiceUuid = async (
@@ -1417,7 +2466,7 @@ export type updateEnvsByServiceUuidResponse =
   | updateEnvsByServiceUuidResponseError;
 
 export const getUpdateEnvsByServiceUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/envs/bulk`;
+  return `/api/coolify/services/${uuid}/envs/bulk`;
 };
 
 export const updateEnvsByServiceUuid = async (
@@ -1559,7 +2608,7 @@ export type deleteEnvByServiceUuidResponse =
   | deleteEnvByServiceUuidResponseError;
 
 export const getDeleteEnvByServiceUuidUrl = (uuid: string, envUuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/envs/${envUuid}`;
+  return `/api/coolify/services/${uuid}/envs/${envUuid}`;
 };
 
 export const deleteEnvByServiceUuid = async (
@@ -1699,7 +2748,7 @@ export type startServiceByUuidResponse =
   | startServiceByUuidResponseError;
 
 export const getStartServiceByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/start`;
+  return `/api/coolify/services/${uuid}/start`;
 };
 
 export const startServiceByUuid = async (
@@ -1722,7 +2771,190 @@ export const startServiceByUuid = async (
 };
 
 export const getStartServiceByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/services/${uuid}/start`] as const;
+  return [`/api/coolify/services/${uuid}/start`] as const;
+};
+
+export const getStartServiceByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof startServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStartServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof startServiceByUuid>>
+  > = ({ signal }) => startServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof startServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StartServiceByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof startServiceByUuid>>
+>;
+export type StartServiceByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof startServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof startServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Start
+ */
+
+export function useStartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof startServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStartServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Start
+ */
+export const prefetchStartServiceByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStartServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getStartServiceByUuidQueryOptions = <
@@ -1754,6 +2986,7 @@ export const getStartServiceByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof startServiceByUuid>>,
@@ -1879,6 +3112,172 @@ export function useStartServiceByUuid<
 }
 
 /**
+ * @summary Start
+ */
+export const prefetchStartServiceByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStartServiceByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getStartServiceByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getStartServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof startServiceByUuid>>
+  > = ({ signal }) => startServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof startServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StartServiceByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof startServiceByUuid>>
+>;
+export type StartServiceByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Start
+ */
+
+export function useStartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof startServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof startServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStartServiceByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Stop service. `Post` request is also accepted.
  * @summary Stop
  */
@@ -1918,7 +3317,7 @@ export type stopServiceByUuidResponse =
   | stopServiceByUuidResponseError;
 
 export const getStopServiceByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/services/${uuid}/stop`;
+  return `/api/coolify/services/${uuid}/stop`;
 };
 
 export const stopServiceByUuid = async (
@@ -1941,7 +3340,189 @@ export const stopServiceByUuid = async (
 };
 
 export const getStopServiceByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/services/${uuid}/stop`] as const;
+  return [`/api/coolify/services/${uuid}/stop`] as const;
+};
+
+export const getStopServiceByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof stopServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getStopServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof stopServiceByUuid>>
+  > = ({ signal }) => stopServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof stopServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StopServiceByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof stopServiceByUuid>>
+>;
+export type StopServiceByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStopServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof stopServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof stopServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof stopServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof stopServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Stop
+ */
+
+export function useStopServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof stopServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStopServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Stop
+ */
+export const prefetchStopServiceByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStopServiceByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getStopServiceByUuidQueryOptions = <
@@ -1972,6 +3553,7 @@ export const getStopServiceByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof stopServiceByUuid>>,
@@ -2097,6 +3679,171 @@ export function useStopServiceByUuid<
 }
 
 /**
+ * @summary Stop
+ */
+export const prefetchStopServiceByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getStopServiceByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getStopServiceByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getStopServiceByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof stopServiceByUuid>>
+  > = ({ signal }) => stopServiceByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof stopServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type StopServiceByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof stopServiceByUuid>>
+>;
+export type StopServiceByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useStopServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useStopServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Stop
+ */
+
+export function useStopServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof stopServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof stopServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getStopServiceByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Restart service. `Post` request is also accepted.
  * @summary Restart
  */
@@ -2151,8 +3898,8 @@ export const getRestartServiceByUuidUrl = (
   const stringifiedParams = normalizedParams.toString();
 
   return stringifiedParams.length > 0
-    ? `https://coolify.tsar-bmb.org/services/${uuid}/restart?${stringifiedParams}`
-    : `https://coolify.tsar-bmb.org/services/${uuid}/restart`;
+    ? `/api/coolify/services/${uuid}/restart?${stringifiedParams}`
+    : `/api/coolify/services/${uuid}/restart`;
 };
 
 export const restartServiceByUuid = async (
@@ -2182,9 +3929,207 @@ export const getRestartServiceByUuidQueryKey = (
   params?: RestartServiceByUuidParams,
 ) => {
   return [
-    `https://coolify.tsar-bmb.org/services/${uuid}/restart`,
+    `/api/coolify/services/${uuid}/restart`,
     ...(params ? [params] : []),
   ] as const;
+};
+
+export const getRestartServiceByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof restartServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRestartServiceByUuidQueryKey(uuid, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof restartServiceByUuid>>
+  > = ({ signal }) =>
+    restartServiceByUuid(uuid, params, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof restartServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RestartServiceByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof restartServiceByUuid>>
+>;
+export type RestartServiceByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useRestartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params: undefined | RestartServiceByUuidParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restartServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof restartServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restartServiceByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof restartServiceByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Restart
+ */
+
+export function useRestartServiceByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof restartServiceByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getRestartServiceByUuidInfiniteQueryOptions(
+    uuid,
+    params,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Restart
+ */
+export const prefetchRestartServiceByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getRestartServiceByUuidInfiniteQueryOptions(
+    uuid,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getRestartServiceByUuidQueryOptions = <
@@ -2218,6 +4163,7 @@ export const getRestartServiceByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof restartServiceByUuid>>,
@@ -2344,6 +4290,187 @@ export function useRestartServiceByUuid<
     TData,
     TError
   > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Restart
+ */
+export const prefetchRestartServiceByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getRestartServiceByUuidQueryOptions(
+    uuid,
+    params,
+    options,
+  );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getRestartServiceByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getRestartServiceByUuidQueryKey(uuid, params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof restartServiceByUuid>>
+  > = ({ signal }) =>
+    restartServiceByUuid(uuid, params, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof restartServiceByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RestartServiceByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof restartServiceByUuid>>
+>;
+export type RestartServiceByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useRestartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params: undefined | RestartServiceByUuidParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRestartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Restart
+ */
+
+export function useRestartServiceByUuidSuspense<
+  TData = Awaited<ReturnType<typeof restartServiceByUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  params?: RestartServiceByUuidParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof restartServiceByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getRestartServiceByUuidSuspenseQueryOptions(
+    uuid,
+    params,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

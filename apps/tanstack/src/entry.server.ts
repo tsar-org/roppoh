@@ -1,8 +1,5 @@
 import handler from "@tanstack/react-start/server-entry";
-import {
-  type DependencyContainer,
-  dependencyInjection,
-} from "@/utils/di.server";
+import { dependencyInjection } from "@/utils/di.server";
 
 export default {
   fetch(request, env, ctx) {

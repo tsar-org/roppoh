@@ -1,13 +1,28 @@
+import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   ClientOnly,
   createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { ThemeProvider } from "@/contexts/theme-provider";
+// import { startInstance } from "@/start-instance";
 import appCss from "../styles.css?url";
 
-export const Route = createRootRoute({
+// const contextInitializationMiddleware = startInstance
+//   .createMiddleware()
+//   .server(({ next, context }) => {
+//     return next({ context });
+//   });
+
+type RouterContext = {
+  queryClient: QueryClient;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  // export const Route = createRootRoute({
   head: () => ({
     links: [
       { href: appCss, rel: "stylesheet" },
@@ -35,6 +50,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             {children}
           </ThemeProvider>
         </ClientOnly>
+        {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
         <Scripts />
       </body>
     </html>

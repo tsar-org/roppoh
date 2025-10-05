@@ -8,18 +8,29 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   CreateEnvironment201,
@@ -75,7 +86,7 @@ export type listProjectsResponse =
   | listProjectsResponseError;
 
 export const getListProjectsUrl = () => {
-  return `https://coolify.tsar-bmb.org/projects`;
+  return `/api/coolify/projects`;
 };
 
 export const listProjects = async (
@@ -97,7 +108,179 @@ export const listProjects = async (
 };
 
 export const getListProjectsQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/projects`] as const;
+  return [`/api/coolify/projects`] as const;
+};
+
+export const getListProjectsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listProjects>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof listProjects>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListProjectsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listProjects>>> = ({
+    signal,
+  }) => listProjects({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listProjects>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListProjectsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listProjects>>
+>;
+export type ListProjectsInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listProjects>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listProjects>>,
+          TError,
+          Awaited<ReturnType<typeof listProjects>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listProjects>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listProjects>>,
+          TError,
+          Awaited<ReturnType<typeof listProjects>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listProjects>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListProjectsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listProjects>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListProjectsInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List
+ */
+export const prefetchListProjectsInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListProjectsInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListProjectsQueryOptions = <
@@ -117,7 +300,12 @@ export const getListProjectsQueryOptions = <
     signal,
   }) => listProjects({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof listProjects>>,
     TError,
     TData
@@ -218,6 +406,158 @@ export function useListProjects<
 }
 
 /**
+ * @summary List
+ */
+export const prefetchListProjectsQuery = async <
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof listProjects>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListProjectsQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListProjectsSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof listProjects>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListProjectsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listProjects>>> = ({
+    signal,
+  }) => listProjects({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listProjects>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListProjectsSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listProjects>>
+>;
+export type ListProjectsSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListProjectsSuspense<
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListProjectsSuspense<
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListProjectsSuspense<
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListProjectsSuspense<
+  TData = Awaited<ReturnType<typeof listProjects>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listProjects>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListProjectsSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Create Project.
  * @summary Create
  */
@@ -257,7 +597,7 @@ export type createProjectResponse =
   | createProjectResponseError;
 
 export const getCreateProjectUrl = () => {
-  return `https://coolify.tsar-bmb.org/projects`;
+  return `/api/coolify/projects`;
 };
 
 export const createProject = async (
@@ -395,7 +735,7 @@ export type getProjectByUuidResponse =
   | getProjectByUuidResponseError;
 
 export const getGetProjectByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}`;
+  return `/api/coolify/projects/${uuid}`;
 };
 
 export const getProjectByUuid = async (
@@ -418,7 +758,189 @@ export const getProjectByUuid = async (
 };
 
 export const getGetProjectByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/projects/${uuid}`] as const;
+  return [`/api/coolify/projects/${uuid}`] as const;
+};
+
+export const getGetProjectByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjectByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProjectByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getProjectByUuid>>
+  > = ({ signal }) => getProjectByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getProjectByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetProjectByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProjectByUuid>>
+>;
+export type GetProjectByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetProjectByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjectByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProjectByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getProjectByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetProjectByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjectByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProjectByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getProjectByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetProjectByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjectByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetProjectByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getProjectByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetProjectByUuidInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get
+ */
+export const prefetchGetProjectByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetProjectByUuidInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetProjectByUuidQueryOptions = <
@@ -449,6 +971,7 @@ export const getGetProjectByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getProjectByUuid>>,
@@ -574,6 +1097,171 @@ export function useGetProjectByUuid<
 }
 
 /**
+ * @summary Get
+ */
+export const prefetchGetProjectByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetProjectByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetProjectByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProjectByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getProjectByUuid>>
+  > = ({ signal }) => getProjectByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getProjectByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetProjectByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProjectByUuid>>
+>;
+export type GetProjectByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetProjectByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetProjectByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetProjectByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetProjectByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getProjectByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getProjectByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetProjectByUuidSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Delete project by UUID.
  * @summary Delete
  */
@@ -614,7 +1302,7 @@ export type deleteProjectByUuidResponse =
   | deleteProjectByUuidResponseError;
 
 export const getDeleteProjectByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}`;
+  return `/api/coolify/projects/${uuid}`;
 };
 
 export const deleteProjectByUuid = async (
@@ -753,7 +1441,7 @@ export type updateProjectByUuidResponse =
   | updateProjectByUuidResponseError;
 
 export const getUpdateProjectByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}`;
+  return `/api/coolify/projects/${uuid}`;
 };
 
 export const updateProjectByUuid = async (
@@ -898,7 +1586,7 @@ export const getGetEnvironmentByNameOrUuidUrl = (
   uuid: string,
   environmentNameOrUuid: string,
 ) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}/${environmentNameOrUuid}`;
+  return `/api/coolify/projects/${uuid}/${environmentNameOrUuid}`;
 };
 
 export const getEnvironmentByNameOrUuid = async (
@@ -930,9 +1618,209 @@ export const getGetEnvironmentByNameOrUuidQueryKey = (
   uuid?: string,
   environmentNameOrUuid?: string,
 ) => {
-  return [
-    `https://coolify.tsar-bmb.org/projects/${uuid}/${environmentNameOrUuid}`,
-  ] as const;
+  return [`/api/coolify/projects/${uuid}/${environmentNameOrUuid}`] as const;
+};
+
+export const getGetEnvironmentByNameOrUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetEnvironmentByNameOrUuidQueryKey(uuid, environmentNameOrUuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+  > = ({ signal }) =>
+    getEnvironmentByNameOrUuid(uuid, environmentNameOrUuid, {
+      signal,
+      ...fetchOptions,
+    });
+
+  return {
+    enabled: !!(uuid && environmentNameOrUuid),
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEnvironmentByNameOrUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+>;
+export type GetEnvironmentByNameOrUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetEnvironmentByNameOrUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentByNameOrUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentByNameOrUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Environment
+ */
+
+export function useGetEnvironmentByNameOrUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetEnvironmentByNameOrUuidInfiniteQueryOptions(
+    uuid,
+    environmentNameOrUuid,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Environment
+ */
+export const prefetchGetEnvironmentByNameOrUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetEnvironmentByNameOrUuidInfiniteQueryOptions(
+    uuid,
+    environmentNameOrUuid,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetEnvironmentByNameOrUuidQueryOptions = <
@@ -970,6 +1858,7 @@ export const getGetEnvironmentByNameOrUuidQueryOptions = <
     enabled: !!(uuid && environmentNameOrUuid),
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
@@ -1103,6 +1992,191 @@ export function useGetEnvironmentByNameOrUuid<
 }
 
 /**
+ * @summary Environment
+ */
+export const prefetchGetEnvironmentByNameOrUuidQuery = async <
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetEnvironmentByNameOrUuidQueryOptions(
+    uuid,
+    environmentNameOrUuid,
+    options,
+  );
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetEnvironmentByNameOrUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetEnvironmentByNameOrUuidQueryKey(uuid, environmentNameOrUuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+  > = ({ signal }) =>
+    getEnvironmentByNameOrUuid(uuid, environmentNameOrUuid, {
+      signal,
+      ...fetchOptions,
+    });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEnvironmentByNameOrUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>
+>;
+export type GetEnvironmentByNameOrUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | NHttp404Response;
+
+export function useGetEnvironmentByNameOrUuidSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentByNameOrUuidSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentByNameOrUuidSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Environment
+ */
+
+export function useGetEnvironmentByNameOrUuidSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+  TError = NHttp400Response | NHttp401Response | NHttp404Response,
+>(
+  uuid: string,
+  environmentNameOrUuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironmentByNameOrUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetEnvironmentByNameOrUuidSuspenseQueryOptions(
+    uuid,
+    environmentNameOrUuid,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * List all environments in a project.
  * @summary List Environments
  */
@@ -1142,7 +2216,7 @@ export type getEnvironmentsResponse =
   | getEnvironmentsResponseError;
 
 export const getGetEnvironmentsUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}/environments`;
+  return `/api/coolify/projects/${uuid}/environments`;
 };
 
 export const getEnvironments = async (
@@ -1165,9 +2239,189 @@ export const getEnvironments = async (
 };
 
 export const getGetEnvironmentsQueryKey = (uuid?: string) => {
-  return [
-    `https://coolify.tsar-bmb.org/projects/${uuid}/environments`,
-  ] as const;
+  return [`/api/coolify/projects/${uuid}/environments`] as const;
+};
+
+export const getGetEnvironmentsInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironments>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetEnvironmentsQueryKey(uuid);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEnvironments>>> = ({
+    signal,
+  }) => getEnvironments(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getEnvironments>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEnvironmentsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getEnvironments>>
+>;
+export type GetEnvironmentsInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetEnvironmentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironments>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEnvironments>>,
+          TError,
+          Awaited<ReturnType<typeof getEnvironments>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironments>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEnvironments>>,
+          TError,
+          Awaited<ReturnType<typeof getEnvironments>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironments>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List Environments
+ */
+
+export function useGetEnvironmentsInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getEnvironments>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetEnvironmentsInfiniteQueryOptions(uuid, options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List Environments
+ */
+export const prefetchGetEnvironmentsInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetEnvironmentsInfiniteQueryOptions(uuid, options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetEnvironmentsQueryOptions = <
@@ -1198,6 +2452,7 @@ export const getGetEnvironmentsQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getEnvironments>>,
@@ -1323,6 +2578,171 @@ export function useGetEnvironments<
 }
 
 /**
+ * @summary List Environments
+ */
+export const prefetchGetEnvironmentsQuery = async <
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetEnvironmentsQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetEnvironmentsSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetEnvironmentsQueryKey(uuid);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEnvironments>>> = ({
+    signal,
+  }) => getEnvironments(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getEnvironments>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetEnvironmentsSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getEnvironments>>
+>;
+export type GetEnvironmentsSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetEnvironmentsSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentsSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetEnvironmentsSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List Environments
+ */
+
+export function useGetEnvironmentsSuspense<
+  TData = Awaited<ReturnType<typeof getEnvironments>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getEnvironments>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetEnvironmentsSuspenseQueryOptions(uuid, options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Create environment in project.
  * @summary Create Environment
  */
@@ -1368,7 +2788,7 @@ export type createEnvironmentResponse =
   | createEnvironmentResponseError;
 
 export const getCreateEnvironmentUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}/environments`;
+  return `/api/coolify/projects/${uuid}/environments`;
 };
 
 export const createEnvironment = async (
@@ -1511,7 +2931,7 @@ export const getDeleteEnvironmentUrl = (
   uuid: string,
   environmentNameOrUuid: string,
 ) => {
-  return `https://coolify.tsar-bmb.org/projects/${uuid}/environments/${environmentNameOrUuid}`;
+  return `/api/coolify/projects/${uuid}/environments/${environmentNameOrUuid}`;
 };
 
 export const deleteEnvironment = async (

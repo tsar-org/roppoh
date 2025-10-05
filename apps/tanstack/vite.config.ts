@@ -54,6 +54,7 @@ const config = defineConfig({
     tanstackStart({
       server: { entry: "./entry.server.ts" },
       srcDirectory: "src",
+      // start: { entry: "./start-instance.ts" },
     }),
     viteReact(),
   ],

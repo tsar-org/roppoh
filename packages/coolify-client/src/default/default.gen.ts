@@ -8,15 +8,25 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   DisableApi200,
@@ -60,7 +70,7 @@ export type versionResponseError = (versionResponse400 | versionResponse401) & {
 export type versionResponse = versionResponseSuccess | versionResponseError;
 
 export const getVersionUrl = () => {
-  return `https://coolify.tsar-bmb.org/version`;
+  return `/api/coolify/version`;
 };
 
 export const version = async (
@@ -78,7 +88,173 @@ export const version = async (
 };
 
 export const getVersionQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/version`] as const;
+  return [`/api/coolify/version`] as const;
+};
+
+export const getVersionInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof version>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<Awaited<ReturnType<typeof version>>, TError, TData>
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getVersionQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof version>>> = ({
+    signal,
+  }) => version({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof version>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type VersionInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof version>>
+>;
+export type VersionInfiniteQueryError = NHttp400Response | NHttp401Response;
+
+export function useVersionInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof version>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof version>>,
+          TError,
+          Awaited<ReturnType<typeof version>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useVersionInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof version>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof version>>,
+          TError,
+          Awaited<ReturnType<typeof version>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useVersionInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof version>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Version
+ */
+
+export function useVersionInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof version>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getVersionInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Version
+ */
+export const prefetchVersionInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getVersionInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getVersionQueryOptions = <
@@ -98,11 +274,14 @@ export const getVersionQueryOptions = <
     signal,
   }) => version({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof version>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof version>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type VersionQueryResult = NonNullable<
@@ -199,6 +378,152 @@ export function useVersion<
 }
 
 /**
+ * @summary Version
+ */
+export const prefetchVersionQuery = async <
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof version>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getVersionQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getVersionSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<Awaited<ReturnType<typeof version>>, TError, TData>
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getVersionQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof version>>> = ({
+    signal,
+  }) => version({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof version>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type VersionSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof version>>
+>;
+export type VersionSuspenseQueryError = NHttp400Response | NHttp401Response;
+
+export function useVersionSuspense<
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useVersionSuspense<
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useVersionSuspense<
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Version
+ */
+
+export function useVersionSuspense<
+  TData = Awaited<ReturnType<typeof version>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof version>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getVersionSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Enable API (only with root permissions).
  * @summary Enable API
  */
@@ -238,7 +563,7 @@ export type enableApiResponse =
   | enableApiResponseError;
 
 export const getEnableApiUrl = () => {
-  return `https://coolify.tsar-bmb.org/enable`;
+  return `/api/coolify/enable`;
 };
 
 export const enableApi = async (
@@ -260,7 +585,180 @@ export const enableApi = async (
 };
 
 export const getEnableApiQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/enable`] as const;
+  return [`/api/coolify/enable`] as const;
+};
+
+export const getEnableApiInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof enableApi>>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof enableApi>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getEnableApiQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof enableApi>>> = ({
+    signal,
+  }) => enableApi({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof enableApi>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnableApiInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof enableApi>>
+>;
+export type EnableApiInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | EnableApi403;
+
+export function useEnableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof enableApi>>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof enableApi>>,
+          TError,
+          Awaited<ReturnType<typeof enableApi>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof enableApi>>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof enableApi>>,
+          TError,
+          Awaited<ReturnType<typeof enableApi>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof enableApi>>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Enable API
+ */
+
+export function useEnableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof enableApi>>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getEnableApiInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Enable API
+ */
+export const prefetchEnableApiInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getEnableApiInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getEnableApiQueryOptions = <
@@ -280,11 +778,14 @@ export const getEnableApiQueryOptions = <
     signal,
   }) => enableApi({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof enableApi>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof enableApi>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 };
 
 export type EnableApiQueryResult = NonNullable<
@@ -384,6 +885,159 @@ export function useEnableApi<
 }
 
 /**
+ * @summary Enable API
+ */
+export const prefetchEnableApiQuery = async <
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof enableApi>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getEnableApiQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getEnableApiSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof enableApi>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getEnableApiQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof enableApi>>> = ({
+    signal,
+  }) => enableApi({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof enableApi>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnableApiSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof enableApi>>
+>;
+export type EnableApiSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | EnableApi403;
+
+export function useEnableApiSuspense<
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnableApiSuspense<
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnableApiSuspense<
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Enable API
+ */
+
+export function useEnableApiSuspense<
+  TData = Awaited<ReturnType<typeof enableApi>>,
+  TError = NHttp400Response | NHttp401Response | EnableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof enableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getEnableApiSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Disable API (only with root permissions).
  * @summary Disable API
  */
@@ -423,7 +1077,7 @@ export type disableApiResponse =
   | disableApiResponseError;
 
 export const getDisableApiUrl = () => {
-  return `https://coolify.tsar-bmb.org/disable`;
+  return `/api/coolify/disable`;
 };
 
 export const disableApi = async (
@@ -445,7 +1099,180 @@ export const disableApi = async (
 };
 
 export const getDisableApiQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/disable`] as const;
+  return [`/api/coolify/disable`] as const;
+};
+
+export const getDisableApiInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof disableApi>>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof disableApi>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getDisableApiQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof disableApi>>> = ({
+    signal,
+  }) => disableApi({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof disableApi>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type DisableApiInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof disableApi>>
+>;
+export type DisableApiInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | DisableApi403;
+
+export function useDisableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof disableApi>>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof disableApi>>,
+          TError,
+          Awaited<ReturnType<typeof disableApi>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDisableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof disableApi>>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof disableApi>>,
+          TError,
+          Awaited<ReturnType<typeof disableApi>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDisableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof disableApi>>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Disable API
+ */
+
+export function useDisableApiInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof disableApi>>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getDisableApiInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Disable API
+ */
+export const prefetchDisableApiInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getDisableApiInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getDisableApiQueryOptions = <
@@ -465,7 +1292,12 @@ export const getDisableApiQueryOptions = <
     signal,
   }) => disableApi({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof disableApi>>,
     TError,
     TData
@@ -569,6 +1401,159 @@ export function useDisableApi<
 }
 
 /**
+ * @summary Disable API
+ */
+export const prefetchDisableApiQuery = async <
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof disableApi>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getDisableApiQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getDisableApiSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof disableApi>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getDisableApiQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof disableApi>>> = ({
+    signal,
+  }) => disableApi({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof disableApi>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type DisableApiSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof disableApi>>
+>;
+export type DisableApiSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | DisableApi403;
+
+export function useDisableApiSuspense<
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDisableApiSuspense<
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDisableApiSuspense<
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Disable API
+ */
+
+export function useDisableApiSuspense<
+  TData = Awaited<ReturnType<typeof disableApi>>,
+  TError = NHttp400Response | NHttp401Response | DisableApi403,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof disableApi>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getDisableApiSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Healthcheck endpoint.
  * @summary Healthcheck
  */
@@ -602,7 +1587,7 @@ export type healthcheckResponse =
   | healthcheckResponseError;
 
 export const getHealthcheckUrl = () => {
-  return `https://coolify.tsar-bmb.org/health`;
+  return `/api/coolify/health`;
 };
 
 export const healthcheck = async (
@@ -624,7 +1609,177 @@ export const healthcheck = async (
 };
 
 export const getHealthcheckQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/health`] as const;
+  return [`/api/coolify/health`] as const;
+};
+
+export const getHealthcheckInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof healthcheck>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof healthcheck>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getHealthcheckQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthcheck>>> = ({
+    signal,
+  }) => healthcheck({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof healthcheck>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type HealthcheckInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthcheck>>
+>;
+export type HealthcheckInfiniteQueryError = NHttp400Response | NHttp401Response;
+
+export function useHealthcheckInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof healthcheck>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof healthcheck>>,
+          TError,
+          Awaited<ReturnType<typeof healthcheck>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useHealthcheckInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof healthcheck>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof healthcheck>>,
+          TError,
+          Awaited<ReturnType<typeof healthcheck>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useHealthcheckInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof healthcheck>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Healthcheck
+ */
+
+export function useHealthcheckInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof healthcheck>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getHealthcheckInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Healthcheck
+ */
+export const prefetchHealthcheckInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getHealthcheckInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getHealthcheckQueryOptions = <
@@ -644,7 +1799,12 @@ export const getHealthcheckQueryOptions = <
     signal,
   }) => healthcheck({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof healthcheck>>,
     TError,
     TData
@@ -738,6 +1898,156 @@ export function useHealthcheck<
     TData,
     TError
   > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Healthcheck
+ */
+export const prefetchHealthcheckQuery = async <
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof healthcheck>>, TError, TData>
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getHealthcheckQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getHealthcheckSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof healthcheck>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getHealthcheckQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof healthcheck>>> = ({
+    signal,
+  }) => healthcheck({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof healthcheck>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type HealthcheckSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof healthcheck>>
+>;
+export type HealthcheckSuspenseQueryError = NHttp400Response | NHttp401Response;
+
+export function useHealthcheckSuspense<
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useHealthcheckSuspense<
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useHealthcheckSuspense<
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Healthcheck
+ */
+
+export function useHealthcheckSuspense<
+  TData = Awaited<ReturnType<typeof healthcheck>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof healthcheck>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getHealthcheckSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

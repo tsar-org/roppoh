@@ -8,18 +8,29 @@
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import type {
   CreatePrivateKey201,
@@ -71,7 +82,7 @@ export type listPrivateKeysResponse =
   | listPrivateKeysResponseError;
 
 export const getListPrivateKeysUrl = () => {
-  return `https://coolify.tsar-bmb.org/security/keys`;
+  return `/api/coolify/security/keys`;
 };
 
 export const listPrivateKeys = async (
@@ -93,7 +104,179 @@ export const listPrivateKeys = async (
 };
 
 export const getListPrivateKeysQueryKey = () => {
-  return [`https://coolify.tsar-bmb.org/security/keys`] as const;
+  return [`/api/coolify/security/keys`] as const;
+};
+
+export const getListPrivateKeysInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof listPrivateKeys>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof listPrivateKeys>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListPrivateKeysQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listPrivateKeys>>> = ({
+    signal,
+  }) => listPrivateKeys({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof listPrivateKeys>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListPrivateKeysInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listPrivateKeys>>
+>;
+export type ListPrivateKeysInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListPrivateKeysInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listPrivateKeys>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listPrivateKeys>>,
+          TError,
+          Awaited<ReturnType<typeof listPrivateKeys>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListPrivateKeysInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listPrivateKeys>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listPrivateKeys>>,
+          TError,
+          Awaited<ReturnType<typeof listPrivateKeys>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListPrivateKeysInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listPrivateKeys>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListPrivateKeysInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof listPrivateKeys>>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListPrivateKeysInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary List
+ */
+export const prefetchListPrivateKeysInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListPrivateKeysInfiniteQueryOptions(options);
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getListPrivateKeysQueryOptions = <
@@ -113,7 +296,12 @@ export const getListPrivateKeysQueryOptions = <
     signal,
   }) => listPrivateKeys({ signal, ...fetchOptions });
 
-  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof listPrivateKeys>>,
     TError,
     TData
@@ -230,6 +418,162 @@ export function useListPrivateKeys<
 }
 
 /**
+ * @summary List
+ */
+export const prefetchListPrivateKeysQuery = async <
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getListPrivateKeysQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getListPrivateKeysSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof listPrivateKeys>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListPrivateKeysQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listPrivateKeys>>> = ({
+    signal,
+  }) => listPrivateKeys({ signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof listPrivateKeys>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type ListPrivateKeysSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listPrivateKeys>>
+>;
+export type ListPrivateKeysSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response;
+
+export function useListPrivateKeysSuspense<
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListPrivateKeysSuspense<
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useListPrivateKeysSuspense<
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary List
+ */
+
+export function useListPrivateKeysSuspense<
+  TData = Awaited<ReturnType<typeof listPrivateKeys>>,
+  TError = NHttp400Response | NHttp401Response,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof listPrivateKeys>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getListPrivateKeysSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Create a new private key.
  * @summary Create
  */
@@ -263,7 +607,7 @@ export type createPrivateKeyResponse =
   | createPrivateKeyResponseError;
 
 export const getCreatePrivateKeyUrl = () => {
-  return `https://coolify.tsar-bmb.org/security/keys`;
+  return `/api/coolify/security/keys`;
 };
 
 export const createPrivateKey = async (
@@ -392,7 +736,7 @@ export type updatePrivateKeyResponse =
   | updatePrivateKeyResponseError;
 
 export const getUpdatePrivateKeyUrl = () => {
-  return `https://coolify.tsar-bmb.org/security/keys`;
+  return `/api/coolify/security/keys`;
 };
 
 export const updatePrivateKey = async (
@@ -528,7 +872,7 @@ export type getPrivateKeyByUuidResponse =
   | getPrivateKeyByUuidResponseError;
 
 export const getGetPrivateKeyByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/security/keys/${uuid}`;
+  return `/api/coolify/security/keys/${uuid}`;
 };
 
 export const getPrivateKeyByUuid = async (
@@ -553,7 +897,196 @@ export const getPrivateKeyByUuid = async (
 };
 
 export const getGetPrivateKeyByUuidQueryKey = (uuid?: string) => {
-  return [`https://coolify.tsar-bmb.org/security/keys/${uuid}`] as const;
+  return [`/api/coolify/security/keys/${uuid}`] as const;
+};
+
+export const getGetPrivateKeyByUuidInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof getPrivateKeyByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetPrivateKeyByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+  > = ({ signal }) => getPrivateKeyByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    enabled: !!uuid,
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPrivateKeyByUuidInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+>;
+export type GetPrivateKeyByUuidInfiniteQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetPrivateKeyByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getPrivateKeyByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPrivateKeyByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getPrivateKeyByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+          TError,
+          Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+        >,
+        "initialData"
+      >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPrivateKeyByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getPrivateKeyByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetPrivateKeyByUuidInfinite<
+  TData = InfiniteData<Awaited<ReturnType<typeof getPrivateKeyByUuid>>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPrivateKeyByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Get
+ */
+export const prefetchGetPrivateKeyByUuidInfiniteQuery = async <
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetPrivateKeyByUuidInfiniteQueryOptions(
+    uuid,
+    options,
+  );
+
+  await queryClient.prefetchInfiniteQuery(queryOptions);
+
+  return queryClient;
 };
 
 export const getGetPrivateKeyByUuidQueryOptions = <
@@ -585,6 +1118,7 @@ export const getGetPrivateKeyByUuidQueryOptions = <
     enabled: !!uuid,
     queryFn,
     queryKey,
+    staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
     Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
@@ -710,6 +1244,175 @@ export function useGetPrivateKeyByUuid<
 }
 
 /**
+ * @summary Get
+ */
+export const prefetchGetPrivateKeyByUuidQuery = async <
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  queryClient: QueryClient,
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetPrivateKeyByUuidQueryOptions(uuid, options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetPrivateKeyByUuidSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetPrivateKeyByUuidQueryKey(uuid);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+  > = ({ signal }) => getPrivateKeyByUuid(uuid, { signal, ...fetchOptions });
+
+  return {
+    queryFn,
+    queryKey,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetPrivateKeyByUuidSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPrivateKeyByUuid>>
+>;
+export type GetPrivateKeyByUuidSuspenseQueryError =
+  | NHttp400Response
+  | NHttp401Response
+  | void;
+
+export function useGetPrivateKeyByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPrivateKeyByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetPrivateKeyByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get
+ */
+
+export function useGetPrivateKeyByUuidSuspense<
+  TData = Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+  TError = NHttp400Response | NHttp401Response | void,
+>(
+  uuid: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getPrivateKeyByUuid>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetPrivateKeyByUuidSuspenseQueryOptions(
+    uuid,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
  * Delete a private key.
  * @summary Delete
  */
@@ -756,7 +1459,7 @@ export type deletePrivateKeyByUuidResponse =
   | deletePrivateKeyByUuidResponseError;
 
 export const getDeletePrivateKeyByUuidUrl = (uuid: string) => {
-  return `https://coolify.tsar-bmb.org/security/keys/${uuid}`;
+  return `/api/coolify/security/keys/${uuid}`;
 };
 
 export const deletePrivateKeyByUuid = async (

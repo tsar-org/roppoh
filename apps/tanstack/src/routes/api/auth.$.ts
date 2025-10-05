@@ -1,18 +1,14 @@
-import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
-import { createBetterAuthInstance } from "@/libs/better-auth/auth.server";
+import { provideContextMiddleware } from "@/middlewares/provide-context-middleware";
 
 export const Route = createFileRoute("/api/auth/$")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const auth = createBetterAuthInstance({ env });
-        return auth.handler(request);
-      },
-      POST: ({ request }) => {
-        const auth = createBetterAuthInstance({ env });
-        return auth.handler(request);
-      },
+      GET: async ({ request, context }) =>
+        context.deps.betterAuth.handler(request),
+      POST: async ({ request, context }) =>
+        context.deps.betterAuth.handler(request),
     },
+    middleware: [provideContextMiddleware],
   },
 });
