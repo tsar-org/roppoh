@@ -10,7 +10,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@roppoh/better-auth-database": "workspace:*",
-    "@tanstack/react-router": "^1.132.0",
+    "@tanstack/react-router": "^1.132.37",
     "@tanstack/react-start": "^1.132.0",
     "better-auth": "^1.3.23",
     "class-variance-authority": "^0.7.1",
