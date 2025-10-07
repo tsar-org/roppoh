@@ -17,6 +17,11 @@ import type { Route } from "./+types/root";
 import { themeSessionResolver } from "./sessions.server";
 
 import "./tailwind.css";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
@@ -32,10 +37,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
+  const queryClient = new QueryClient();
 
   return (
     <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
-      <HtmlWrapper theme={data?.theme || undefined}>{children}</HtmlWrapper>
+      <QueryClientProvider client={queryClient}>
+        <HtmlWrapper theme={data?.theme || undefined}>{children}</HtmlWrapper>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

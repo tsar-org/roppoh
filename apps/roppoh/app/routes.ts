@@ -9,6 +9,7 @@ export default [
   // api
   route("/action/set-theme", "apis/theme.ts"),
   route("/api/auth/*", "apis/auth.ts"),
+  route("/api/dokploy/*", "apis/dokploy.ts"),
 
   // pages
   route("/login", "./pages/login/page.tsx"),

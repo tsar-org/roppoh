@@ -27,3 +27,7 @@ dist
 
 # mise
 mise.local.toml
+
+# dotenv
+.env
+.env.secret
