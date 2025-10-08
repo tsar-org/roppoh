@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#MISE description="Update Linux VRT screenshots using Docker"
-
-cd "$MISE_ORIGINAL_CWD"
-
-docker compose up vrt
