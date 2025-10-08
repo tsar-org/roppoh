@@ -1,0 +1,9 @@
+services:
+  vrt:
+    build:
+      context: .
+      dockerfile: .docker/vrt/Dockerfile
+    volumes:
+      # Mount screenshot directory to persist Linux screenshots
+      - ./apps/roppoh/tests/visual-regression/pages/__screenshots__:/app/apps/roppoh/tests/visual-regression/pages/__screenshots__
+    command: bun run test:visual --update

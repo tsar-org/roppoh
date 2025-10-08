@@ -27,7 +27,7 @@ function getData(): Payment[] {
   ];
 }
 
-export default function TopPage() {
+export default function () {
   const data = getData();
   // project.getall() -> compose.one
   // const { data: projectList } = useQuery({
