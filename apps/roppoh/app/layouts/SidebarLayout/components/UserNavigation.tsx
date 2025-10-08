@@ -1,17 +1,26 @@
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut, Moon, Sun, SunMoon } from "lucide-react";
+import { Suspense } from "react";
 import { useNavigate } from "react-router";
+import { Theme, useTheme } from "remix-themes";
+import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { authClient } from "@/libs/betterAuth/auth.client";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/shadcn/components/ui/avatar";
+import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
 import {
@@ -25,6 +34,7 @@ export function UserNavigation() {
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
   const { data } = authClient.useSession();
+  const [, setTheme] = useTheme();
 
   return (
     <SidebarMenu>
@@ -54,7 +64,7 @@ export function UserNavigation() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            align="end"
+            align="start"
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
@@ -79,20 +89,38 @@ export function UserNavigation() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={async () => {
-                authClient.signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      navigate("/login");
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="w-full">
+                  <SunMoon />
+                  <p className="">Toggle theme</p>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={() => setTheme(Theme.LIGHT)}>
+                      Light
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTheme(Theme.DARK)}>
+                      Dark
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+              <DropdownMenuItem
+                onClick={async () => {
+                  authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        navigate("/login");
+                      },
                     },
-                  },
-                });
-              }}
-            >
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+                  });
+                }}
+              >
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
