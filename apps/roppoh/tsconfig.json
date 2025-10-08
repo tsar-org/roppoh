@@ -25,12 +25,11 @@
   "include": [
     "worker-configuration.d.ts",
     "env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx",
+    "server.ts",
+    "./app/**/*.ts",
+    "./app/**/*.tsx",
+    "./tests/**/*.tsx",
+    "./tests/**/*.tsx",
     ".react-router/types/**/*"
   ]
 }

@@ -7,7 +7,7 @@ import { Button } from "@/shadcn/components/ui/button";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
 
-export default function TopPage() {
+export default function () {
   const [theme] = useTheme();
   const signIn = async () => {
     await authClient.signIn.social({
@@ -32,7 +32,7 @@ export default function TopPage() {
                 Roppoh is discord activity hosting server
               </p>
             </div>
-            <Button className="w-sm cursor-pointer" onClick={signIn}>
+            <Button className=" w-xs cursor-pointer" onClick={signIn}>
               {theme === Theme.LIGHT ? (
                 <img
                   alt="discord-mark-white"

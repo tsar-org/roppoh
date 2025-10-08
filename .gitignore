@@ -27,3 +27,11 @@ dist
 
 # mise
 mise.local.toml
+.mise.local.toml
+
+# vitest
+.vitest-attachments
+
+# dotenv
+.env
+.env.secret
