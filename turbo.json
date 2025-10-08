@@ -23,6 +23,9 @@
       "dependsOn": ["^build"],
       "inputs": ["**/*.{ts,tsx}", "package.json", "tsconfig.json"],
       "outputs": []
+    },
+    "test": {
+      "cache": false
     }
   }
 }
