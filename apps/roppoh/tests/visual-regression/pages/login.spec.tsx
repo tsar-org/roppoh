@@ -16,7 +16,7 @@ describe("VRT login page", async () => {
     );
 
     await document.fonts.ready;
-    await expect(screen.container).toMatchScreenshot();
+    await expect(screen.container).toMatchScreenshot("desktop-dark");
   });
 
   test("desktop light", async () => {
@@ -29,7 +29,7 @@ describe("VRT login page", async () => {
     );
 
     await document.fonts.ready;
-    await expect(screen.container).toMatchScreenshot();
+    await expect(screen.container).toMatchScreenshot("desktop-light");
   });
 
   test("mobile dark", async () => {
@@ -42,7 +42,7 @@ describe("VRT login page", async () => {
     );
 
     await document.fonts.ready;
-    await expect(screen.container).toMatchScreenshot();
+    await expect(screen.container).toMatchScreenshot("mobile-dark");
   });
 
   test("mobile light", async () => {
@@ -55,6 +55,6 @@ describe("VRT login page", async () => {
     );
 
     await document.fonts.ready;
-    await expect(screen.container).toMatchScreenshot();
+    await expect(screen.container).toMatchScreenshot("mobile-light");
   });
 });
