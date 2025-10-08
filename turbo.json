@@ -14,7 +14,8 @@
         "**/*.{ts,tsx}",
         "wrangler.jsonc",
         "package.json",
-        ".dev.vars"
+        ".dev.vars",
+        ".env"
       ],
       "outputs": ["worker-configuration.d.ts"]
     },
