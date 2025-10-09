@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Update VRT screenshots"
+
+cd "$MISE_ORIGINAL_CWD"
+
+docker compose up vrt
+
+cd apps/roppoh && bun test:visual --update

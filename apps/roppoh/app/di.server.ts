@@ -2,8 +2,8 @@ import type { Logger } from "pino";
 import {
   type BetterAuthInstance,
   createBetterAuthInstance,
-} from "./lib/betterAuth/auth.server";
-import { createLogger } from "./lib/pino/logger.server";
+} from "./libs/betterAuth/auth.server";
+import { createLogger } from "./libs/pino/logger.server";
 
 export type DependencyContainer = {
   logger: Logger;

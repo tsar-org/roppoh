@@ -1,9 +1,9 @@
-import PageTransition from "@/components/PageTransition";
-import { ToggleThemeButton } from "@/components/ToggleThemeButton";
-import { TsarOrganizationLink } from "@/components/TsarOrganizationLink";
+import PageTransition from "@/components/page-transition";
+import { ToggleThemeButton } from "@/components/toggle-theme-button";
+import { TsarOrganizationLink } from "@/components/tsar-organization-link";
 import { UnitySportsResortCard } from "@/pages/index/components/state/unitySportsResortCard";
 
-export default function TopPage() {
+export default function () {
   return (
     <PageTransition>
       <div className="grid min-h-svh lg:grid-cols-2">

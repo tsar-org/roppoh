@@ -20,3 +20,6 @@ jobs:
       - run: bun turbo check:type
       - run: bun knip
       - run: bun turbo build
+      - name: Install Playwright Browsers
+        run: bunx --no playwright install --with-deps --only-shell
+      - run: bun turbo test

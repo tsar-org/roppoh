@@ -4,6 +4,7 @@ node = "22.16.0"
 dprint = "latest"
 lefthook = "latest"
 "npm:turbo" = "latest"
+"npm:dev3000" = "latest"
 
 [settings]
 npm.bun = true

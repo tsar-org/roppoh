@@ -1,8 +1,8 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
     "biomejs.biome",
-    "hverlin.mise-vscode"
+    "hverlin.mise-vscode",
+    "vitest.explorer"
   ]
 }

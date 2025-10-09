@@ -13,9 +13,6 @@ dist
 # @turbo
 .turbo
 
-# knip
-.knip
-
 # sqlite
 *.sqlite
 
@@ -24,3 +21,14 @@ dist
 
 # vscode
 .vscode/settings.json
+
+# mise
+mise.local.toml
+.mise.local.toml
+
+# vitest
+.vitest-attachments
+
+# dotenv
+.env
+.env.secret
