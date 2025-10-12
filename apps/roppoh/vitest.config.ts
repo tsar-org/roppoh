@@ -27,7 +27,11 @@ export default defineConfig({
             instances: [{ browser: "chromium" as const }],
             provider: playwright(),
           },
+          env: {
+            VITE_BASE_URL: "http://localhost:3000",
+          },
           name: "visual",
+          testTimeout: 30000,
         },
       },
     ],

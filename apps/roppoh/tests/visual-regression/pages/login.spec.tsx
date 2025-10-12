@@ -24,7 +24,6 @@ describe("VRT login page", async () => {
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
-    await document.fonts.ready;
 
     // Assert
     await expect(screen.container).toMatchScreenshot("desktop-dark");
@@ -43,7 +42,6 @@ describe("VRT login page", async () => {
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
-    await document.fonts.ready;
 
     // Assert
     await expect(screen.container).toMatchScreenshot("desktop-light");
@@ -62,7 +60,6 @@ describe("VRT login page", async () => {
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
-    await document.fonts.ready;
 
     // Assert
     await expect(screen.container).toMatchScreenshot("mobile-dark");
@@ -80,7 +77,6 @@ describe("VRT login page", async () => {
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
-    await document.fonts.ready;
 
     // Assert
     await expect(screen.container).toMatchScreenshot("mobile-light");
