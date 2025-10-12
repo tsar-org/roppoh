@@ -34,7 +34,7 @@ async function requestProxy({
 
   // add header
   const headers = new Headers(request.headers);
-  headers.set("Authorization", `Bearer ${env.DOKPLOY_API_TOKEN}`);
+  headers.set("x-api-key", `${env.DOKPLOY_API_TOKEN}`);
   headers.set("CF-Access-Client-Id", env.CF_ACCESS_CLIENT_ID);
   headers.set("CF-Access-Client-Secret", env.CF_ACCESS_CLIENT_SECRET);
   headers.set("Accept", "application/json");

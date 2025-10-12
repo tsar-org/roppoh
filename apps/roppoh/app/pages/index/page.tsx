@@ -7,9 +7,7 @@ import {
 import { useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
-import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
-import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
 import type { Route } from "./+types/page";
 import { DataTable } from "./components/table";
 import { ServerTableColumns } from "./components/table/columns";
@@ -20,13 +18,13 @@ import {
   projectAllQueryOption,
 } from "./queries/project";
 
-export async function loader({}: Route.LoaderArgs) {
-  const client = newServerSideReactQueryClient();
-  const dokployClient = newDokployClient();
+export async function loader({ context: ctx }: Route.LoaderArgs) {
+  const queryOption = projectAllQueryOption({
+    dokployClient: ctx.dep.dokployClient,
+  });
+  await ctx.dep.tanstackQueryClient.prefetchQuery(queryOption);
 
-  await client.prefetchQuery(projectAllQueryOption({ dokployClient }));
-
-  return { dehydratedState: dehydrate(client) };
+  return { dehydratedState: dehydrate(ctx.dep.tanstackQueryClient) };
 }
 
 export default function () {
