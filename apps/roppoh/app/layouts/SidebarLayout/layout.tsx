@@ -8,7 +8,6 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarRail,
-  SidebarTrigger,
 } from "@/shadcn/components/ui/sidebar";
 import type { Route } from "./+types/layout";
 import { ContentNavigation } from "./components/ContentNavigation";

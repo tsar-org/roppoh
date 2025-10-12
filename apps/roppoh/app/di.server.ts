@@ -8,6 +8,7 @@ import { createLogger } from "./libs/pino/logger.server";
 export type DependencyContainer = {
   logger: Logger;
   betterAuth: BetterAuthInstance;
+  // reactQueryClient: QueryClient
 };
 
 export const dependencyInjection = ({
@@ -15,12 +16,9 @@ export const dependencyInjection = ({
 }: {
   env: Cloudflare.Env;
 }): DependencyContainer => {
-  const betterAuth = createBetterAuthInstance({ env });
-
-  const logger = createLogger();
-
   return {
-    betterAuth,
-    logger,
+    betterAuth: createBetterAuthInstance({ env }),
+    logger: createLogger(),
+    // reactQueryClient: newServerSideReactQueryClient(),
   };
 };

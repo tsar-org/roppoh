@@ -1,60 +1,68 @@
 import {
   dehydrate,
   HydrationBoundary,
-  QueryClient,
   useQueries,
   useQuery,
 } from "@tanstack/react-query";
+import { useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
-import { ToggleThemeButton } from "@/components/toggle-theme-button";
-import { TsarOrganizationLink } from "@/components/tsar-organization-link";
-import { dokployClient } from "@/libs/dokploy-sdk/dokploy.client";
+import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
+import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
+import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
+import type { Route } from "./+types/page";
 import { DataTable } from "./components/table";
-import { columns, type Payment } from "./components/table/columns";
+import { ServerTableColumns } from "./components/table/columns";
 import { UnitySportsResortCard } from "./components/unity-sports-resort-card";
+import { useTableData } from "./hooks/use-tabel-data";
+import {
+  environmentByProjectIdQueryOption,
+  projectAllQueryOption,
+} from "./queries/project";
 
-function getData(): Payment[] {
-  // Fetch data from your API here.
-  return [
-    {
-      amount: 100,
-      email: "m@example.com",
-      id: "728ed52f",
-      status: "pending",
-    },
-    // ...
-  ];
+export async function loader({}: Route.LoaderArgs) {
+  const client = newServerSideReactQueryClient();
+  const dokployClient = newDokployClient();
+
+  await client.prefetchQuery(projectAllQueryOption({ dokployClient }));
+
+  return { dehydratedState: dehydrate(client) };
 }
 
 export default function () {
-  const data = getData();
-  // project.getall() -> compose.one
-  // const { data: projectList } = useQuery({
-  //   queryFn: () => dokployClient.project.getAll(),
-  //   queryKey: ["project.getAll"],
-  // });
-  // const composeQueries = useQueries({
-  //   queries: (projectList ?? []).map((project) => ({
-  //     enabled: !!projectList, // projectListが取得できたら実行
-  //     queryFn: () => dokployClient.compose.one(project.composeId),
-  //     queryKey: ["compose", project.composeId],
-  //   })),
-  // });
+  const loaderData = useLoaderData<typeof loader>();
+  const dokployClient = getDokployClient();
+  const { data: projectList } = useQuery(
+    projectAllQueryOption({ dokployClient }),
+  );
+  const environmentQueries = useQueries({
+    queries: (projectList ?? []).map((project) =>
+      environmentByProjectIdQueryOption({
+        dokployClient: dokployClient,
+        projectId: project.projectId,
+      }),
+    ),
+  });
+  const { tableData } = useTableData({ environmentQueries, projectList });
 
   return (
-    <PageTransition>
-      <SiteHeader title="Servers" />
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-              <UnitySportsResortCard />
+    <HydrationBoundary state={loaderData.dehydratedState}>
+      <PageTransition>
+        <SiteHeader title="Servers" />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              {/* tile Layout */}
+              <div className="grid @5xl/main:grid-cols-4 @xl/main:grid-cols-2 grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 dark:*:data-[slot=card]:bg-card">
+                <UnitySportsResortCard />
+              </div>
+
+              {/* server table */}
+              <DataTable columns={ServerTableColumns} data={tableData} />
             </div>
-            <DataTable columns={columns} data={data} />
           </div>
         </div>
-      </div>
-    </PageTransition>
+      </PageTransition>
+    </HydrationBoundary>
   );
 }

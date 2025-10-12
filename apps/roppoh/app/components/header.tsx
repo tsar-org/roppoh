@@ -1,6 +1,4 @@
-import { RefreshCw } from "lucide-react";
 import { Suspense } from "react";
-import { Button } from "@/shadcn/components/ui/button";
 import { Separator } from "@/shadcn/components/ui/separator";
 import { SidebarTrigger } from "@/shadcn/components/ui/sidebar";
 import { Skeleton } from "@/shadcn/components/ui/skeleton";
@@ -16,7 +14,7 @@ export function SiteHeader({ title }: { title: string }) {
           className="mx-2 data-[orientation=vertical]:h-4"
           orientation="vertical"
         />
-        <h1 className="text-base font-medium"> {title} </h1>
+        <h1 className="py-4 font-medium text-base"> {title} </h1>
       </div>
     </header>
   );

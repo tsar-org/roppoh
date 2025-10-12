@@ -1,9 +1,4 @@
-import { Dokploy } from "dokploy-sdk";
+import { cache } from "react";
+import { newDokployClient } from "./dokploy";
 
-console.log("url: " + import.meta.env.VITE_BASE_URL);
-
-export const dokployClient = new Dokploy({
-  apiKeyAuth:
-    "fHXikAzzKPfCHEnHbnGAJXHlFvBFcnMWYgHqjZdkEzYBhAwhWXmUwQtwHKIZZBFk",
-  serverURL: import.meta.env.VITE_BASE_URL + "/api/dokploy",
-});
+export const getDokployClient = cache(() => newDokployClient());

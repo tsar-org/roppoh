@@ -1,15 +1,12 @@
-import { ChevronsUpDown, LogOut, Moon, Sun, SunMoon } from "lucide-react";
-import { Suspense } from "react";
+import { ChevronsUpDown, LogOut, SunMoon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Theme, useTheme } from "remix-themes";
-import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { authClient } from "@/libs/betterAuth/auth.client";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/shadcn/components/ui/avatar";
-import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,

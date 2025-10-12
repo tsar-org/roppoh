@@ -27,7 +27,7 @@ export const UnitySportsResortCard = () => {
       </CardHeader>
       <CardContent>
         <Link to="/unity-sports-resort">
-          <Button className="w-full">play</Button>
+          <Button className="w-full cursor-pointer">play</Button>
         </Link>
       </CardContent>
     </Card>
