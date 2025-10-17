@@ -1,4 +1,6 @@
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
+import { useState } from "react";
 import type { LinksFunction } from "react-router";
 import {
   Links,
@@ -13,10 +15,15 @@ import {
   ThemeProvider,
   useTheme,
 } from "remix-themes";
+import {
+  clientSideQueryConfig,
+  persister,
+} from "@/libs/react-query/client.client";
+import { themeSessionResolver } from "@/sessions.server";
 import type { Route } from "./+types/root";
-import { themeSessionResolver } from "./sessions.server";
-
 import "./tailwind.css";
+import { QueryClient } from "@tanstack/react-query";
+import { Toaster } from "@/shadcn/components/ui/sonner";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
@@ -30,16 +37,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
-
-  return (
-    <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
-      <HtmlWrapper theme={data?.theme || undefined}>{children}</HtmlWrapper>
-    </ThemeProvider>
-  );
-}
-
 function HtmlWrapper({
   children,
   theme: ssrTheme,
@@ -48,6 +45,8 @@ function HtmlWrapper({
   theme?: string;
 }) {
   const [theme] = useTheme();
+  const [queryClient] = useState(() => new QueryClient(clientSideQueryConfig));
+
   return (
     <html className={clsx(theme)} lang="en">
       <head>
@@ -58,7 +57,13 @@ function HtmlWrapper({
         <Links />
       </head>
       <body suppressHydrationWarning>
-        {children}
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={{ persister }}
+        >
+          {children}
+        </PersistQueryClientProvider>
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -67,5 +72,12 @@ function HtmlWrapper({
 }
 
 export default function App() {
-  return <Outlet />;
+  const data = useLoaderData<typeof loader>();
+  return (
+    <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
+      <HtmlWrapper theme={data?.theme || undefined}>
+        <Outlet />
+      </HtmlWrapper>
+    </ThemeProvider>
+  );
 }

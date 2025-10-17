@@ -1,5 +1,7 @@
 #\!/usr/bin/env bash
 
+bunx --bun biome lint
+
 turbo cf-typegen
 
 turbo check:type

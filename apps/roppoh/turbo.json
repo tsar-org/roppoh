@@ -2,6 +2,9 @@
   "$schema": "https://turborepo.com/schema.json",
   "extends": ["//"],
   "tasks": {
+    "build": {
+      "outputs": ["build/**"]
+    },
     "check:type": {
       "outputs": [".react-router/types/**"]
     }

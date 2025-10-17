@@ -26,6 +26,7 @@
   },
   "vars": {
     "DISCORD_CLIENT_ID": "1320047030717911111",
+    "DOKPLOY_API_URL": "https://dokploy.tsar-bmb.org/api",
     "TSAR_GUILD_ID": "695466655152734228"
   }
 }

@@ -7,10 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  lint-and-build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    name: ci
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
@@ -20,6 +19,15 @@ jobs:
       - run: bun turbo check:type
       - run: bun knip
       - run: bun turbo build
-      - name: Install Playwright Browsers
-        run: bunx --no playwright install --with-deps --only-shell
-      - run: bun turbo test
+
+  playwright-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: lint-and-build
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-bun-turbo
+      - uses: ./.github/actions/setup-playwright
+      - name: VRT test
+        run: bun run test:visual
+        working-directory: apps/roppoh

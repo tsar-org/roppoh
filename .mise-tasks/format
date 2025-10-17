@@ -1,7 +1,5 @@
 #\!/usr/bin/env bash
 
-cd "$MISE_ORIGINAL_CWD"
-
 dprint fmt
 
-bunx biome check --fix --unsafe
+bunx --bun biome check --fix --unsafe

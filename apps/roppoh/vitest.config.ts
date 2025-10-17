@@ -3,8 +3,10 @@ import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
+import { VRT_ENV } from "./test/visual-regression/constant";
 
 export default defineConfig({
+  plugins: [react(), tailwindcss(), tsconfigPaths()],
   test: {
     projects: [
       {
@@ -27,7 +29,9 @@ export default defineConfig({
             instances: [{ browser: "chromium" as const }],
             provider: playwright(),
           },
+          env: VRT_ENV,
           name: "visual",
+          testTimeout: 30000,
         },
       },
     ],

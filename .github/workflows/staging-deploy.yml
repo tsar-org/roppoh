@@ -9,6 +9,8 @@ jobs:
     timeout-minutes: 5
     name: staging-deploy
     if: contains(github.event.pull_request.labels.*.name, 'staging')
+    env:
+      VITE_BASE_URL: https://roppoh.stg.tsar-bmb.org
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo

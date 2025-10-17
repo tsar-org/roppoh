@@ -11,7 +11,12 @@
     }
   },
   "files": {
-    "includes": ["**/*", "!**/bun.lock", "!**/worker-configuration.d.ts"]
+    "includes": [
+      "**/*",
+      "!**/bun.lock",
+      "!**/worker-configuration.d.ts",
+      "!apps/roppoh/app/shadcn"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -24,7 +29,6 @@
   },
   "linter": {
     "enabled": true,
-    "includes": ["!apps/tanstack/src/shadcn/**"],
     "rules": {
       "correctness": {
         "noEmptyPattern": "off",

@@ -5,9 +5,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarInset,
   SidebarProvider,
   SidebarRail,
-  SidebarTrigger,
 } from "@/shadcn/components/ui/sidebar";
 import type { Route } from "./+types/layout";
 import { ContentNavigation } from "./components/ContentNavigation";
@@ -52,7 +52,7 @@ export async function clientLoader({}: Route.ClientLoaderArgs) {}
 export default function SidebarLayout() {
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
+      <Sidebar collapsible="icon" variant="inset">
         <SidebarHeader>
           <GuildSwitcher />
         </SidebarHeader>
@@ -64,10 +64,11 @@ export default function SidebarLayout() {
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-      <main className="h-full w-full">
-        <SidebarTrigger />
-        <Outlet />
-      </main>
+      <SidebarInset>
+        <main className="h-full w-full">
+          <Outlet />
+        </main>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

@@ -1,40 +1,66 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  useQueries,
+  useQuery,
+} from "@tanstack/react-query";
+import { useLoaderData } from "react-router";
+import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
-import { ToggleThemeButton } from "@/components/toggle-theme-button";
-import { TsarOrganizationLink } from "@/components/tsar-organization-link";
-import { UnitySportsResortCard } from "@/pages/index/components/state/unitySportsResortCard";
+import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
+import type { Route } from "./+types/page";
+import { DataTable } from "./components/table";
+import { ServerTableColumns } from "./components/table/columns";
+import { UnitySportsResortCard } from "./components/unity-sports-resort-card";
+import { useTableData } from "./hooks/use-tabel-data";
+import {
+  environmentByProjectIdQueryOption,
+  projectAllQueryOption,
+} from "./queries/project";
+
+export async function loader({ context: ctx }: Route.LoaderArgs) {
+  const queryOption = projectAllQueryOption({
+    dokployClient: ctx.dep.dokployClient,
+  });
+  await ctx.dep.tanstackQueryClient.prefetchQuery(queryOption);
+
+  return { dehydratedState: dehydrate(ctx.dep.tanstackQueryClient) };
+}
 
 export default function () {
+  const loaderData = useLoaderData<typeof loader>();
+  const dokployClient = getDokployClient();
+  const { data: projectList } = useQuery(
+    projectAllQueryOption({ dokployClient }),
+  );
+  const environmentQueries = useQueries({
+    queries: (projectList ?? []).map((project) =>
+      environmentByProjectIdQueryOption({
+        dokployClient: dokployClient,
+        projectId: project.projectId,
+      }),
+    ),
+  });
+  const { tableData } = useTableData({ environmentQueries, projectList });
+
   return (
-    <PageTransition>
-      <div className="grid min-h-svh lg:grid-cols-2">
-        <div className="flex flex-col gap-4 p-6 md:p-10">
-          <div className="flex justify-between">
-            <TsarOrganizationLink />
-            <ToggleThemeButton />
-          </div>
+    <HydrationBoundary state={loaderData.dehydratedState}>
+      <PageTransition>
+        <SiteHeader title="Servers" />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              {/* tile Layout */}
+              <div className="grid @5xl/main:grid-cols-4 @xl/main:grid-cols-2 grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 dark:*:data-[slot=card]:bg-card">
+                <UnitySportsResortCard />
+              </div>
 
-          <div className="mt-1 flex w-full flex-1 flex-col items-center justify-center gap-6">
-            <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="font-bold text-4xl">Roppoh</h1>
-              <p className="text-balance text-muted-foreground text-sm">
-                Roppoh is discord activity hosting server
-              </p>
-            </div>
-
-            <div className="flex w-full max-w-md flex-col justify-center">
-              <UnitySportsResortCard />
+              {/* server table */}
+              <DataTable columns={ServerTableColumns} data={tableData} />
             </div>
           </div>
         </div>
-
-        <div className="relative hidden bg-muted lg:block">
-          <img
-            alt="tsar-org-icon"
-            className="absolute inset-0 size-full dark:brightness-[0.2] dark:grayscale"
-            src="/icons/tsar-icon.png"
-          />
-        </div>
-      </div>
-    </PageTransition>
+      </PageTransition>
+    </HydrationBoundary>
   );
 }

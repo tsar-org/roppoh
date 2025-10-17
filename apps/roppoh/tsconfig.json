@@ -11,7 +11,8 @@
     "moduleResolution": "Bundler",
     "noEmit": true,
     "paths": {
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "@/test/*": ["./test/*"]
     },
     "resolveJsonModule": true,
     "rootDirs": [".", "./.react-router/types"],
@@ -23,13 +24,11 @@
   },
   "extends": "../../tsconfig.json",
   "include": [
-    "worker-configuration.d.ts",
-    "env.d.ts",
-    "server.ts",
+    "*.ts",
     "./app/**/*.ts",
     "./app/**/*.tsx",
-    "./tests/**/*.tsx",
-    "./tests/**/*.tsx",
+    "./test/**/*.ts",
+    "./test/**/*.tsx",
     ".react-router/types/**/*"
   ]
 }

@@ -32,7 +32,7 @@ export default function () {
                 Roppoh is discord activity hosting server
               </p>
             </div>
-            <Button className=" w-xs cursor-pointer" onClick={signIn}>
+            <Button className="w-xs cursor-pointer" onClick={signIn}>
               {theme === Theme.LIGHT ? (
                 <img
                   alt="discord-mark-white"
