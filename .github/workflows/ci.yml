@@ -10,7 +10,6 @@ jobs:
   lint-and-build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    name: lint-and-build
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
@@ -24,7 +23,6 @@ jobs:
   playwright-test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    name: test
     needs: lint-and-build
     steps:
       - uses: actions/checkout@v5
