@@ -17,7 +17,8 @@
       "ignoreDependencies": [
         "tailwindcss-animate",
         "tw-animate-css",
-        "tailwindcss"
+        "tailwindcss",
+        "@radix-ui/react-select"
       ],
       "react-router": {
         "config": ["react-router.config.ts", "vite.config.ts"]

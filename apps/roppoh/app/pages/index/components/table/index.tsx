@@ -1,5 +1,3 @@
-"use client";
-
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -30,13 +28,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shadcn/components/ui/select";
 import {
   Table,
   TableBody,
@@ -191,30 +182,6 @@ export function DataTable({ columns, data }: DataTableProps) {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
-          <div className="hidden items-center gap-2 lg:flex">
-            <label className="font-medium text-sm" htmlFor="rows-per-page">
-              Rows per page
-            </label>
-            <Select
-              onValueChange={(value: string) => {
-                table.setPageSize(Number(value));
-              }}
-              value={`${table.getState().pagination.pageSize}`}
-            >
-              <SelectTrigger className="w-20">
-                <SelectValue
-                  placeholder={table.getState().pagination.pageSize}
-                />
-              </SelectTrigger>
-              <SelectContent side="top">
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
           <div className="flex w-fit items-center justify-center font-medium text-sm">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}

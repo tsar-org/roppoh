@@ -21,7 +21,7 @@ jobs:
       - run: bun knip
       - run: bun turbo build
 
-  test:
+  playwright-test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     name: test
@@ -29,8 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
-      - name: Install Playwright Browsers
-        run: bunx playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
       - name: VRT test
         run: bun run test:visual
         working-directory: apps/roppoh

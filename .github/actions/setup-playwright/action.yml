@@ -1,0 +1,13 @@
+name: Setup playwright
+description: Setup playwright with deps
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/bun.lock') }}
+        restore-keys: ${{ runner.os }}-playwright-
+    - shell: bash
+      run: bunx playwright install --with-deps chromium

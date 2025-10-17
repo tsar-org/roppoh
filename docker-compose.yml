@@ -1,9 +1,13 @@
 services:
-  vrt:
+  linux-vrt:
     build:
       context: .
-      dockerfile: .docker/vrt/Dockerfile
+      dockerfile: .docker/linux-vrt/Dockerfile
     volumes:
-      # Mount screenshot directory to persist Linux screenshots
-      - ./apps/roppoh/tests/visual-regression/pages/__screenshots__:/app/apps/roppoh/tests/visual-regression/pages/__screenshots__
+      # Mount entire project for dynamic source code updates
+      - .:/app
+      # Protect node_modules from being overwritten by host
+      - /app/node_modules
+      - /app/apps/roppoh/node_modules
+      - /app/packages/better-auth-database/node_modules
     command: bun run test:visual --update

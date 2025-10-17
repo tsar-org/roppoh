@@ -52,6 +52,9 @@ function useSidebar() {
   return context;
 }
 
+// Export context for testing purposes
+export { SidebarContext };
+
 function SidebarProvider({
   defaultOpen = true,
   open: openProp,

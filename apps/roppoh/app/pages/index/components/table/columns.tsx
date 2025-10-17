@@ -1,5 +1,3 @@
-"use client";
-
 import type { ColumnDef } from "@tanstack/react-table";
 import type {
   EnvironmentByProjectIdComposeStatus,
@@ -66,9 +64,9 @@ export const ServerTableColumns: ColumnDef<ServerTableRecord>[] = [
     accessorKey: "projectName",
     cell: ({ row }) => <div>{row.original.projectName}</div>,
     header: "Project",
-    maxSize: 70,
-    minSize: 70,
-    size: 70,
+    maxSize: 80,
+    minSize: 80,
+    size: 80,
   },
   {
     accessorKey: "environment",

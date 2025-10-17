@@ -1,5 +1,5 @@
 import { EnvironmentByProjectIdComposeStatus } from "dokploy-sdk/models/operations";
-import { BadgeCheck, CirclePause, CircleX } from "lucide-react";
+import { BadgeCheck, CirclePause, CircleX, Hammer } from "lucide-react";
 import type { JSX } from "react";
 import { Badge } from "@/shadcn/components/ui/badge";
 
@@ -10,6 +10,12 @@ type Props = {
 const StatusIcon = (props: Props): JSX.Element => {
   switch (props.type) {
     case EnvironmentByProjectIdComposeStatus.Running:
+      return (
+        <>
+          <Hammer color="#ffc800" />
+          {props.type}
+        </>
+      );
     case EnvironmentByProjectIdComposeStatus.Done:
       return (
         <>

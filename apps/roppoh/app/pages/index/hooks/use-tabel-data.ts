@@ -27,20 +27,17 @@ export const useTableData = ({
 
     return environmentQueries
       .flatMap((query) => query.data ?? [])
-      .flatMap((env) => {
-        const project = projectList.find((p) => p.projectId === env.projectId);
-        if (project === undefined) return [];
-
-        return env.compose.map((cps) => ({
+      .flatMap((env) =>
+        env.compose.map((cps) => ({
           description: cps.description,
           environment: env.name,
           id: cps.composeId,
           name: cps.name,
-          projectName: project.name,
+          projectName: env.project.name,
           status: cps.composeStatus,
           type: cps.composeType,
-        }));
-      });
+        })),
+      );
   }, [projectList, environmentQueries]);
 
   return { tableData };
