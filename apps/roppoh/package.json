@@ -28,7 +28,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.4",
-    "react-unity-webgl": "^9.9.0",
+    "react-unity-webgl": "^10.1.6",
     "remix-themes": "^2.0.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1"
