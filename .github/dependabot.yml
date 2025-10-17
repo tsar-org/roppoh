@@ -5,7 +5,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     commit-message:
       prefix: "⬆️ "
       prefix-development: "⬆️ "
@@ -18,7 +18,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     commit-message:
       prefix: "⬆️ "
       prefix-development: "⬆️ "
@@ -34,3 +34,21 @@ updates:
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    pull-request-branch-name:
+      separator: "/"
+    labels:
+      - "dependencies"
+      - "docker"
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    pull-request-branch-name:
+      separator: "/"
+    labels:
+      - "dependencies"
+      - "docker-compose"
