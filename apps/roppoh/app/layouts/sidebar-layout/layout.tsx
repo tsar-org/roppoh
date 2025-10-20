@@ -1,4 +1,3 @@
-import { Gamepad, Server } from "lucide-react";
 import { Outlet } from "react-router";
 import {
   Sidebar,
@@ -10,46 +9,13 @@ import {
   SidebarRail,
 } from "@/shadcn/components/ui/sidebar";
 import type { Route } from "./+types/layout";
-import { ContentNavigation } from "./components/ContentNavigation";
+import { ContentNavigation } from "./components/content-navigation";
 import { GuildSwitcher } from "./components/TeamSwitcher";
 import { UserNavigation } from "./components/UserNavigation";
 
-const data = {
-  ContentNavigation: [
-    {
-      icon: Gamepad,
-      isActive: true,
-      items: [
-        {
-          title: "Unity Sports Resort",
-          url: "/unity-sports-resort",
-        },
-      ],
-      title: "Playground",
-      url: "#",
-    },
-    {
-      icon: Server,
-      isActive: true,
-      items: [
-        {
-          title: "Minecraft Server",
-          url: "#",
-        },
-        {
-          title: "Ark Server",
-          url: "#",
-        },
-      ],
-      title: "Servers",
-      url: "#",
-    },
-  ],
-};
-
 export async function clientLoader({}: Route.ClientLoaderArgs) {}
 
-export default function SidebarLayout() {
+export default function () {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon" variant="inset">
@@ -57,7 +23,7 @@ export default function SidebarLayout() {
           <GuildSwitcher />
         </SidebarHeader>
         <SidebarContent>
-          <ContentNavigation items={data.ContentNavigation} />
+          <ContentNavigation />
         </SidebarContent>
         <SidebarFooter>
           <UserNavigation />

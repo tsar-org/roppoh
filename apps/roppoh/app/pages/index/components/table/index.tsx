@@ -21,6 +21,7 @@ import {
   LayoutGridIcon,
 } from "lucide-react";
 import { useState } from "react";
+import type { Server } from "@/features/dokploy-server-management";
 import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -36,11 +37,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/shadcn/components/ui/table";
-import type { ServerTableRecord } from "./columns";
 
 interface DataTableProps {
-  columns: ColumnDef<ServerTableRecord, unknown>[];
-  data: ServerTableRecord[];
+  columns: ColumnDef<Server, unknown>[];
+  data: Server[];
 }
 
 export function DataTable({ columns, data }: DataTableProps) {
