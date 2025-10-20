@@ -6,7 +6,6 @@ import { defineConfig } from "vitest/config";
 import { VRT_ENV } from "./test/visual-regression/constant";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsconfigPaths()],
   test: {
     projects: [
       {
@@ -30,8 +29,17 @@ export default defineConfig({
             provider: playwright(),
           },
           env: VRT_ENV,
+          include: ["test/visual-regression/**/*.spec.{ts,tsx}"],
           name: "visual",
           testTimeout: 30000,
+        },
+      },
+      {
+        plugins: [tsconfigPaths()],
+        test: {
+          include: ["./test/unit/**/*.spec.ts"],
+          name: "unit",
+          testTimeout: 1000,
         },
       },
     ],
