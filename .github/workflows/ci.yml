@@ -16,8 +16,8 @@ jobs:
       - uses: dprint/check@v2.3
       - run: bunx biome format
       - run: bunx biome lint
-      - run: bun turbo check:type
       - run: bun knip
+      - run: bun turbo check:type
       - run: bun turbo build
 
   playwright-test:
@@ -28,6 +28,14 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
       - uses: ./.github/actions/setup-playwright
-      - name: VRT test
-        run: bun run test:visual
+      - run: bun run test:visual
         working-directory: apps/roppoh
+
+  unit-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: lint-and-build
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-bun-turbo
+      - run: bun run test:unit

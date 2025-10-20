@@ -2,11 +2,19 @@
 
 import type { Route } from "./+types/dokploy";
 
-export const loader = ({ request, context }: Route.LoaderArgs) =>
-  requestProxy({ env: context.cf.env, request });
+export const loader = async ({ request, context }: Route.LoaderArgs) =>
+  fetch(requestProxy({ env: context.cf.env, request }));
 
-export const action = ({ request, context }: Route.ActionArgs) =>
-  requestProxy({ env: context.cf.env, request });
+export const action = async ({ request, context }: Route.ActionArgs) =>
+  fetch(requestProxy({ env: context.cf.env, request }));
+
+type DokployEnv = Pick<
+  Cloudflare.Env,
+  | "DOKPLOY_API_URL"
+  | "DOKPLOY_API_TOKEN"
+  | "CF_ACCESS_CLIENT_ID"
+  | "CF_ACCESS_CLIENT_SECRET"
+>;
 
 /**
  * Proxies requests to the Dokploy API
@@ -19,18 +27,16 @@ export const action = ({ request, context }: Route.ActionArgs) =>
  *
  * @returns Response from the Dokploy API
  */
-async function requestProxy({
+export function requestProxy({
   request,
   env,
 }: {
   request: Request;
-  env: Cloudflare.Env;
+  env: DokployEnv;
 }) {
-  // convert request url
   const url = new URL(request.url);
-  const apiUrl = new URL(env.DOKPLOY_API_URL);
   const apiPath = url.pathname.replace(/^\/api\/dokploy\//, "/api/");
-  const proxyUrl = new URL(apiPath + url.search, apiUrl);
+  const proxyUrl = new URL(apiPath + url.search, env.DOKPLOY_API_URL);
 
   // add header
   const headers = new Headers(request.headers);
@@ -39,10 +45,16 @@ async function requestProxy({
   headers.set("CF-Access-Client-Secret", env.CF_ACCESS_CLIENT_SECRET);
   headers.set("Accept", "application/json");
 
-  // send request
-  return fetch(proxyUrl, {
+  const requestOptions: RequestInit = {
     body: request.body,
     headers: headers,
     method: request.method,
-  });
+  };
+
+  // Add duplex for streaming bodies
+  if (request.body) {
+    Object.assign(requestOptions, { duplex: "half" });
+  }
+
+  return new Request(proxyUrl, requestOptions);
 }
