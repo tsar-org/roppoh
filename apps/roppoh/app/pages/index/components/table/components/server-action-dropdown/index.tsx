@@ -1,16 +1,16 @@
+import type { Server } from "@/features/dokploy-server-management";
 import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
-import type { ServerTableRecord } from "../../columns";
 import { ServerActionDropdownView } from "./components/dropdown";
 import { useServerControl } from "./hooks/use-server-control.client";
 
 type Props = {
-  record: ServerTableRecord;
+  server: Server;
 };
 
-export const ServerActionDropdownContainer = ({ record }: Props) => {
+export const ServerActionDropdownContainer = ({ server }: Props) => {
   const dokployClient = getDokployClient();
   const { execute, isProcessing } = useServerControl();
-  const composeId = record.id;
+  const composeId = server.status === "fetched" ? server.compose.composeId : "";
 
   const onClickStart = () =>
     execute({
@@ -42,7 +42,7 @@ export const ServerActionDropdownContainer = ({ record }: Props) => {
       onClickReDeploy={onClickReDeploy}
       onClickStart={onClickStart}
       onClickStop={onClickStop}
-      record={record}
+      server={server}
     />
   );
 };

@@ -6,12 +6,13 @@ import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
+import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import IndexPage, { type loader } from "@/pages/index/page";
-import { projectAllQueryOption } from "@/pages/index/queries/project";
 import Root, { type loader as rootLoader } from "@/root";
 import { SidebarForTest } from "../../helpers/sidebar-for-test";
-import { test } from "../../helpers/test-extend";
+import { testWithMswMock } from "../../helpers/test-with-msw-mock";
 import { setDesktopViewPort, setMobileViewPort } from "../../helpers/view-port";
+import { worker } from "./msw.handlers";
 
 describe("VRT index page", async () => {
   const PATH = "/";
@@ -28,7 +29,6 @@ describe("VRT index page", async () => {
               dokployClient: dokployClient,
             });
             await client.prefetchQuery(queryOption);
-            const _res = await dokployClient.project.getAll();
             return { dehydratedState: dehydrate(client) };
           },
           path: PATH,
@@ -37,7 +37,7 @@ describe("VRT index page", async () => {
     },
   ];
 
-  test("desktop dark", async () => {
+  testWithMswMock(worker)("desktop dark", async () => {
     // Arrange
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
@@ -57,7 +57,7 @@ describe("VRT index page", async () => {
     await expect(screen.container).toMatchScreenshot("desktop-dark");
   });
 
-  test("desktop light", async () => {
+  testWithMswMock(worker)("desktop light", async () => {
     // Arrange
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
@@ -77,7 +77,7 @@ describe("VRT index page", async () => {
     await expect(screen.container).toMatchScreenshot("desktop-light");
   });
 
-  test("mobile dark", async () => {
+  testWithMswMock(worker)("mobile dark", async () => {
     // Arrange
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
@@ -97,7 +97,7 @@ describe("VRT index page", async () => {
     await expect(screen.container).toMatchScreenshot("mobile-dark");
   });
 
-  test("mobile light", async () => {
+  testWithMswMock(worker)("mobile light", async () => {
     // Arrange
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
