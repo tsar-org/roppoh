@@ -23,4 +23,7 @@ export default [
       route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
     ]),
   ]),
+
+  // 404 not found page
+  route("*", "./pages/404/page.tsx"),
 ] satisfies RouteConfig;

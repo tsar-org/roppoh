@@ -6,23 +6,12 @@ import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
+import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import IndexPage, { type loader } from "@/pages/index/page";
-import { projectAllQueryOption } from "@/pages/index/queries/project";
 import Root, { type loader as rootLoader } from "@/root";
 import { SidebarForTest } from "../../helpers/sidebar-for-test";
 import { test } from "../../helpers/test-extend";
 import { setDesktopViewPort, setMobileViewPort } from "../../helpers/view-port";
-
-// Mock SiteHeader to avoid SidebarTrigger which uses useSidebar
-// vi.mock("@/components/header", () => ({
-//   SiteHeader: ({ title }: { title: string }) => (
-//     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b">
-//       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-//         <h1 className="py-4 font-medium text-base">{title}</h1>
-//       </div>
-//     </header>
-//   ),
-// }));
 
 describe("VRT index page", async () => {
   const PATH = "/";
