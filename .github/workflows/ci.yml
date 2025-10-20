@@ -16,8 +16,8 @@ jobs:
       - uses: dprint/check@v2.3
       - run: bunx biome format
       - run: bunx biome lint
-      - run: bun knip
       - run: bun turbo check:type
+      - run: bun knip
       - run: bun turbo build
 
   playwright-test:
