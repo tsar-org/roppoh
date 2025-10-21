@@ -8,8 +8,7 @@
   "project": [],
   "workspaces": {
     ".": {
-      "biome": { "config": "biome.jsonc" },
-      "ignoreDependencies": ["@biomejs/biome"]
+      "biome": { "config": "biome.jsonc" }
     },
     "apps/roppoh": {
       "entry": [],
