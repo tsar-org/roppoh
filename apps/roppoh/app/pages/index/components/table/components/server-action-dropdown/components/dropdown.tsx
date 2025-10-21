@@ -1,5 +1,6 @@
 import { EnvironmentByProjectIdComposeStatus } from "dokploy-sdk/models/operations";
 import { EllipsisVertical } from "lucide-react";
+import type { Server } from "@/features/dokploy-server-management";
 import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -7,10 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import type { ServerTableRecord } from "../../../columns";
 
 type Props = {
-  record: ServerTableRecord;
+  server: Server;
   isProcessingServerControl: boolean;
   onClickStart: () => void;
   onClickStop: () => void;
@@ -18,6 +18,27 @@ type Props = {
 };
 
 export const ServerActionDropdownView = (props: Props) => {
+  const isStartButtonDisabled =
+    props.server.status === "fetching" ||
+    // serverが停止中(idle)状態のみ押下可能
+    props.server.compose.composeStatus !==
+      EnvironmentByProjectIdComposeStatus.Idle ||
+    props.isProcessingServerControl;
+
+  const isStopButtonDisabled =
+    props.server.status === "fetching" ||
+    // serverが稼働中(done or running)状態のみ押下可能
+    !(
+      props.server.compose.composeStatus ===
+        EnvironmentByProjectIdComposeStatus.Done ||
+      props.server.compose.composeStatus ===
+        EnvironmentByProjectIdComposeStatus.Running
+    ) ||
+    props.isProcessingServerControl;
+
+  const isReDeployButtonDisabled =
+    props.server.status === "fetching" || props.isProcessingServerControl;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,12 +55,7 @@ export const ServerActionDropdownView = (props: Props) => {
         <DropdownMenuItem>
           <Button
             className="h-[20px] w-full justify-start"
-            disabled={
-              // serverが停止中(idle)状態のみ押下可能
-              props.record.status !==
-                EnvironmentByProjectIdComposeStatus.Idle ||
-              props.isProcessingServerControl
-            }
+            disabled={isStartButtonDisabled}
             onClick={props.onClickStart}
             size="icon"
             variant={"ghost"}
@@ -50,15 +66,7 @@ export const ServerActionDropdownView = (props: Props) => {
         <DropdownMenuItem>
           <Button
             className="h-[20px] w-full justify-start"
-            disabled={
-              // serverが稼働中(done or running)状態のみ押下可能
-              !(
-                props.record.status ===
-                  EnvironmentByProjectIdComposeStatus.Done ||
-                props.record.status ===
-                  EnvironmentByProjectIdComposeStatus.Running
-              ) || props.isProcessingServerControl
-            }
+            disabled={isStopButtonDisabled}
             onClick={props.onClickStop}
             size="icon"
             variant={"ghost"}
@@ -69,7 +77,7 @@ export const ServerActionDropdownView = (props: Props) => {
         <DropdownMenuItem>
           <Button
             className="h-[20px] w-full justify-start"
-            disabled={props.isProcessingServerControl}
+            disabled={isReDeployButtonDisabled}
             onClick={props.onClickReDeploy}
             size="icon"
             variant={"ghost"}

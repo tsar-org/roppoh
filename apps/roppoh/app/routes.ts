@@ -17,7 +17,7 @@ export default [
   // auth required pages
   layout("./layouts/AuthenticatedLayout/layout.tsx", [
     layout("./layouts/GuildAuthorizedLayout/layout.tsx", [
-      layout("./layouts/SidebarLayout/layout.tsx", [
+      layout("./layouts/sidebar-layout/layout.tsx", [
         index("./pages/index/page.tsx"),
       ]),
       route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),

@@ -1,22 +1,13 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  useQueries,
-  useQuery,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
-import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
+import { useServers } from "@/features/dokploy-server-management";
+import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import type { Route } from "./+types/page";
 import { DataTable } from "./components/table";
 import { ServerTableColumns } from "./components/table/columns";
 import { UnitySportsResortCard } from "./components/unity-sports-resort-card";
-import { useTableData } from "./hooks/use-tabel-data";
-import {
-  environmentByProjectIdQueryOption,
-  projectAllQueryOption,
-} from "./queries/project";
 
 export async function loader({ context: ctx }: Route.LoaderArgs) {
   const queryOption = projectAllQueryOption({
@@ -29,19 +20,7 @@ export async function loader({ context: ctx }: Route.LoaderArgs) {
 
 export default function () {
   const loaderData = useLoaderData<typeof loader>();
-  const dokployClient = getDokployClient();
-  const { data: projectList } = useQuery(
-    projectAllQueryOption({ dokployClient }),
-  );
-  const environmentQueries = useQueries({
-    queries: (projectList ?? []).map((project) =>
-      environmentByProjectIdQueryOption({
-        dokployClient: dokployClient,
-        projectId: project.projectId,
-      }),
-    ),
-  });
-  const { tableData } = useTableData({ environmentQueries, projectList });
+  const { servers } = useServers();
 
   return (
     <HydrationBoundary state={loaderData.dehydratedState}>
@@ -56,7 +35,7 @@ export default function () {
               </div>
 
               {/* server table */}
-              <DataTable columns={ServerTableColumns} data={tableData} />
+              <DataTable columns={ServerTableColumns} data={servers} />
             </div>
           </div>
         </div>
