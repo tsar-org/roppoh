@@ -4,7 +4,7 @@ import type { Logger } from "pino";
 import {
   type BetterAuthInstance,
   createBetterAuthInstance,
-} from "@/libs/betterAuth/auth.server";
+} from "@/libs/better-auth/auth.server";
 import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { createLogger } from "@/libs/pino/logger.server";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";

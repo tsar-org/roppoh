@@ -10,8 +10,8 @@ import {
 } from "@/shadcn/components/ui/sidebar";
 import type { Route } from "./+types/layout";
 import { ContentNavigation } from "./components/content-navigation";
-import { GuildSwitcher } from "./components/TeamSwitcher";
-import { UserNavigation } from "./components/UserNavigation";
+import { GuildSwitcher } from "./components/team-switcher";
+import { UserNavigation } from "./components/user-navigation";
 
 export async function clientLoader({}: Route.ClientLoaderArgs) {}
 
