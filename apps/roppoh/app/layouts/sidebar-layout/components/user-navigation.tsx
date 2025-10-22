@@ -1,7 +1,7 @@
 import { ChevronsUpDown, LogOut, SunMoon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Theme, useTheme } from "remix-themes";
-import { authClient } from "@/libs/betterAuth/auth.client";
+import { authClient } from "@/libs/better-auth/auth.client";
 import {
   Avatar,
   AvatarFallback,

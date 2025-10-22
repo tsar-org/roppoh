@@ -14,8 +14,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-bun-turbo
       - uses: dprint/check@v2.3
-      - run: bunx biome format
-      - run: bunx biome lint
+      - run: bun biome ci
       - run: bun turbo check:type
       - run: bun knip
       - run: bun turbo build

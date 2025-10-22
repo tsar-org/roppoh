@@ -2,7 +2,7 @@ import { Theme, useTheme } from "remix-themes";
 import PageTransition from "@/components/page-transition";
 import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { TsarOrganizationLink } from "@/components/tsar-organization-link";
-import { authClient } from "@/libs/betterAuth/auth.client";
+import { authClient } from "@/libs/better-auth/auth.client";
 import { Button } from "@/shadcn/components/ui/button";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
