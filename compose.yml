@@ -7,7 +7,12 @@ services:
       # Mount entire project for dynamic source code updates
       - .:/app
       # Protect node_modules from being overwritten by host
-      - /app/node_modules
-      - /app/apps/roppoh/node_modules
-      - /app/packages/better-auth-database/node_modules
+      - node_modules:/app/node_modules
+      - roppoh_node_modules:/app/apps/roppoh/node_modules
+      - better_auth_node_modules:/app/packages/better-auth-database/node_modules
     command: bun run test:visual --update
+
+volumes:
+  node_modules:
+  roppoh_node_modules:
+  better_auth_node_modules:
