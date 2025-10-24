@@ -23,35 +23,14 @@ import { themeSessionResolver } from "@/sessions.server";
 import type { Route } from "./+types/root";
 import "./tailwind.css";
 import { QueryClient } from "@tanstack/react-query";
+import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Toaster } from "@/shadcn/components/ui/sonner";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
 ];
 
-export const meta: MetaFunction = () => {
-  const siteName = "Roppoh";
-  const title = "Roppoh";
-  const description =
-    "Roppoh — The game server management web application. And Play WebGL games right in your browser";
-  const baseUrl = process.env.VITE_BASE_URL || "";
-  const imageUrl = `${baseUrl}/api/og/${"Root"}`;
-
-  return [
-    { title: title },
-    { content: description, name: "description" },
-    { content: siteName, property: "og:site_name" },
-    { content: baseUrl, property: "og:url" },
-    { content: "website", property: "og:type" },
-    { content: title, property: "og:title" },
-    { content: description, property: "og:description" },
-    { content: imageUrl, property: "og:image" },
-    { content: "1200", property: "og:image:width" },
-    { content: "630", property: "og:image:height" },
-    { content: "image/png", property: "og:image:type" },
-    { content: "summary_large_image", name: "twitter:card" },
-  ];
-};
+export const meta: MetaFunction = () => [...baseMeta({ title: "Roppoh" })];
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {
