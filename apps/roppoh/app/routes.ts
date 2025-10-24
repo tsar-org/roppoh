@@ -10,6 +10,7 @@ export default [
   route("/action/set-theme", "apis/theme.ts"),
   route("/api/auth/*", "apis/auth.ts"),
   route("/api/dokploy/*", "apis/dokploy.ts"),
+  route("/api/og/:title", "apis/og/route.tsx"),
 
   // pages
   route("/login", "./pages/login/page.tsx"),

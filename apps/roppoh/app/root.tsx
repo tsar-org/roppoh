@@ -1,7 +1,7 @@
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
 import { useState } from "react";
-import type { LinksFunction } from "react-router";
+import type { LinksFunction, MetaFunction } from "react-router";
 import {
   Links,
   Meta,
@@ -28,6 +28,23 @@ import { Toaster } from "@/shadcn/components/ui/sonner";
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
 ];
+
+export const meta: MetaFunction = () => {
+  const title = "Roppoh";
+  const description =
+    "Roppoh — The game server management web application. And Play WebGL games right in your browser";
+  return [
+    { title: title },
+    { content: description, name: "description" },
+    { content: title, property: "og:title" },
+    { content: description, property: "og:description" },
+    { content: "profile", property: "og:type" },
+    {
+      content: `${process.env.VITE_BASE_URL}/api/og/${"Root"}`,
+      property: "og:url",
+    },
+  ];
+};
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {
