@@ -1,9 +1,10 @@
+import Icon from "./assets/tsar-icon-32x32.svg";
+
 interface Props {
   title: string;
-  staticAssetBaseUrl: string;
 }
 
-export const OG = ({ title, staticAssetBaseUrl }: Props) => {
+export const OG = ({ title }: Props) => {
   return (
     <div
       style={{
@@ -40,7 +41,7 @@ export const OG = ({ title, staticAssetBaseUrl }: Props) => {
             width: "48px",
           }}
         >
-          <img alt="icon" src={`${staticAssetBaseUrl}/icons/tsar-icon.png`} />
+          <img alt="icon" src={Icon} />
         </div>
         <div
           style={{
