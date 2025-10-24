@@ -30,19 +30,26 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => {
+  const siteName = "Roppoh";
   const title = "Roppoh";
   const description =
     "Roppoh — The game server management web application. And Play WebGL games right in your browser";
+  const baseUrl = process.env.VITE_BASE_URL || "";
+  const imageUrl = `${baseUrl}/api/og/${"Root"}`;
+
   return [
     { title: title },
     { content: description, name: "description" },
+    { content: siteName, property: "og:site_name" },
+    { content: baseUrl, property: "og:url" },
+    { content: "website", property: "og:type" },
     { content: title, property: "og:title" },
     { content: description, property: "og:description" },
-    { content: "profile", property: "og:type" },
-    {
-      content: `${process.env.VITE_BASE_URL}/api/og/${"Root"}`,
-      property: "og:url",
-    },
+    { content: imageUrl, property: "og:image" },
+    { content: "1200", property: "og:image:width" },
+    { content: "630", property: "og:image:height" },
+    { content: "image/png", property: "og:image:type" },
+    { content: "summary_large_image", name: "twitter:card" },
   ];
 };
 
