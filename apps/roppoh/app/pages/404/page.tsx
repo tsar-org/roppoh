@@ -1,6 +1,9 @@
 import { ArrowUpRightIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, type MetaFunction } from "react-router";
+import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Button } from "@/shadcn/components/ui/button";
+
+export const meta: MetaFunction = () => [...baseMeta({ title: "404" })];
 
 export default function NotFoundPage() {
   return (

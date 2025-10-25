@@ -1,7 +1,7 @@
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
 import { useState } from "react";
-import type { LinksFunction } from "react-router";
+import type { LinksFunction, MetaFunction } from "react-router";
 import {
   Links,
   Meta,
@@ -23,11 +23,14 @@ import { themeSessionResolver } from "@/sessions.server";
 import type { Route } from "./+types/root";
 import "./tailwind.css";
 import { QueryClient } from "@tanstack/react-query";
+import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Toaster } from "@/shadcn/components/ui/sonner";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
 ];
+
+export const meta: MetaFunction = () => [...baseMeta({ title: "Roppoh" })];
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {

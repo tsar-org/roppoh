@@ -17,7 +17,7 @@
   },
   "name": "@roppoh/better-auth-database",
   "peerDependencies": {
-    "better-auth": "^1.3.6",
+    "better-auth": "1.3.0",
     "typescript": "latest"
   },
   "private": true,
