@@ -13,9 +13,25 @@ export const createBetterAuthInstance = ({
 }): BetterAuthInstance => {
   return betterAuth({
     advanced: {
+      ipAddress: {
+        ipAddressHeaders: ["cf-connecting-ip", "x-real-ip"],
+      },
+      // crossSubDomainCookies: {
+      //   domain: "tsar-bmb.org",
+      //   enabled: true,
+      // },
       useSecureCookies: false,
     },
+    // baseURL: env.BETTER_AUTH_URL,
     database: createD1Database(env.ROPPOH_AUTH_DB),
+    // trustedOrigins: [
+    //   "http://localhost",
+    //   "https://roppoh.tsar-bmb.org",
+    //   "https://roppoh.stg.tsar-bmb.org",
+    // ],
+    rateLimit: {
+      enabled: true,
+    },
     secret: env.BETTER_AUTH_SECRET,
     session: {
       // FYI: https://www.better-auth.com/docs/guides/optimizing-for-performance
