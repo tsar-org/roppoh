@@ -15,6 +15,7 @@ export const createBetterAuthInstance = ({
     advanced: {
       useSecureCookies: false,
     },
+    baseURL: env.BETTER_AUTH_URL,
     database: createD1Database(env.ROPPOH_AUTH_DB),
     secret: env.BETTER_AUTH_SECRET,
     session: {
