@@ -20,11 +20,9 @@ export const dependencyInjection = ({
   env,
 }: {
   env: Cloudflare.Env;
-}): DependencyContainer => {
-  return {
-    betterAuth: createBetterAuthInstance({ env }),
-    dokployClient: newDokployClient(),
-    logger: createLogger(),
-    tanstackQueryClient: newServerSideReactQueryClient(),
-  };
-};
+}): DependencyContainer => ({
+  betterAuth: createBetterAuthInstance({ env }),
+  dokployClient: newDokployClient(),
+  logger: createLogger(),
+  tanstackQueryClient: newServerSideReactQueryClient(),
+});
