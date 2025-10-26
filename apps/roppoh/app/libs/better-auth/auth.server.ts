@@ -10,12 +10,15 @@ export const createBetterAuthInstance = ({
   env,
 }: {
   env: Cloudflare.Env;
-}): BetterAuthInstance => {
-  return betterAuth({
+}): BetterAuthInstance =>
+  betterAuth({
     advanced: {
       useSecureCookies: false,
     },
     database: createD1Database(env.ROPPOH_AUTH_DB),
+    rateLimit: {
+      enabled: false,
+    },
     secret: env.BETTER_AUTH_SECRET,
     session: {
       // FYI: https://www.better-auth.com/docs/guides/optimizing-for-performance
@@ -31,7 +34,6 @@ export const createBetterAuthInstance = ({
       },
     },
     telemetry: {
-      enabled: false,
+      enabled: true,
     },
   });
-};
