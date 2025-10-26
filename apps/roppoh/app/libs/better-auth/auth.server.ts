@@ -22,7 +22,6 @@ export const createBetterAuthInstance = ({
       },
       useSecureCookies: false,
     },
-    // baseURL: env.BETTER_AUTH_URL,
     database: createD1Database(env.ROPPOH_AUTH_DB),
     rateLimit: {
       enabled: true,

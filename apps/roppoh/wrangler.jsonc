@@ -17,23 +17,12 @@
     }
   ],
   "dev": { "port": 3000 },
-  "env": {
-    "staging": {
-      "vars": {
-        // "BETTER_AUTH_URL": "https://roppoh.stg.tsar-bmb.org",
-        "DISCORD_CLIENT_ID": "1320047030717911111",
-        "TSAR_GUILD_ID": "695466655152734228",
-        "VITE_BASE_URL": "https://roppoh.stg.tsar-bmb.org"
-      }
-    }
-  },
   "main": "./server.ts",
   "name": "roppoh",
   "observability": {
     "enabled": true
   },
   "vars": {
-    // "BETTER_AUTH_URL": "https://roppoh.tsar-bmb.org",
     "DISCORD_CLIENT_ID": "1320047030717911111",
     "DOKPLOY_API_URL": "https://dokploy.tsar-bmb.org/api",
     "TSAR_GUILD_ID": "695466655152734228"
