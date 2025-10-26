@@ -10,27 +10,24 @@ export const createBetterAuthInstance = ({
   env,
 }: {
   env: Cloudflare.Env;
-}): BetterAuthInstance => {
-  return betterAuth({
+}): BetterAuthInstance =>
+  betterAuth({
     advanced: {
       ipAddress: {
-        ipAddressHeaders: ["cf-connecting-ip", "x-real-ip"],
+        ipAddressHeaders: [
+          "x-client-ip",
+          "x-forwarded-for",
+          "cf-connecting-ip",
+        ],
       },
-      // crossSubDomainCookies: {
-      //   domain: "tsar-bmb.org",
-      //   enabled: true,
-      // },
       useSecureCookies: false,
     },
     // baseURL: env.BETTER_AUTH_URL,
     database: createD1Database(env.ROPPOH_AUTH_DB),
-    // trustedOrigins: [
-    //   "http://localhost",
-    //   "https://roppoh.tsar-bmb.org",
-    //   "https://roppoh.stg.tsar-bmb.org",
-    // ],
     rateLimit: {
       enabled: true,
+      max: 999999, // 実質無制限
+      window: 60, // 60秒
     },
     secret: env.BETTER_AUTH_SECRET,
     session: {
@@ -47,7 +44,6 @@ export const createBetterAuthInstance = ({
       },
     },
     telemetry: {
-      enabled: false,
+      enabled: true,
     },
   });
-};
