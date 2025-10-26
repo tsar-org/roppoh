@@ -5,6 +5,7 @@ import { drizzle } from "drizzle-orm/d1";
 import { schemas } from "./schema";
 
 export const createD1Database = (
+  // biome-ignore lint/suspicious/noExplicitAny: to allow any type for drizzle
   d1Database: any,
 ): ((options: BetterAuthOptions) => DBAdapter<BetterAuthOptions>) => {
   const db = drizzle(d1Database);
