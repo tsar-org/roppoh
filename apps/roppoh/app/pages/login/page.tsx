@@ -1,11 +1,15 @@
+import type { MetaFunction } from "react-router";
 import { Theme, useTheme } from "remix-themes";
 import PageTransition from "@/components/page-transition";
 import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { TsarOrganizationLink } from "@/components/tsar-organization-link";
 import { authClient } from "@/libs/better-auth/auth.client";
+import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Button } from "@/shadcn/components/ui/button";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
+
+export const meta: MetaFunction = () => [...baseMeta({ title: "Login" })];
 
 export default function () {
   const [theme] = useTheme();

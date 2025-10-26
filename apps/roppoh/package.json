@@ -31,7 +31,8 @@
     "react-unity-webgl": "^10.1.6",
     "remix-themes": "^2.0.4",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "workers-og": "^0.0.27"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.13.12",

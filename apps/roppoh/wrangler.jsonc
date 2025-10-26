@@ -16,9 +16,7 @@
       "migrations_dir": "../../packages/better-auth-database/src/migrations"
     }
   ],
-  "dev": {
-    "port": 3000
-  },
+  "dev": { "port": 3000 },
   "main": "./server.ts",
   "name": "roppoh",
   "observability": {

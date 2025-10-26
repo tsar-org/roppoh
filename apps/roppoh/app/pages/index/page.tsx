@@ -1,13 +1,16 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { useLoaderData } from "react-router";
+import { type MetaFunction, useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
 import { useServers } from "@/features/dokploy-server-management";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
+import { baseMeta } from "@/libs/react-router/base-meta-function";
 import type { Route } from "./+types/page";
 import { DataTable } from "./components/table";
 import { ServerTableColumns } from "./components/table/columns";
 import { UnitySportsResortCard } from "./components/unity-sports-resort-card";
+
+export const meta: MetaFunction = () => [...baseMeta({ title: "Home" })];
 
 export async function loader({ context: ctx }: Route.LoaderArgs) {
   const queryOption = projectAllQueryOption({
