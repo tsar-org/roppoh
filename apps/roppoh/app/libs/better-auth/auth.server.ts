@@ -13,11 +13,20 @@ export const createBetterAuthInstance = ({
 }): BetterAuthInstance =>
   betterAuth({
     advanced: {
+      ipAddress: {
+        ipAddressHeaders: [
+          "x-client-ip",
+          "x-forwarded-for",
+          "cf-connecting-ip",
+        ],
+      },
       useSecureCookies: false,
     },
     database: createD1Database(env.ROPPOH_AUTH_DB),
     rateLimit: {
-      enabled: false,
+      enabled: true,
+      max: 999999, // 実質無制限
+      window: 60, // 60秒
     },
     secret: env.BETTER_AUTH_SECRET,
     session: {
