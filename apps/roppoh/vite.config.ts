@@ -6,18 +6,19 @@ import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  build: {},
   plugins: [
     VitePWA({
       base: "/",
       devOptions: {
         enabled: true,
-        navigateFallback: "index.html",
+        navigateFallback: "offline.html",
         suppressWarnings: true,
         type: "module",
       },
-      includeAssets: ["favicon.ico", "icons/tsar-icon.png"],
+      includeAssets: [],
       manifest: {
-        background_color: "#ffffff",
+        background_color: "#000000",
         display: "standalone",
         icons: [
           {
@@ -33,7 +34,7 @@ export default defineConfig({
         ],
         name: "roppoh",
         short_name: "roppoh",
-        theme_color: "#ffffff",
+        theme_color: "#000000",
       },
       outDir: "build/client",
       registerType: "autoUpdate",
@@ -41,7 +42,9 @@ export default defineConfig({
       strategies: "generateSW",
       workbox: {
         globDirectory: "build/client",
+        globPatterns: ["**/*.{css,svg}"],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        navigateFallback: "offline.html",
       },
     }),
     cloudflare({
@@ -52,6 +55,7 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
+  publicDir: "./public",
   server: {
     port: 3000,
   },
