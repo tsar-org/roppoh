@@ -39,7 +39,7 @@ export default defineConfig({
       strategies: "generateSW",
       workbox: {
         globDirectory: "build/client",
-        globPatterns: ["**/*.{css,svg,js}"], // HTMLは除外
+        globPatterns: ["**/*.{css,svg,js}"],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: "offline.html",
       },
