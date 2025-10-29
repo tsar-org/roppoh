@@ -8,6 +8,7 @@ import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import IndexPage, { type loader } from "@/pages/index/page";
+import { VRT_ENV } from "../../constant";
 import { createLayoutRouteStub } from "../../helpers/layout-route-stub";
 import { SidebarForTest } from "../../helpers/sidebar-for-test";
 import { testWithMswMock } from "../../helpers/test-with-msw-mock";
@@ -16,7 +17,9 @@ import { worker } from "./msw.handlers";
 
 describe("VRT index page", async () => {
   const PATH = "/";
-  const routeChildren: Parameters<typeof createRoutesStub>[0] = [
+  const createRouteChildren = (
+    theme: Theme,
+  ): Parameters<typeof createRoutesStub>[0] => [
     {
       Component: SidebarForTest,
       children: [
@@ -29,7 +32,11 @@ describe("VRT index page", async () => {
               dokployClient: dokployClient,
             });
             await client.prefetchQuery(queryOption);
-            return { dehydratedState: dehydrate(client) };
+            return {
+              baseUrl: VRT_ENV.VITE_BASE_URL,
+              dehydratedState: dehydrate(client),
+              theme: theme,
+            };
           },
           path: PATH,
         },
@@ -40,6 +47,7 @@ describe("VRT index page", async () => {
   testWithMswMock(worker)("desktop dark", async () => {
     // Arrange
     await setDesktopViewPort(page);
+    const routeChildren = createRouteChildren(Theme.DARK);
     const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
@@ -52,6 +60,7 @@ describe("VRT index page", async () => {
   testWithMswMock(worker)("desktop light", async () => {
     // Arrange
     await setDesktopViewPort(page);
+    const routeChildren = createRouteChildren(Theme.DARK);
     const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
@@ -64,6 +73,7 @@ describe("VRT index page", async () => {
   testWithMswMock(worker)("mobile dark", async () => {
     // Arrange
     await setMobileViewPort(page);
+    const routeChildren = createRouteChildren(Theme.DARK);
     const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
@@ -76,6 +86,7 @@ describe("VRT index page", async () => {
   testWithMswMock(worker)("mobile light", async () => {
     // Arrange
     await setMobileViewPort(page);
+    const routeChildren = createRouteChildren(Theme.DARK);
     const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act

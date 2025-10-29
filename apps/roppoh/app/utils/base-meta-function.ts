@@ -1,19 +1,36 @@
 import type { MetaDescriptor } from "react-router";
+import { Theme } from "remix-themes";
+import { themeColorToHexColor } from "./theme-color-to-hex-color";
 
-export const baseMeta = ({ title }: { title: string }): MetaDescriptor[] => {
+interface Argument {
+  baseUrl: string;
+  title: string;
+  theme: Theme | null;
+}
+
+export const generateBaseMeta = ({
+  baseUrl,
+  title,
+  theme,
+}: Argument): MetaDescriptor[] => {
   const description =
     "Roppoh — The game server management web application. And Play WebGL games right in your browser";
 
   return [
     { title: `${title} | Roppoh` },
     { content: description, name: "description" },
+
+    // theme
+    { content: themeColorToHexColor(theme ?? Theme.DARK), name: "theme-color" },
+
+    // OG
     { content: "Roppoh", property: "og:site_name" },
-    { content: import.meta.env.VITE_BASE_URL, property: "og:url" },
+    { content: baseUrl, property: "og:url" },
     { content: "website", property: "og:type" },
     { content: title, property: "og:title" },
     { content: description, property: "og:description" },
     {
-      content: `${import.meta.env.VITE_BASE_URL}/api/og/${title}`,
+      content: `${baseUrl}/api/og/${title}`,
       property: "og:image",
     },
     { content: "1200", property: "og:image:width" },

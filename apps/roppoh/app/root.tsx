@@ -1,7 +1,7 @@
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
 import { useState } from "react";
-import type { LinksFunction, MetaFunction } from "react-router";
+import type { LinksFunction } from "react-router";
 import {
   Links,
   Meta,
@@ -23,20 +23,29 @@ import {
 import type { Route } from "./+types/root";
 import "./tailwind.css";
 import { QueryClient } from "@tanstack/react-query";
-import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Toaster } from "@/shadcn/components/ui/sonner";
+import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
 ];
 
-export const meta: MetaFunction = () => [...baseMeta({ title: "Roppoh" })];
+export const meta = ({ loaderData }: Route.MetaArgs) => [
+  ...generateBaseMeta({
+    baseUrl: loaderData.baseUrl,
+    theme: loaderData.theme,
+    title: "Roppoh",
+  }),
+];
 
 // Return the theme from the session storage using the loader
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request);
-  return { theme: getTheme() };
+  return {
+    baseUrl: context.cf.env.VITE_BASE_URL,
+    theme: getTheme(),
+  };
 }
 
 export function Html({
