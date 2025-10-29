@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import type { Route } from "./+types/layout";
+import { useMetaThemeColorSync } from "./hooks/use-meta-theme-color-sync";
 import { useSwUpdatePrompt } from "./hooks/use-sw-update-prompt";
 
 // for client side render
@@ -14,6 +15,7 @@ export async function clientLoader({}: Route.ClientLoaderArgs) {}
  */
 export default function () {
   const {} = useSwUpdatePrompt();
+  const {} = useMetaThemeColorSync();
 
   return <Outlet />;
 }
