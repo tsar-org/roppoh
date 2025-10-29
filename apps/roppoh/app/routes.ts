@@ -12,19 +12,21 @@ export default [
   route("/api/dokploy/*", "apis/dokploy.ts"),
   route("/api/og/:title", "apis/og/route.tsx"),
 
-  // pages
-  route("/login", "./pages/login/page.tsx"),
+  layout("./layouts/client-side-root/layout.tsx", [
+    // pages
+    route("/login", "./pages/login/page.tsx"),
 
-  // auth required pages
-  layout("./layouts/authenticated-layout/layout.tsx", [
-    layout("./layouts/guild-authorized-layout/layout.tsx", [
-      layout("./layouts/sidebar-layout/layout.tsx", [
-        index("./pages/index/page.tsx"),
+    // auth required pages
+    layout("./layouts/authenticated-layout/layout.tsx", [
+      layout("./layouts/guild-authorized-layout/layout.tsx", [
+        layout("./layouts/sidebar-layout/layout.tsx", [
+          index("./pages/index/page.tsx"),
+        ]),
+        route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
       ]),
-      route("/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
     ]),
-  ]),
 
-  // 404 not found page
-  route("*", "./pages/404/page.tsx"),
+    // 404 not found page
+    route("*", "./pages/404/page.tsx"),
+  ]),
 ] satisfies RouteConfig;

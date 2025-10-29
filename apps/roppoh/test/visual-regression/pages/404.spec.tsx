@@ -1,10 +1,10 @@
-import { createRoutesStub } from "react-router";
+import { createRoutesStub, Outlet } from "react-router";
 import { Theme } from "remix-themes";
 import { describe, expect, test } from "vitest";
 import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import NotFoundPage from "@/pages/404/page";
-import Root, { type loader } from "@/root";
+import { Layout, type loader } from "@/root";
 import { setDesktopViewPort, setMobileViewPort } from "../helpers/view-port";
 
 describe("VRT 404-not-found page", async () => {
@@ -16,7 +16,11 @@ describe("VRT 404-not-found page", async () => {
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof loader> => ({ theme: Theme.DARK }),
       },
@@ -34,7 +38,11 @@ describe("VRT 404-not-found page", async () => {
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof loader> => ({ theme: Theme.LIGHT }),
       },
@@ -52,7 +60,11 @@ describe("VRT 404-not-found page", async () => {
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof loader> => ({ theme: Theme.DARK }),
       },
@@ -69,7 +81,11 @@ describe("VRT 404-not-found page", async () => {
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof loader> => ({ theme: Theme.LIGHT }),
       },

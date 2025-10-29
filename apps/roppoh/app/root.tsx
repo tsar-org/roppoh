@@ -12,6 +12,7 @@ import {
 } from "react-router";
 import {
   PreventFlashOnWrongTheme,
+  type Theme,
   ThemeProvider,
   useTheme,
 } from "remix-themes";
@@ -19,12 +20,12 @@ import {
   clientSideQueryConfig,
   persister,
 } from "@/libs/react-query/client.client";
-import { themeSessionResolver } from "@/sessions.server";
 import type { Route } from "./+types/root";
 import "./tailwind.css";
 import { QueryClient } from "@tanstack/react-query";
 import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Toaster } from "@/shadcn/components/ui/sonner";
+import { themeSessionResolver } from "@/utils/sessions.server";
 
 export const links: LinksFunction = () => [
   { href: "/manifest.webmanifest", rel: "manifest" },
@@ -35,17 +36,15 @@ export const meta: MetaFunction = () => [...baseMeta({ title: "Roppoh" })];
 // Return the theme from the session storage using the loader
 export async function loader({ request }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request);
-  return {
-    theme: getTheme(),
-  };
+  return { theme: getTheme() };
 }
 
-function HtmlWrapper({
+export function Html({
   children,
-  theme: ssrTheme,
+  ssrTheme,
 }: {
   children: React.ReactNode;
-  theme?: string;
+  ssrTheme: Theme | null;
 }) {
   const [theme] = useTheme();
   const [queryClient] = useState(() => new QueryClient(clientSideQueryConfig));
@@ -74,13 +73,16 @@ function HtmlWrapper({
   );
 }
 
-export default function App() {
+export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
+
   return (
     <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">
-      <HtmlWrapper theme={data?.theme || undefined}>
-        <Outlet />
-      </HtmlWrapper>
+      <Html ssrTheme={data.theme}>{children}</Html>
     </ThemeProvider>
   );
+}
+
+export default function App() {
+  return <Outlet />;
 }

@@ -1,5 +1,5 @@
 import { dehydrate } from "@tanstack/react-query";
-import { createRoutesStub } from "react-router";
+import { createRoutesStub, Outlet } from "react-router";
 import { Theme } from "remix-themes";
 import { describe, expect } from "vitest";
 import { page } from "vitest/browser";
@@ -8,7 +8,7 @@ import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import IndexPage, { type loader } from "@/pages/index/page";
-import Root, { type loader as rootLoader } from "@/root";
+import { Layout, type loader as rootLoader } from "@/root";
 import { SidebarForTest } from "../../helpers/sidebar-for-test";
 import { testWithMswMock } from "../../helpers/test-with-msw-mock";
 import { setDesktopViewPort, setMobileViewPort } from "../../helpers/view-port";
@@ -42,7 +42,11 @@ describe("VRT index page", async () => {
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof rootLoader> => ({
           theme: Theme.DARK,
@@ -62,7 +66,11 @@ describe("VRT index page", async () => {
     await setDesktopViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof rootLoader> => ({
           theme: Theme.LIGHT,
@@ -82,7 +90,11 @@ describe("VRT index page", async () => {
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof rootLoader> => ({
           theme: Theme.DARK,
@@ -102,7 +114,11 @@ describe("VRT index page", async () => {
     await setMobileViewPort(page);
     const Stub = createRoutesStub([
       {
-        Component: Root,
+        Component: () => (
+          <Layout>
+            <Outlet />
+          </Layout>
+        ),
         children: routeChildren,
         loader: async (): ReturnType<typeof rootLoader> => ({
           theme: Theme.LIGHT,

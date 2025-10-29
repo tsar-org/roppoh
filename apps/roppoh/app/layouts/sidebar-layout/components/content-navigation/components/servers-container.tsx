@@ -19,7 +19,7 @@ export const ServersContainer = () => {
       <SidebarMenuSub>
         {servers.map((server) => {
           if (server.status === "fetching")
-            return <Skeleton className="h-6 w-full" />;
+            return <Skeleton className="h-6 w-full" key={server.status} />;
 
           return (
             <SidebarContentView

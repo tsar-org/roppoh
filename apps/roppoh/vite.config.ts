@@ -2,20 +2,17 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
+import devtoolsJson from "vite-plugin-devtools-json";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   build: {},
   plugins: [
+    devtoolsJson(),
     VitePWA({
       base: "/",
-      devOptions: {
-        enabled: true,
-        navigateFallback: "offline.html",
-        suppressWarnings: true,
-        type: "module",
-      },
+      devOptions: { enabled: false },
       includeAssets: [],
       manifest: {
         background_color: "#000000",
@@ -42,7 +39,7 @@ export default defineConfig({
       strategies: "generateSW",
       workbox: {
         globDirectory: "build/client",
-        globPatterns: ["**/*.{css,svg}"],
+        globPatterns: ["**/*.{css,svg,js}"], // HTMLは除外
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: "offline.html",
       },
