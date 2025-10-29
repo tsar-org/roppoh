@@ -1,24 +1,36 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { type MetaFunction, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
 import PageTransition from "@/components/page-transition";
 import { useServers } from "@/features/dokploy-server-management";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
-import { baseMeta } from "@/libs/react-router/base-meta-function";
+import { generateBaseMeta } from "@/utils/base-meta-function";
+import { themeSessionResolver } from "@/utils/sessions.server";
 import type { Route } from "./+types/page";
 import { DataTable } from "./components/table";
 import { ServerTableColumns } from "./components/table/columns";
 import { UnitySportsResortCard } from "./components/unity-sports-resort-card";
 
-export const meta: MetaFunction = () => [...baseMeta({ title: "Home" })];
+export const meta = ({ loaderData }: Route.MetaArgs) => [
+  ...generateBaseMeta({
+    baseUrl: loaderData.baseUrl,
+    theme: loaderData.theme,
+    title: "Home",
+  }),
+];
 
-export async function loader({ context: ctx }: Route.LoaderArgs) {
+export async function loader({ request, context: ctx }: Route.LoaderArgs) {
+  const { getTheme } = await themeSessionResolver(request);
   const queryOption = projectAllQueryOption({
     dokployClient: ctx.dep.dokployClient,
   });
   await ctx.dep.tanstackQueryClient.prefetchQuery(queryOption);
 
-  return { dehydratedState: dehydrate(ctx.dep.tanstackQueryClient) };
+  return {
+    baseUrl: ctx.cf.env.VITE_BASE_URL,
+    dehydratedState: dehydrate(ctx.dep.tanstackQueryClient),
+    theme: getTheme(),
+  };
 }
 
 export default function () {

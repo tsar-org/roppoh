@@ -1,11 +1,11 @@
-import { useTheme } from "next-themes";
+import { useTheme } from "remix-themes";
 import type { ComponentProps } from "react";
 import { Toaster as Sonner } from "sonner";
 
 type ToasterProps = ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
+  const [theme = "system"] = useTheme();
 
   return (
     <Sonner

@@ -1,15 +1,31 @@
-import type { MetaFunction } from "react-router";
 import { Theme, useTheme } from "remix-themes";
 import PageTransition from "@/components/page-transition";
 import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { TsarOrganizationLink } from "@/components/tsar-organization-link";
 import { authClient } from "@/libs/better-auth/auth.client";
-import { baseMeta } from "@/libs/react-router/base-meta-function";
 import { Button } from "@/shadcn/components/ui/button";
+import { generateBaseMeta } from "@/utils/base-meta-function";
+import { themeSessionResolver } from "@/utils/sessions.server";
+import type { Route } from "./+types/page";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
 
-export const meta: MetaFunction = () => [...baseMeta({ title: "Login" })];
+export const meta = ({ loaderData }: Route.MetaArgs) => [
+  ...generateBaseMeta({
+    baseUrl: loaderData.baseUrl,
+    theme: loaderData.theme,
+    title: "Login",
+  }),
+];
+
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const { getTheme } = await themeSessionResolver(request);
+
+  return {
+    baseUrl: context.cf.env.VITE_BASE_URL,
+    theme: getTheme(),
+  };
+}
 
 export default function () {
   const [theme] = useTheme();

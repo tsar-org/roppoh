@@ -19,7 +19,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "types": ["node", "vite/client", "./worker-configuration.d.ts"],
+    "types": [
+      "node",
+      "vite/client",
+      "./worker-configuration.d.ts",
+      "vite-plugin-pwa/client",
+      "vite-plugin-pwa/react"
+    ],
     "verbatimModuleSyntax": true
   },
   "extends": "../../tsconfig.json",
