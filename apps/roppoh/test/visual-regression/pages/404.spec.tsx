@@ -1,10 +1,9 @@
-import { createRoutesStub, Outlet } from "react-router";
 import { Theme } from "remix-themes";
 import { describe, expect, test } from "vitest";
 import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
 import NotFoundPage from "@/pages/404/page";
-import { Layout, type loader } from "@/root";
+import { createLayoutRouteStub } from "../helpers/layout-route-stub";
 import { setDesktopViewPort, setMobileViewPort } from "../helpers/view-port";
 
 describe("VRT 404-not-found page", async () => {
@@ -14,17 +13,7 @@ describe("VRT 404-not-found page", async () => {
   test("desktop dark", async () => {
     // Arrange
     await setDesktopViewPort(page);
-    const Stub = createRoutesStub([
-      {
-        Component: () => (
-          <Layout>
-            <Outlet />
-          </Layout>
-        ),
-        children: routeChildren,
-        loader: async (): ReturnType<typeof loader> => ({ theme: Theme.DARK }),
-      },
-    ]);
+    const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
@@ -36,17 +25,7 @@ describe("VRT 404-not-found page", async () => {
   test("desktop light", async () => {
     // Arrange
     await setDesktopViewPort(page);
-    const Stub = createRoutesStub([
-      {
-        Component: () => (
-          <Layout>
-            <Outlet />
-          </Layout>
-        ),
-        children: routeChildren,
-        loader: async (): ReturnType<typeof loader> => ({ theme: Theme.LIGHT }),
-      },
-    ]);
+    const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
@@ -58,17 +37,7 @@ describe("VRT 404-not-found page", async () => {
   test("mobile dark", async () => {
     // Arrange
     await setMobileViewPort(page);
-    const Stub = createRoutesStub([
-      {
-        Component: () => (
-          <Layout>
-            <Outlet />
-          </Layout>
-        ),
-        children: routeChildren,
-        loader: async (): ReturnType<typeof loader> => ({ theme: Theme.DARK }),
-      },
-    ]);
+    const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
@@ -79,17 +48,7 @@ describe("VRT 404-not-found page", async () => {
 
   test("mobile light", async () => {
     await setMobileViewPort(page);
-    const Stub = createRoutesStub([
-      {
-        Component: () => (
-          <Layout>
-            <Outlet />
-          </Layout>
-        ),
-        children: routeChildren,
-        loader: async (): ReturnType<typeof loader> => ({ theme: Theme.LIGHT }),
-      },
-    ]);
+    const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
     const screen = render(<Stub initialEntries={[PATH]} />);
