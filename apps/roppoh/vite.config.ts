@@ -13,6 +13,7 @@ export default defineConfig({
     VitePWA({
       base: "/",
       devOptions: { enabled: false },
+      filename: "sw.ts",
       includeAssets: [],
       manifest: {
         background_color: "#000000",
@@ -36,9 +37,9 @@ export default defineConfig({
       outDir: "build/client",
       registerType: "autoUpdate",
       scope: "/",
-      strategies: "generateSW",
+      srcDir: "app",
+      strategies: "injectManifest",
       workbox: {
-        globDirectory: "build/client",
         globPatterns: ["**/*.{css,svg,js}"],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: "offline.html",

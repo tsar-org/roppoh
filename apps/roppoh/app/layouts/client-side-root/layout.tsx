@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 import type { Route } from "./+types/layout";
 import { useMetaThemeColorSync } from "./hooks/use-meta-theme-color-sync";
+import { useNotificationPermission } from "./hooks/use-notification-permission";
 import { useSwUpdatePrompt } from "./hooks/use-sw-update-prompt";
 
 // for client side render
@@ -16,6 +17,7 @@ export async function clientLoader({}: Route.ClientLoaderArgs) {}
 export default function () {
   const {} = useSwUpdatePrompt();
   const {} = useMetaThemeColorSync();
+  const {} = useNotificationPermission();
 
   return <Outlet />;
 }
