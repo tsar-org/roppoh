@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import {
   Card,
@@ -9,12 +10,14 @@ import {
 } from "@/shadcn/components/ui/card";
 
 export const UnitySportsResortCard = () => {
+  const { LL } = useI18nContext();
+
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Unity Sports Resort</CardTitle>
         <CardDescription>
-          Author:{" "}
+          {LL.top.tile.unitySportsResortCard.author()}
           <a
             className="underline underline-offset-4"
             href="https://github.com/s1gnsgrfu"
@@ -27,7 +30,9 @@ export const UnitySportsResortCard = () => {
       </CardHeader>
       <CardContent>
         <Link to="/unity-sports-resort">
-          <Button className="w-full cursor-pointer">play</Button>
+          <Button className="w-full cursor-pointer">
+            {LL.unitySportsResortCard.play()}
+          </Button>
         </Link>
       </CardContent>
     </Card>

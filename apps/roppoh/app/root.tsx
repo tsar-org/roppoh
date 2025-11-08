@@ -1,6 +1,6 @@
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import type { LinksFunction } from "react-router";
 import {
   Links,
@@ -9,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useNavigation,
 } from "react-router";
 import {
   PreventFlashOnWrongTheme,
@@ -23,6 +24,7 @@ import {
 import type { Route } from "./+types/root";
 import "./tailwind.css";
 import { QueryClient } from "@tanstack/react-query";
+import { Loading } from "@/components/loading";
 import { Toaster } from "@/shadcn/components/ui/sonner";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
@@ -48,6 +50,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   };
 }
 
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  return await serverLoader();
+}
+
 export function Html({
   children,
   ssrTheme,
@@ -55,6 +61,8 @@ export function Html({
   children: React.ReactNode;
   ssrTheme: Theme | null;
 }) {
+  const navigation = useNavigation();
+  const isNavigating = Boolean(navigation.location);
   const [theme] = useTheme();
   const [queryClient] = useState(() => new QueryClient(clientSideQueryConfig));
 
@@ -72,7 +80,14 @@ export function Html({
           client={queryClient}
           persistOptions={{ persister }}
         >
-          {children}
+          {
+            // FYI: https://reactrouter.com/start/framework/pending-ui#global-pending-navigation
+            isNavigating ? (
+              <Loading />
+            ) : (
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            )
+          }
         </PersistQueryClientProvider>
         <Toaster />
         <ScrollRestoration />
@@ -83,7 +98,7 @@ export function Html({
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <ThemeProvider specifiedTheme={data?.theme} themeAction="/action/set-theme">

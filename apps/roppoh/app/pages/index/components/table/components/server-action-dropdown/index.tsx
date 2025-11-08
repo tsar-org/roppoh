@@ -1,4 +1,5 @@
 import type { Server } from "@/features/dokploy-server-management";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { getDokployClient } from "@/libs/dokploy-sdk/dokploy.client";
 import { ServerActionDropdownView } from "./components/dropdown";
 import { useServerControl } from "./hooks/use-server-control.client";
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export const ServerActionDropdownContainer = ({ server }: Props) => {
+  const { LL } = useI18nContext();
   const dokployClient = getDokployClient();
   const { execute, isProcessing } = useServerControl();
   const composeId = server.status === "fetched" ? server.compose.composeId : "";
@@ -15,25 +17,25 @@ export const ServerActionDropdownContainer = ({ server }: Props) => {
   const onClickStart = () =>
     execute({
       apiCall: () => dokployClient.compose.start({ composeId }),
-      error: "❌ Failed to start server. Please try again.",
-      loading: "🚀 Launching server...",
-      success: "✨ Server is up and running!",
+      error: LL.top.table.serverActionDropdown.start.error(),
+      loading: LL.top.table.serverActionDropdown.start.loading(),
+      success: LL.top.table.serverActionDropdown.start.success(),
     });
 
   const onClickStop = () =>
     execute({
       apiCall: () => dokployClient.compose.stop({ composeId }),
-      error: "❌ Failed to stop server. Please try again.",
-      loading: "⏹️ Stopping server...",
-      success: "✅ Server stopped successfully",
+      error: LL.top.table.serverActionDropdown.stop.error(),
+      loading: LL.top.table.serverActionDropdown.stop.loading(),
+      success: LL.top.table.serverActionDropdown.stop.success(),
     });
 
   const onClickReDeploy = () =>
     execute({
       apiCall: () => dokployClient.compose.redeploy({ composeId }),
-      error: "❌ Failed to redeploy server. Please try again.",
-      loading: "🔄 Redeploying server...",
-      success: "🎉 Server redeployed successfully!",
+      error: LL.top.table.serverActionDropdown.redeploy.error(),
+      loading: LL.top.table.serverActionDropdown.redeploy.loading(),
+      success: LL.top.table.serverActionDropdown.redeploy.success(),
     });
 
   return (

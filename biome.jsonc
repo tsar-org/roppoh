@@ -20,7 +20,8 @@
       "**/*",
       "!**/bun.lock",
       "!**/worker-configuration.d.ts",
-      "!apps/roppoh/app/shadcn"
+      "!apps/roppoh/app/shadcn",
+      "!apps/roppoh/app/i18n/*.ts"
     ]
   },
   "formatter": {

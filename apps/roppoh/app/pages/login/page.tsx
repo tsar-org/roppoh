@@ -1,7 +1,8 @@
 import { Theme, useTheme } from "remix-themes";
-import PageTransition from "@/components/page-transition";
+import { PageTransition } from "@/components/page-transition";
 import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { TsarOrganizationLink } from "@/components/tsar-organization-link";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { authClient } from "@/libs/better-auth/auth.client";
 import { Button } from "@/shadcn/components/ui/button";
 import { generateBaseMeta } from "@/utils/base-meta-function";
@@ -28,6 +29,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export default function () {
+  const { LL } = useI18nContext();
   const [theme] = useTheme();
   const signIn = async () => {
     await authClient.signIn.social({
@@ -49,7 +51,7 @@ export default function () {
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="font-bold text-4xl">Roppoh</h1>
               <p className="text-balance text-muted-foreground text-sm">
-                Roppoh is discord activity hosting server
+                {LL.login.description()}
               </p>
             </div>
             <Button className="w-xs cursor-pointer" onClick={signIn}>
@@ -66,7 +68,7 @@ export default function () {
                   width={20}
                 />
               )}
-              Login with Discord
+              {LL.login.loginButton()}
             </Button>
           </div>
         </div>
