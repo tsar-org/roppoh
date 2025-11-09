@@ -1,9 +1,7 @@
 import { createRoutesStub, Outlet } from "react-router";
 import type { Theme } from "remix-themes";
-import { loadLocaleAsync } from "@/i18n/i18n-util.async";
-import i18nProvider, {
-  type loader as i18nProvideLoader,
-} from "@/layouts/i18n-provider/layout";
+import TypesafeI18n from "@/i18n/i18n-react";
+import { loadLocale } from "@/i18n/i18n-util.sync";
 import { Layout, type loader } from "@/root";
 import { VRT_ENV } from "../constant";
 
@@ -19,20 +17,22 @@ export function createLayoutRouteStub(routeChildren: RouteChild, theme: Theme) {
       ),
       children: [
         {
-          Component: i18nProvider,
+          Component: () => {
+            loadLocale("en");
+
+            return (
+              <TypesafeI18n locale={"en"}>
+                <Outlet />
+              </TypesafeI18n>
+            );
+          },
           children: routeChildren,
-          loader: async (): ReturnType<typeof i18nProvideLoader> => ({
-            locale: "en",
-          }),
         },
       ],
-      loader: async (): ReturnType<typeof loader> => {
-        await loadLocaleAsync("en");
-        return {
-          baseUrl: VRT_ENV.VITE_BASE_URL,
-          theme,
-        };
-      },
+      loader: async (): ReturnType<typeof loader> => ({
+        baseUrl: VRT_ENV.VITE_BASE_URL,
+        theme: theme,
+      }),
     },
   ]);
 }

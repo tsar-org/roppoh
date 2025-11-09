@@ -52,7 +52,7 @@
     "@vitejs/plugin-rsc": "^0.5.1",
     "@vitest/browser": "^4.0.3",
     "@vitest/browser-playwright": "^4.0.3",
-    "@vitest/ui": "4.0.3",
+    "@vitest/ui": "^4.0.8",
     "msw": "^2.11.5",
     "playwright": "^1.56.0",
     "tailwindcss": "^4.1.14",
