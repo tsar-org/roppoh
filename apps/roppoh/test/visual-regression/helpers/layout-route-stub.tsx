@@ -1,5 +1,8 @@
 import { createRoutesStub, Outlet } from "react-router";
 import type { Theme } from "remix-themes";
+import i18nProvider, {
+  type loader as i18nProvideLoader,
+} from "@/layouts/i18n-provider/layout";
 import { Layout, type loader } from "@/root";
 import { VRT_ENV } from "../constant";
 
@@ -13,10 +16,18 @@ export function createLayoutRouteStub(routeChildren: RouteChild, theme: Theme) {
           <Outlet />
         </Layout>
       ),
-      children: routeChildren,
+      children: [
+        {
+          Component: i18nProvider,
+          children: routeChildren,
+          loader: async (): ReturnType<typeof i18nProvideLoader> => ({
+            locale: "en",
+          }),
+        },
+      ],
       loader: async (): ReturnType<typeof loader> => ({
         baseUrl: VRT_ENV.VITE_BASE_URL,
-        theme,
+        theme: theme,
       }),
     },
   ]);

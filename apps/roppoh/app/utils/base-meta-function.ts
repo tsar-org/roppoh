@@ -37,5 +37,29 @@ export const generateBaseMeta = ({
     { content: "630", property: "og:image:height" },
     { content: "image/png", property: "og:image:type" },
     { content: "summary_large_image", name: "twitter:card" },
+    {
+      href: `${baseUrl}/en`,
+      hreflang: "en",
+      rel: "alternate",
+      tagName: "link",
+    },
+    {
+      href: `${baseUrl}/ja-JP`,
+      hreflang: "ja",
+      rel: "alternate",
+      tagName: "link",
+    },
+    {
+      href: `${baseUrl}/en`,
+      hreflang: "x-default",
+      rel: "alternate",
+      tagName: "link",
+    },
+    {
+      href: `${baseUrl}/ar`,
+      hreflang: "ar",
+      rel: "alternate",
+      tagName: "link",
+    },
   ];
 };

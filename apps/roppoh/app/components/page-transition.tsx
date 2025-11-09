@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function PageTransition({
+export function PageTransition({
   children,
 }: Readonly<{
   children: React.ReactNode;

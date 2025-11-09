@@ -1,6 +1,7 @@
 import { EnvironmentByProjectIdComposeStatus } from "dokploy-sdk/models/operations";
 import { EllipsisVertical } from "lucide-react";
 import type { Server } from "@/features/dokploy-server-management";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -18,6 +19,8 @@ type Props = {
 };
 
 export const ServerActionDropdownView = (props: Props) => {
+  const { LL } = useI18nContext();
+
   const isStartButtonDisabled =
     props.server.status === "fetching" ||
     // serverが停止中(idle)状態のみ押下可能
@@ -54,35 +57,35 @@ export const ServerActionDropdownView = (props: Props) => {
       <DropdownMenuContent align="end" className="w-32">
         <DropdownMenuItem>
           <Button
-            className="h-[20px] w-full justify-start"
+            className="h-5 w-full justify-start"
             disabled={isStartButtonDisabled}
             onClick={props.onClickStart}
             size="icon"
             variant={"ghost"}
           >
-            Start
+            {LL.top.table.serverActionDropdown.start.start()}
           </Button>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Button
-            className="h-[20px] w-full justify-start"
+            className="h-5 w-full justify-start"
             disabled={isStopButtonDisabled}
             onClick={props.onClickStop}
             size="icon"
             variant={"ghost"}
           >
-            Stop
+            {LL.top.table.serverActionDropdown.stop.stop()}
           </Button>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Button
-            className="h-[20px] w-full justify-start"
+            className="h-5 w-full justify-start"
             disabled={isReDeployButtonDisabled}
             onClick={props.onClickReDeploy}
             size="icon"
             variant={"ghost"}
           >
-            ReDeploy
+            {LL.top.table.serverActionDropdown.redeploy.reDeploy()}
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>

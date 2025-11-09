@@ -1,8 +1,9 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { useLoaderData } from "react-router";
 import { SiteHeader } from "@/components/header";
-import PageTransition from "@/components/page-transition";
+import { PageTransition } from "@/components/page-transition";
 import { useServers } from "@/features/dokploy-server-management";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
@@ -36,11 +37,12 @@ export async function loader({ request, context: ctx }: Route.LoaderArgs) {
 export default function () {
   const loaderData = useLoaderData<typeof loader>();
   const { servers } = useServers();
+  const { LL } = useI18nContext();
 
   return (
     <HydrationBoundary state={loaderData.dehydratedState}>
       <PageTransition>
-        <SiteHeader title="Servers" />
+        <SiteHeader title={LL.top.title()} />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
@@ -50,7 +52,7 @@ export default function () {
               </div>
 
               {/* server table */}
-              <DataTable columns={ServerTableColumns} data={servers} />
+              <DataTable columns={ServerTableColumns(LL)} data={servers} />
             </div>
           </div>
         </div>

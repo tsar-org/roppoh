@@ -1,4 +1,6 @@
 import { Outlet, redirect } from "react-router";
+import { navigatorDetector } from "typesafe-i18n/detectors";
+import { detectLocale } from "@/i18n/i18n-util";
 import type { Route } from "./+types/layout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
@@ -8,13 +10,14 @@ export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
     });
 
     if (!session) {
-      return redirect("/login");
+      const detectedLocale = detectLocale(navigatorDetector);
+      return redirect(`/${detectedLocale}/login`);
     }
 
     return;
   } catch (error) {
     ctx.dep.logger.error(error, "Failed to get session");
-    return redirect("/login");
+    return redirect("/en/login");
   }
 }
 

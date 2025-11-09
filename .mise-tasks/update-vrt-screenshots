@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="Update VRT screenshots"
 
-docker compose up linux-vrt
+VRT_MODE=update docker compose up linux-vrt
 
 cd apps/roppoh && bun test:visual --update

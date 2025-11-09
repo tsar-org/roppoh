@@ -1,5 +1,5 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
-import PageTransition from "@/components/page-transition";
+import { PageTransition } from "@/components/page-transition";
 import { Progress } from "@/shadcn/components/ui/progress";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";

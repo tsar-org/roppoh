@@ -3,6 +3,7 @@
     "bradlc.vscode-tailwindcss",
     "biomejs.biome",
     "hverlin.mise-vscode",
-    "vitest.explorer"
+    "vitest.explorer",
+    "arktypeio.arkdark"
   ]
 }

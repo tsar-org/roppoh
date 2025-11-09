@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import type { Server } from "@/features/dokploy-server-management";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -44,6 +45,7 @@ interface DataTableProps {
 }
 
 export function DataTable({ columns, data }: DataTableProps) {
+  const { LL } = useI18nContext();
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -54,6 +56,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   });
 
   const table = useReactTable({
+    columnResizeDirection: "rtl",
     columns,
     data,
     enableRowSelection: true,
@@ -86,8 +89,12 @@ export function DataTable({ columns, data }: DataTableProps) {
             <DropdownMenuTrigger asChild>
               <Button size="sm" variant="outline">
                 <LayoutGridIcon className="size-4" />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
+                <span className="hidden lg:inline">
+                  {LL.top.table.customizeColumns.long()}
+                </span>
+                <span className="lg:hidden">
+                  {LL.top.table.customizeColumns.short()}
+                </span>
                 <ChevronDown className="size-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -109,7 +116,9 @@ export function DataTable({ columns, data }: DataTableProps) {
                         column.toggleVisibility(!!value)
                       }
                     >
-                      {column.id}
+                      {LL.top.table.column[
+                        column.id as keyof typeof LL.top.table.column
+                      ]?.() ?? column.id}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
@@ -178,13 +187,17 @@ export function DataTable({ columns, data }: DataTableProps) {
 
       <div className="flex items-center justify-between px-4">
         <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {LL.top.table.pagination.rowsSelected({
+            selected: table.getFilteredSelectedRowModel().rows.length,
+            total: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="flex w-fit items-center justify-center font-medium text-sm">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            {LL.top.table.pagination.pageInfo({
+              current: table.getState().pagination.pageIndex + 1,
+              total: table.getPageCount(),
+            })}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
             <Button

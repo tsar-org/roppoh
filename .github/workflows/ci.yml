@@ -21,14 +21,22 @@ jobs:
 
   playwright-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     needs: lint-and-build
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup-bun-turbo
-      - uses: ./.github/actions/setup-playwright
-      - run: bun run test:visual
-        working-directory: apps/roppoh
+      - uses: docker/setup-buildx-action@v3
+      - name: Run VRT tests with Docker
+        run: docker compose up --build --exit-code-from linux-vrt
+      - name: Upload VRT screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-diff-screenshots
+          path: |
+            apps/roppoh/.vitest-attachments/**/*.png
+            apps/roppoh/test/visual-regression/**/__screenshots__/**/*.png
+          retention-days: 7
 
   unit-test:
     runs-on: ubuntu-latest
