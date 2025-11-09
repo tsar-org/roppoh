@@ -12,7 +12,7 @@
     },
     "apps/roppoh": {
       "entry": [],
-      "ignore": ["app/shadcn/**"],
+      "ignore": ["app/shadcn/**", "app/sw.ts"],
       "ignoreDependencies": [
         "tailwindcss-animate",
         "tw-animate-css",
