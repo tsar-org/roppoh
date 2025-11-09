@@ -29,6 +29,16 @@ jobs:
       - uses: ./.github/actions/setup-playwright
       - run: bun run test:visual
         working-directory: apps/roppoh
+        continue-on-error: true
+      - name: Upload VRT screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-diff-screenshots
+          path: |
+            apps/roppoh/.vitest-attachments/**/*.png
+            apps/roppoh/test/visual-regression/pages/__screenshots__/**/*.png
+          retention-days: 7
 
   unit-test:
     runs-on: ubuntu-latest
