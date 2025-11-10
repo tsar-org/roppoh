@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon } from "lucide-react";
 import { Link } from "react-router";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
@@ -23,6 +24,8 @@ export const meta = ({ loaderData }: Route.MetaArgs) => [
 ];
 
 export default function NotFoundPage() {
+  const { locale } = useI18nContext();
+
   return (
     <div
       style={{
@@ -37,7 +40,7 @@ export default function NotFoundPage() {
     >
       404 Page Not Found
       <br />
-      <Link to={"/"}>
+      <Link to={`/${locale}`}>
         <Button variant="link">
           back to top page <ArrowUpRightIcon />
         </Button>
