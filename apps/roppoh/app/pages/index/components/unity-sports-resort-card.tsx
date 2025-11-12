@@ -10,7 +10,7 @@ import {
 } from "@/shadcn/components/ui/card";
 
 export const UnitySportsResortCard = () => {
-  const { LL } = useI18nContext();
+  const { LL, locale } = useI18nContext();
 
   return (
     <Card className="w-full">
@@ -29,7 +29,7 @@ export const UnitySportsResortCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Link to="/unity-sports-resort">
+        <Link to={`/${locale}/unity-sports-resort`}>
           <Button className="w-full cursor-pointer">
             {LL.unitySportsResortCard.play()}
           </Button>
