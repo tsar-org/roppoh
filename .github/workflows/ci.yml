@@ -30,7 +30,7 @@ jobs:
         run: docker compose up --build --exit-code-from linux-vrt
       - name: Upload VRT screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: vrt-diff-screenshots
           path: |
