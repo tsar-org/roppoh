@@ -12,7 +12,7 @@ jobs:
     env:
       VITE_BASE_URL: https://roppoh.stg.tsar-bmb.org
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun-turbo
       - run: bun turbo build
       - name: deploy
