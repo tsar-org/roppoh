@@ -63,7 +63,7 @@
     "vite-plugin-pwa": "^1.1.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^4.0.3",
-    "vitest-browser-react": "^1.0.1",
+    "vitest-browser-react": "^2.0.2",
     "wrangler": "^4.40.1"
   },
   "name": "@roppoh/roppoh",
