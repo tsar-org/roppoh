@@ -12,6 +12,7 @@ WORKDIR /app
 # Copy package files
 COPY package.json bun.lock ./
 COPY apps/roppoh/package.json ./apps/roppoh/
+COPY apps/fujimatsu/package.json ./apps/fujimatsu/
 COPY packages/better-auth-database/package.json ./packages/better-auth-database/
 
 # Install dependencies

@@ -13,7 +13,7 @@
         "typescript": "latest",
       },
     },
-    "apps/fujimatu": {
+    "apps/fujimatsu": {
       "name": "@roppoh/fujimatu",
       "version": "0.0.0",
       "dependencies": {
@@ -760,7 +760,7 @@
 
     "@roppoh/better-auth-database": ["@roppoh/better-auth-database@workspace:packages/better-auth-database"],
 
-    "@roppoh/fujimatu": ["@roppoh/fujimatu@workspace:apps/fujimatu"],
+    "@roppoh/fujimatu": ["@roppoh/fujimatu@workspace:apps/fujimatsu"],
 
     "@roppoh/roppoh": ["@roppoh/roppoh@workspace:apps/roppoh"],
 
