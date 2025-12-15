@@ -42,7 +42,7 @@ describe("VRT sidebar-layout", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot();
@@ -54,7 +54,7 @@ describe("VRT sidebar-layout", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot();

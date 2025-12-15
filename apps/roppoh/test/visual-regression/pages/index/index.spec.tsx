@@ -51,7 +51,7 @@ describe("VRT index page", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot("desktop-dark");
@@ -64,7 +64,7 @@ describe("VRT index page", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot("desktop-light");
@@ -77,7 +77,7 @@ describe("VRT index page", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.DARK);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot("mobile-dark");
@@ -90,7 +90,7 @@ describe("VRT index page", async () => {
     const Stub = createLayoutRouteStub(routeChildren, Theme.LIGHT);
 
     // Act
-    const screen = render(<Stub initialEntries={[PATH]} />);
+    const screen = await render(<Stub initialEntries={[PATH]} />);
 
     // Assert
     await expect(screen.container).toMatchScreenshot("mobile-light");

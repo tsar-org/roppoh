@@ -40,7 +40,7 @@
     "workers-og": "^0.0.27"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.13.12",
+    "@cloudflare/vite-plugin": "^1.17.1",
     "@cloudflare/workers-types": "^4.20250922.0",
     "@react-router/dev": "^7.8.0",
     "@tailwindcss/vite": "^4.1.14",
@@ -50,9 +50,8 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitejs/plugin-rsc": "^0.5.1",
-    "@vitest/browser": "^4.0.3",
-    "@vitest/browser-playwright": "^4.0.6",
-    "@vitest/ui": "^4.0.8",
+    "@vitest/browser-playwright": "4.0.3",
+    "@vitest/ui": "4.0.3",
     "msw": "^2.11.5",
     "playwright": "^1.56.0",
     "tailwindcss": "^4.1.14",
@@ -62,8 +61,8 @@
     "vite-plugin-devtools-json": "^1.0.0",
     "vite-plugin-pwa": "^1.1.0",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^4.0.3",
-    "vitest-browser-react": "^1.0.1",
+    "vitest": "4.0.3",
+    "vitest-browser-react": "^2.0.2",
     "wrangler": "^4.40.1"
   },
   "name": "@roppoh/roppoh",

@@ -25,7 +25,7 @@ describe("VRT OG", async () => {
     const title = "";
 
     // Act
-    const screen = render(
+    const screen = await render(
       <OgRoot>
         <OG title={title} />
       </OgRoot>,
@@ -41,7 +41,7 @@ describe("VRT OG", async () => {
     const title = "Welcome";
 
     // Act
-    const screen = render(
+    const screen = await render(
       <OgRoot>
         <OG title={title} />
       </OgRoot>,
@@ -57,7 +57,7 @@ describe("VRT OG", async () => {
     const title = "Welcome to Roppoh";
 
     // Act
-    const screen = render(
+    const screen = await render(
       <OgRoot>
         <OG title={title} />
       </OgRoot>,
@@ -74,7 +74,7 @@ describe("VRT OG", async () => {
       "This is a very long title to verify text wrapping and truncation behavior";
 
     // Act
-    const screen = render(
+    const screen = await render(
       <OgRoot>
         <OG title={title} />
       </OgRoot>,
@@ -90,7 +90,7 @@ describe("VRT OG", async () => {
     const title = "Welcome to Roppoh\nmulti line text. AAAAAAAAAA";
 
     // Act
-    const screen = render(
+    const screen = await render(
       <OgRoot>
         <OG title={title} />
       </OgRoot>,
