@@ -2,7 +2,6 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "compatibility_date": "2025-10-08",
   "compatibility_flags": ["nodejs_compat"],
-
   "durable_objects": {
     "bindings": [
       {
@@ -11,7 +10,6 @@
       }
     ]
   },
-
   "kv_namespaces": [
     {
       "binding": "KV",
@@ -19,7 +17,6 @@
     }
   ],
   "main": "./src/server.ts",
-
   "migrations": [
     {
       "new_classes": ["AuthorizationCodeStore"],
@@ -27,9 +24,20 @@
     }
   ],
   "name": "fujimatsu",
-  "observability": { "enabled": true },
-
+  "observability": {
+    "enabled": true
+  },
+  "preview_urls": false,
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "fujimatsu.tsar-bmb.org",
+      "zone_name": "tsar-bmb.org"
+    }
+  ],
   "vars": {
-    "DISCORD_CLIENT_ID": "1320047030717911111"
-  }
+    "DISCORD_CLIENT_ID": "1320047030717911111",
+    "DISCORD_REDIRECT_URL": "https://fujimatsu.tsar-bmb.org/callback"
+  },
+  "workers_dev": false
 }
