@@ -1,9 +1,14 @@
-import { defineConfig } from "vitest/config";
-// import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 
-export default defineConfig({
-  // plugins: [tsconfigPaths()],
+export default defineWorkersConfig({
   test: {
-    env: {},
+    // env: {
+    //   DISCORD_CLIENT_ID: "DISCORD_CLIENT_ID",
+    //   DISCORD_CLIENT_SECRET: "DISCORD_CLIENT_SECRET",
+    //   DISCORD_REDIRECT_URL: "DISCORD_REDIRECT_URL",
+    // },
+    poolOptions: {
+      workers: { wrangler: { configPath: "./wrangler.jsonc" } },
+    },
   },
 });
