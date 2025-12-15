@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    // package option
+    "baseUrl": ".",
+    "paths": {},
+    "rootDir": "."
+  },
+  "extends": ["../../tsconfig.json"],
+  "include": ["src", "test", "vitest.config.ts", "worker-configuration.d.ts"]
+}

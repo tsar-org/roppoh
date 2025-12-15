@@ -10,6 +10,7 @@
     ".": {
       "biome": { "config": "biome.jsonc" }
     },
+    "apps/fujimatu": {},
     "apps/roppoh": {
       "entry": [],
       "ignore": ["app/shadcn/**", "app/i18n/*.{ts,tsx}"],
@@ -34,7 +35,8 @@
       "ignore": [
         // generated code
         "src/relations.ts"
-      ]
+      ],
+      "ignoreDependencies": ["@better-auth/cli"]
     }
   }
 }

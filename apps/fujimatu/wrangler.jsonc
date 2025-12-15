@@ -1,0 +1,35 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "class_name": "AuthorizationCodeStore",
+        "name": "AUTH_CODE_STORE"
+      }
+    ]
+  },
+
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "acd5f8213e1a4728803fc88d94970a9d"
+    }
+  ],
+  "main": "./src/server.ts",
+
+  "migrations": [
+    {
+      "new_classes": ["AuthorizationCodeStore"],
+      "tag": "v1"
+    }
+  ],
+  "name": "fujimatu",
+  "observability": { "enabled": true },
+
+  "vars": {
+    "DISCORD_CLIENT_ID": "1320047030717911111"
+  }
+}

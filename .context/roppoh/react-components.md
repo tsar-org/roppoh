@@ -525,7 +525,7 @@ const svg = lockSvg.replace('color="red"', 'color="blue"');
 // PlayerList-view.test.tsx
 describe('PlayerListView', () => {
   it('renders players', () => {
-    const { getByText } = render(
+    const { getByText } = await render(
       <PlayerListView
         players={[{ id: '1', name: 'Alice' }]}
         isLoading={false}
@@ -547,7 +547,7 @@ describe('PlayerListContainer', () => {
       })),
     }));
 
-    const { getByText } = render(<PlayerListContainer guildId="123" />);
+    const { getByText } = await render(<PlayerListContainer guildId="123" />);
     await waitFor(() => {
       expect(getByText('Alice')).toBeInTheDocument();
     });
