@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "cf-typegen": {
+      "inputs": ["wrangler.jsonc"],
+      "outputs": ["worker-configuration.d.ts"]
+    },
+    "check:type": {
+      "inputs": ["src", "package.json", "tsconfig.json", "vite.config.ts"]
+    }
+  }
+}

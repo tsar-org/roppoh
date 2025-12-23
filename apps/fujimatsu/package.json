@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "@discordjs/core": "^2.0.0",
+    "@discordjs/rest": "^2.6.0",
+    "@hono/valibot-validator": "^0.6.1",
+    "cloudflare": "^5.2.0",
+    "hono": "^4.11.0",
+    "jose": "^5.9.6",
+    "valibot": "^1.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.17.1",
+    "vite": "^7.2.7",
+    "vitest": "3.2.0",
+    "wrangler": "^4.54.0"
+  },
+  "main": "./src/server.ts",
+  "name": "@roppoh/fujimatu",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "check:type": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "dev": "vite",
+    "test": "vitest run"
+  },
+  "type": "module",
+  "version": "0.0.0"
+}

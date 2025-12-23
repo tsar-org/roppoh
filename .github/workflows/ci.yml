@@ -47,3 +47,5 @@ jobs:
       - uses: ./.github/actions/setup-bun-turbo
       - run: bun run test:unit
         working-directory: apps/roppoh
+      - run: bun run test
+        working-directory: apps/fujimatsu

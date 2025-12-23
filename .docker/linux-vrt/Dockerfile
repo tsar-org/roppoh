@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.56.1-jammy
+FROM mcr.microsoft.com/playwright:v1.56.0-jammy
 
 # Install Bun
 RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
@@ -12,6 +12,7 @@ WORKDIR /app
 # Copy package files
 COPY package.json bun.lock ./
 COPY apps/roppoh/package.json ./apps/roppoh/
+COPY apps/fujimatsu/package.json ./apps/fujimatsu/
 COPY packages/better-auth-database/package.json ./packages/better-auth-database/
 
 # Install dependencies

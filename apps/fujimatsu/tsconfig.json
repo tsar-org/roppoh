@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    // package option
+    "baseUrl": ".",
+    "paths": {},
+    "rootDir": "."
+  },
+  "extends": ["../../tsconfig.json"],
+  "include": ["src", "test", "./*.ts"]
+}
