@@ -19,6 +19,7 @@ const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
   c,
   next,
 ) => {
+  if (!c.env) c.env = {} as Env["Bindings"];
   if (!c.env.keyPairService) c.env.keyPairService = new KeyPairService();
 
   if (!c.env.oidcStateCodecService)

@@ -3,8 +3,7 @@
     // package option
     "baseUrl": ".",
     "paths": {},
-    "rootDir": ".",
-    "types": ["@cloudflare/vitest-pool-workers"]
+    "rootDir": "."
   },
   "extends": ["../../tsconfig.json"],
   "include": ["src", "test", "./*.ts"]

@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.17.1",
-    "@cloudflare/vitest-pool-workers": "^0.10.15",
     "vite": "^7.2.7",
     "vitest": "3.2.0",
     "wrangler": "^4.54.0"
@@ -23,7 +22,7 @@
   "private": true,
   "scripts": {
     "build": "vite build",
-    "cf-typegen": "wrangler types",
+    "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "tsc --noEmit",
     "deploy": "wrangler deploy",
     "dev": "vite",

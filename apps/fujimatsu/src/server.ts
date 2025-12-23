@@ -12,8 +12,6 @@ import { jwksRoute } from "./routes/jwks";
 import { tokenRoute } from "./routes/token";
 import { userinfoRoute } from "./routes/userinfo";
 
-export { AuthorizationCodeStore };
-
 const app = new Hono<Env>()
   .use("*", injectDependenciesMiddleware)
   // health
@@ -26,4 +24,5 @@ const app = new Hono<Env>()
   .route("/token", tokenRoute)
   .route("/userinfo", userinfoRoute);
 
+export { AuthorizationCodeStore, app };
 export default app;
