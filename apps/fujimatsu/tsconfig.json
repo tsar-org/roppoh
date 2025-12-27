@@ -2,8 +2,12 @@
   "compilerOptions": {
     // package option
     "baseUrl": ".",
-    "paths": {},
-    "rootDir": "."
+    "paths": {
+      "@/*": ["./src/*"],
+      "@test/*": ["./test/*"]
+    },
+    "rootDir": ".",
+    "types": ["@cloudflare/vitest-pool-workers"]
   },
   "extends": ["../../tsconfig.json"],
   "include": ["src", "test", "./*.ts"]

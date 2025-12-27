@@ -1,19 +1,12 @@
-import { testClient } from "hono/testing";
-import { describe, expect, it, vi } from "vitest";
-import { app } from "../../src/server";
-
-vi.mock("cloudflare:workers", () => {
-  return {
-    DurableObject: class {},
-  };
-});
+import { SELF } from "cloudflare:test";
+import { describe, expect, it } from "vitest";
 
 describe("test /.well-known/openid-configuration", async () => {
-  const client = testClient(app);
-
   it("should return 200", async () => {
     // act
-    const res = await client[".well-known"]["openid-configuration"].$get();
+    const res = await SELF.fetch(
+      "http://localhost/.well-known/openid-configuration",
+    );
 
     // assert
     expect(res.status).toBe(200);

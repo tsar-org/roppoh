@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import * as v from "valibot";
+import type { DiscordService } from "@/services/discord-service";
+import type { KeyPairService } from "@/services/keypair-service";
 import * as jwt_lib from "../lib/jwt";
 import type { Env } from "../middlewares/dependency-injection";
 import {
@@ -22,6 +24,12 @@ export const tokenRoute = new Hono<Env>().post(
   "",
   oidcValidator("form", tokenFormSchema),
   async (c) => {
+    // di
+    const keyPairService =
+      await c.env.container.getAsync<KeyPairService>("keyPairService");
+    const discordService =
+      await c.env.container.getAsync<DiscordService>("DiscordService");
+
     const { code, client_id, grant_type, redirect_uri } = c.req.valid("form");
 
     if (grant_type !== "authorization_code") {
@@ -29,7 +37,7 @@ export const tokenRoute = new Hono<Env>().post(
       return unsupportedGrantType(c, "Only authorization_code is supported");
     }
 
-    const keyPair = await c.env.keyPairService.loadOrGenerate(c.env.KV);
+    const keyPair = await keyPairService.loadOrGenerate(c.env.KV);
 
     const id = c.env.AUTH_CODE_STORE.idFromName("default");
     const store = c.env.AUTH_CODE_STORE.get(id);
@@ -45,7 +53,7 @@ export const tokenRoute = new Hono<Env>().post(
     }
 
     try {
-      const userInfo = await c.env.discordService.getUserInfo({
+      const userInfo = await discordService.getUserInfo({
         accessToken: authCode.code, // code is the Discord access_token
       });
 

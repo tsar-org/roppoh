@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { AuthorizationCodeStore } from "./durable-objects/authorization-code-store";
 import {
   type Env,
   injectDependenciesMiddleware,
@@ -12,7 +11,8 @@ import { jwksRoute } from "./routes/jwks";
 import { tokenRoute } from "./routes/token";
 import { userinfoRoute } from "./routes/userinfo";
 
-const app = new Hono<Env>()
+export const app = new Hono<Env>()
+  // middleware
   .use("*", injectDependenciesMiddleware)
   // health
   .route("/health", health)
@@ -23,6 +23,3 @@ const app = new Hono<Env>()
   .route("/jwks.json", jwksRoute)
   .route("/token", tokenRoute)
   .route("/userinfo", userinfoRoute);
-
-export { AuthorizationCodeStore, app };
-export default app;
