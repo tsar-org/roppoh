@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import * as v from "valibot";
+import type { DiscordService } from "@/services/discord-service";
+import type { OidcStateCodecService } from "@/services/oidc-state-codec-service";
 import type { Env } from "../middlewares/dependency-injection";
 import {
   emailNotVerified,
@@ -17,15 +19,25 @@ export const callbackRoute = new Hono<Env>().get(
   "",
   oidcValidator("query", querySchema),
   async (c) => {
+    // di
+    const oidcStateCodecService =
+      await c.env.container.getAsync<OidcStateCodecService>(
+        "OidcStateCodecService",
+      );
+    const discordService =
+      await c.env.container.getAsync<DiscordService>("DiscordService");
+
+    // parse request
     const { code, state } = c.req.valid("query");
-    const decodedState = c.env.oidcStateCodecService.decode(state);
+
+    const decodedState = oidcStateCodecService.decode(state);
 
     if (!decodedState) {
       return invalidState(c, "OIDC state codec error. Failed to decode state.");
     }
 
     try {
-      const tokenResponse = await c.env.discordService.exchangeCodeForToken({
+      const tokenResponse = await discordService.exchangeCodeForToken({
         client_id: decodedState.clientId,
         client_secret: c.env.DISCORD_CLIENT_SECRET,
         code: code,
@@ -33,7 +45,7 @@ export const callbackRoute = new Hono<Env>().get(
         redirect_uri: c.env.DISCORD_REDIRECT_URL,
       });
 
-      const userInfo = await c.env.discordService.getUserInfo({
+      const userInfo = await discordService.getUserInfo({
         accessToken: tokenResponse.access_token,
       });
 

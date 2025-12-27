@@ -1,13 +1,12 @@
 import type { MiddlewareHandler } from "hono";
 import type { Bindings, Variables } from "hono/types";
-import { DiscordService } from "../services/discord-service";
-import { KeyPairService } from "../services/keypair-service";
-import { OidcStateCodecService } from "../services/oidc-state-codec-service";
+import { Container } from "inversify";
+import type { DiscordService } from "../services/discord-service";
+import type { KeyPairService } from "../services/keypair-service";
+import type { OidcStateCodecService } from "../services/oidc-state-codec-service";
 
 interface ExtendBindings extends Bindings {
-  keyPairService: KeyPairService;
-  oidcStateCodecService: OidcStateCodecService;
-  discordService: DiscordService;
+  container: Container;
 }
 
 interface Env {
@@ -20,12 +19,25 @@ const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
   next,
 ) => {
   if (!c.env) c.env = {} as Env["Bindings"];
-  if (!c.env.keyPairService) c.env.keyPairService = new KeyPairService();
 
-  if (!c.env.oidcStateCodecService)
-    c.env.oidcStateCodecService = new OidcStateCodecService();
+  const container = new Container();
 
-  if (!c.env.discordService) c.env.discordService = new DiscordService();
+  container.bind<KeyPairService>("KeyPairService").toDynamicValue(async () => {
+    const module = await import("../services/keypair-service");
+    return new module.KeyPairService();
+  });
+
+  container
+    .bind<OidcStateCodecService>("OidcStateCodecService")
+    .toDynamicValue(async () => {
+      const module = await import("../services/oidc-state-codec-service");
+      return new module.OidcStateCodecService();
+    });
+
+  container.bind<DiscordService>("DiscordService").toDynamicValue(async () => {
+    const module = await import("../services/discord-service");
+    return new module.DiscordService();
+  });
 
   return next();
 };

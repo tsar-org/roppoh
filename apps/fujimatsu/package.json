@@ -5,16 +5,21 @@
     "@hono/valibot-validator": "^0.6.1",
     "cloudflare": "^5.2.0",
     "hono": "^4.11.0",
+    "inversify": "^7.10.8",
     "jose": "^5.9.6",
+    "reflect-metadata": "^0.2.2",
     "valibot": "^1.2.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.17.1",
+    "@cloudflare/vitest-pool-workers": "^0.11.1",
+    "@faker-js/faker": "^10.1.0",
     "vite": "^7.2.7",
-    "vitest": "3.2.0",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "~3.2.0",
     "wrangler": "^4.54.0"
   },
-  "main": "./src/server.ts",
+  "main": "./src/entry.ts",
   "name": "@roppoh/fujimatu",
   "peerDependencies": {
     "typescript": "latest"

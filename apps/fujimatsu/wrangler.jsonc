@@ -16,7 +16,7 @@
       "id": "acd5f8213e1a4728803fc88d94970a9d"
     }
   ],
-  "main": "./src/server.ts",
+  "main": "./src/entry.ts",
   "migrations": [
     {
       "new_classes": ["AuthorizationCodeStore"],
@@ -35,6 +35,9 @@
       "zone_name": "tsar-bmb.org"
     }
   ],
+  "triggers": {
+    "crons": ["0 0 * * *"]
+  },
   "vars": {
     "DISCORD_CLIENT_ID": "1320047030717911111",
     "DISCORD_REDIRECT_URL": "https://fujimatsu.tsar-bmb.org/callback"

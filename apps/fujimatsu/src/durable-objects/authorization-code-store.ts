@@ -1,6 +1,6 @@
 import { DurableObject } from "cloudflare:workers";
 
-interface AuthorizationCode {
+export interface AuthorizationCode {
   clientId: string;
   code: string; // authorization code
   createdAt: number;
@@ -49,5 +49,22 @@ export class AuthorizationCodeStore extends DurableObject<Cloudflare.Env> {
     await this.ctx.storage.put<AuthorizationCode>(args.code, consumedAuthCode);
 
     return consumedAuthCode;
+  }
+
+  public async deleteExpired() {
+    const now = Date.now();
+    const codes = await this.ctx.storage.list<AuthorizationCode>();
+
+    const keysToDelete = Array.from(codes.entries())
+      .filter(([, authCode]) => authCode.expiresAt < now)
+      .map(([key]) => key);
+
+    if (keysToDelete.length === 0) return;
+
+    await this.ctx.storage.delete(keysToDelete);
+  }
+
+  public async deleteAll() {
+    return await this.ctx.storage.deleteAll();
   }
 }

@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import * as v from "valibot";
+import type { DiscordService } from "@/services/discord-service";
+import type { OidcStateCodecService } from "@/services/oidc-state-codec-service";
 import type { Env } from "../middlewares/dependency-injection";
 import { invalidClient } from "../utils/error-response";
 import { oidcValidator } from "../utils/oidc-validator";
@@ -16,6 +18,15 @@ export const authorizeRoute = new Hono<Env>().get(
   "",
   oidcValidator("query", authorizeQuerySchema),
   async (c) => {
+    // di
+    const oidcStateCodecService =
+      await c.env.container.getAsync<OidcStateCodecService>(
+        "OidcStateCodecService",
+      );
+    const discordService =
+      await c.env.container.getAsync<DiscordService>("DiscordService");
+
+    // parse request
     const { client_id, redirect_uri, response_type, scope, state } =
       c.req.valid("query");
 
@@ -34,7 +45,7 @@ export const authorizeRoute = new Hono<Env>().get(
       return c.redirect(errorUrl.toString());
     }
 
-    const discordState = c.env.oidcStateCodecService.encode({
+    const discordState = oidcStateCodecService.encode({
       clientId: client_id,
       redirectUri: redirect_uri,
       scope: scope,
@@ -52,7 +63,7 @@ export const authorizeRoute = new Hono<Env>().get(
       return c.redirect(errorUrl.toString());
     }
 
-    const redirectUrl = await c.env.discordService.generateAuthorizationURL({
+    const redirectUrl = await discordService.generateAuthorizationURL({
       client_id: c.env.DISCORD_CLIENT_ID,
       redirect_uri: c.env.DISCORD_REDIRECT_URL,
       response_type: "code",
