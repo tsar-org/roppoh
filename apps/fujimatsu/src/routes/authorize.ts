@@ -1,10 +1,13 @@
 import { Hono } from "hono";
 import * as v from "valibot";
+import {
+  type Env,
+  ServiceIdentifier,
+} from "@/middlewares/dependency-injection";
 import type { DiscordService } from "@/services/discord-service";
 import type { OidcStateCodecService } from "@/services/oidc-state-codec-service";
-import type { Env } from "../middlewares/dependency-injection";
-import { invalidClient } from "../utils/error-response";
-import { oidcValidator } from "../utils/oidc-validator";
+import { invalidClient } from "@/utils/error-response";
+import { oidcValidator } from "@/utils/oidc-validator";
 
 const authorizeQuerySchema = v.object({
   client_id: v.pipe(v.string(), v.minLength(1)),
@@ -21,10 +24,11 @@ export const authorizeRoute = new Hono<Env>().get(
     // di
     const oidcStateCodecService =
       await c.env.container.getAsync<OidcStateCodecService>(
-        "OidcStateCodecService",
+        ServiceIdentifier.OIDC_STATE_CODEC_SERVICE,
       );
-    const discordService =
-      await c.env.container.getAsync<DiscordService>("DiscordService");
+    const discordService = await c.env.container.getAsync<DiscordService>(
+      ServiceIdentifier.DISCORD_SERVICE,
+    );
 
     // parse request
     const { client_id, redirect_uri, response_type, scope, state } =

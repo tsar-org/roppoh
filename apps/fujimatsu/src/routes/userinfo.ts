@@ -1,10 +1,13 @@
 import { Hono } from "hono";
 import { jwtVerify } from "jose";
 import * as v from "valibot";
+import {
+  type Env,
+  ServiceIdentifier,
+} from "@/middlewares/dependency-injection";
 import type { KeyPairService } from "@/services/keypair-service";
-import type { Env } from "../middlewares/dependency-injection";
-import { invalidToken } from "../utils/error-response";
-import { oidcValidator } from "../utils/oidc-validator";
+import { invalidToken } from "@/utils/error-response";
+import { oidcValidator } from "@/utils/oidc-validator";
 
 const userinfoHeaderSchema = v.object({
   authorization: v.pipe(
@@ -21,8 +24,9 @@ export const userinfoRoute = new Hono<Env>().get(
   oidcValidator("header", userinfoHeaderSchema),
   async (c) => {
     // di
-    const keyPairService =
-      await c.env.container.getAsync<KeyPairService>("keyPairService");
+    const keyPairService = await c.env.container.getAsync<KeyPairService>(
+      ServiceIdentifier.KEY_PAIR_SERVICE,
+    );
 
     // parse request
     const { authorization } = c.req.valid("header");
