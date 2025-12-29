@@ -1,25 +1,13 @@
 {
   "mcpServers": {
+    "cloudflare": {
+      "type": "http",
+      "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
     "context7": {
       "args": ["-y", "@upstash/context7-mcp"],
       "command": "bunx",
       "type": "stdio"
-    },
-    "dev3000": {
-      "type": "http",
-      "url": "http://localhost:3684/mcp"
-    },
-    "git": {
-      "args": ["mcp-server-git"],
-      "command": "uvx"
-    },
-    "playwright": {
-      "args": ["@playwright/mcp@latest"],
-      "command": "bunx"
-    },
-    "sequential-thinking": {
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "command": "bunx"
     }
   }
 }

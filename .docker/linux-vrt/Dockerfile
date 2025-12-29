@@ -11,9 +11,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json bun.lock ./
-COPY apps/roppoh/package.json ./apps/roppoh/
-COPY apps/fujimatsu/package.json ./apps/fujimatsu/
-COPY packages/better-auth-database/package.json ./packages/better-auth-database/
+COPY apps/*/package.json ./apps/
+COPY packages/*/package.json ./packages/
 
 # Install dependencies
 RUN bun install --frozen-lockfile
