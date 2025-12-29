@@ -10,9 +10,7 @@
   },
   "exports": {
     ".": {
-      "default": "./src/index.ts",
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
+      "default": "./src/index.ts"
     }
   },
   "name": "@roppoh/better-auth-database",
