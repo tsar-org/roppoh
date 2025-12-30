@@ -1,11 +1,16 @@
 import { Hono } from "hono";
+import {
+  type Env,
+  ServiceIdentifier,
+} from "@/middlewares/dependency-injection";
 import type { KeyPairService } from "@/services/keypair-service";
-import type { Env } from "../middlewares/dependency-injection";
-import { serverError } from "../utils/error-response";
+import { serverError } from "@/utils/error-response";
 
 export const jwksRoute = new Hono<Env>().get("", async (c) => {
-  const keyPairService =
-    await c.env.container.getAsync<KeyPairService>("keyPairService");
+  // di
+  const keyPairService = await c.env.container.getAsync<KeyPairService>(
+    ServiceIdentifier.KEY_PAIR_SERVICE,
+  );
 
   try {
     const keyPair = await keyPairService.loadOrGenerate(c.env.KV);

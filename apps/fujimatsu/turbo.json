@@ -2,12 +2,21 @@
   "$schema": "https://turborepo.com/schema.json",
   "extends": ["//"],
   "tasks": {
+    "build": {
+      "inputs": ["src", "./*.ts"],
+      "outputs": ["./dist/**"]
+    },
     "cf-typegen": {
       "inputs": ["wrangler.jsonc"],
       "outputs": ["worker-configuration.d.ts"]
     },
     "check:type": {
-      "inputs": ["src", "package.json", "tsconfig.json", "vite.config.ts"]
+      "inputs": [
+        "src",
+        "$TURBO_ROOT$/tsconfig.json",
+        "./*.ts",
+        "./tsconfig.json"
+      ]
     }
   }
 }

@@ -14,6 +14,12 @@ interface Env {
   Variables: Variables;
 }
 
+export enum ServiceIdentifier {
+  KEY_PAIR_SERVICE = "KeyPairService",
+  OIDC_STATE_CODEC_SERVICE = "OidcStateCodecService",
+  DISCORD_SERVICE = "DiscordService",
+}
+
 const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
   c,
   next,
@@ -22,22 +28,28 @@ const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
 
   const container = new Container();
 
-  container.bind<KeyPairService>("KeyPairService").toDynamicValue(async () => {
-    const module = await import("../services/keypair-service");
-    return new module.KeyPairService();
-  });
+  container
+    .bind<KeyPairService>(ServiceIdentifier.KEY_PAIR_SERVICE)
+    .toDynamicValue(async () => {
+      const module = await import("../services/keypair-service");
+      return new module.KeyPairService();
+    });
 
   container
-    .bind<OidcStateCodecService>("OidcStateCodecService")
+    .bind<OidcStateCodecService>(ServiceIdentifier.OIDC_STATE_CODEC_SERVICE)
     .toDynamicValue(async () => {
       const module = await import("../services/oidc-state-codec-service");
       return new module.OidcStateCodecService();
     });
 
-  container.bind<DiscordService>("DiscordService").toDynamicValue(async () => {
-    const module = await import("../services/discord-service");
-    return new module.DiscordService();
-  });
+  container
+    .bind<DiscordService>(ServiceIdentifier.DISCORD_SERVICE)
+    .toDynamicValue(async () => {
+      const module = await import("../services/discord-service");
+      return new module.DiscordService();
+    });
+
+  c.env.container = container;
 
   return next();
 };

@@ -1,16 +1,19 @@
 import { Hono } from "hono";
 import * as v from "valibot";
+import {
+  type Env,
+  ServiceIdentifier,
+} from "@/middlewares/dependency-injection";
 import type { DiscordService } from "@/services/discord-service";
 import type { KeyPairService } from "@/services/keypair-service";
-import * as jwt_lib from "../lib/jwt";
-import type { Env } from "../middlewares/dependency-injection";
 import {
   invalidGrant,
   invalidRequest,
   serverError,
   unsupportedGrantType,
-} from "../utils/error-response";
-import { oidcValidator } from "../utils/oidc-validator";
+} from "@/utils/error-response";
+import { oidcValidator } from "@/utils/oidc-validator";
+import * as jwt_lib from "../lib/jwt";
 
 const tokenFormSchema = v.object({
   client_id: v.pipe(v.string(), v.minLength(1)),
@@ -25,10 +28,12 @@ export const tokenRoute = new Hono<Env>().post(
   oidcValidator("form", tokenFormSchema),
   async (c) => {
     // di
-    const keyPairService =
-      await c.env.container.getAsync<KeyPairService>("keyPairService");
-    const discordService =
-      await c.env.container.getAsync<DiscordService>("DiscordService");
+    const keyPairService = await c.env.container.getAsync<KeyPairService>(
+      ServiceIdentifier.KEY_PAIR_SERVICE,
+    );
+    const discordService = await c.env.container.getAsync<DiscordService>(
+      ServiceIdentifier.DISCORD_SERVICE,
+    );
 
     const { code, client_id, grant_type, redirect_uri } = c.req.valid("form");
 
