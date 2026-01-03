@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "babel-plugin-react-compiler": "^1.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.17.1",
+    "@playwright/test": "1.56.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.2.7",
+    "vite-plugin-devtools-json": "^1.0.0",
+    "vite-plugin-pwa": "^1.2.0",
+    "vite-tsconfig-paths": "^6.0.3",
+    "wrangler": "^4.54.0"
+  },
+  "main": "./worker/index.ts",
+  "name": "@roppoh/ura-roppoh",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "check:type": "tsc --noEmit",
+    "deploy": "npm run build && wrangler deploy",
+    "dev": "vite",
+    "test": "playwright test"
+  },
+  "type": "module",
+  "version": "0.0.0"
+}

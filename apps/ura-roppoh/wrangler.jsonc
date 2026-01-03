@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "assets": {
+    "not_found_handling": "single-page-application"
+  },
+  "compatibility_date": "2025-12-30",
+  "main": "worker/index.ts",
+  "name": "ura-roppoh",
+  "observability": {
+    "enabled": true
+  },
+  "preview_urls": false,
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "ura-roppoh.tsar-bmb.org",
+      "zone_name": "tsar-bmb.org"
+    }
+  ],
+  "workers_dev": false
+}
