@@ -29,7 +29,7 @@ jobs:
       - name: Run vrt docker container
         run: docker compose up -d
       - name: "roppoh vrt"
-        run: docker compose exec linux-vrt sh -c "cd apps/ura-roppoh && bun run test:visual"
+        run: docker compose exec linux-vrt sh -c "cd apps/roppoh && bun run test:visual"
       - name: "ura-roppoh vtr"
         run: docker compose exec linux-vrt sh -c "cd apps/ura-roppoh && bun run test"
       - run: docker compose down
