@@ -16,6 +16,7 @@ COPY apps/roppoh/package.json ./apps/roppoh/
 COPY apps/zunpachi/package.json ./apps/zunpachi/
 COPY packages/better-auth/package.json ./packages/better-auth/
 COPY packages/better-auth-database/package.json ./packages/better-auth-database/
+COPY packages/shadcn/package.json ./packages/shadcn/
 
 # Install dependencies
 RUN bun install --frozen-lockfile
