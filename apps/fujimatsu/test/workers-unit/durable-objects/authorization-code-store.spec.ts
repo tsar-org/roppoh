@@ -1,12 +1,17 @@
-import { env } from "cloudflare:test";
-import { generateRandomAuthCode } from "@test/helpers/authorization-code";
-import { describe, expect, it } from "vitest";
+import { getDefaultDurableObjectsFromMiniflare } from "@test/helpers/durable-objects";
+import { MiniFlareController } from "@test/helpers/miniflare";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { generateRandomAuthCode } from "../../helpers/authorization-code";
 
 describe("test durable-objects AuthorizationCodeStore", async () => {
+  const miniflareController = new MiniFlareController();
+
+  beforeEach(async () => miniflareController.before());
+  afterEach(async () => miniflareController.after());
   it("issues and consumes authorization code", async () => {
     // arrange
-    const id = env.AUTH_CODE_STORE.newUniqueId();
-    const object = env.AUTH_CODE_STORE.get(id);
+    const mf = miniflareController.getMiniflare();
+    const object = await getDefaultDurableObjectsFromMiniflare(mf);
     const code = generateRandomAuthCode({});
 
     // act
@@ -27,8 +32,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
   describe("consume() validation failures", () => {
     it("returns null for expired authorization code", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       const code = generateRandomAuthCode({
         expiresAt: Date.now() - 1000, // 1 second ago
       });
@@ -48,8 +53,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("returns null for already consumed authorization code", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       const code = generateRandomAuthCode({
         expiresAt: Date.now() + 60000, // 1 minute in future
       });
@@ -78,8 +83,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("returns null when clientId does not match", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       const code = generateRandomAuthCode({
         expiresAt: Date.now() + 60000,
       });
@@ -99,8 +104,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("returns null when redirectUri does not match", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       const code = generateRandomAuthCode({
         expiresAt: Date.now() + 60000,
       });
@@ -120,8 +125,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("returns null for non-existent authorization code", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       // Do not issue any code
 
       // act
@@ -139,8 +144,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
   describe("deleteExpired() method", () => {
     it("removes only expired authorization codes", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
 
       const expiredCode1 = generateRandomAuthCode({
         expiresAt: Date.now() - 2000,
@@ -186,8 +191,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("keeps all codes when none are expired", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
 
       const validCode1 = generateRandomAuthCode({
         expiresAt: Date.now() + 60000,
@@ -231,8 +236,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("handles empty store without errors", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       // Do not issue any codes
 
       // act & assert - should not throw
@@ -243,8 +248,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
   describe("deleteAll() method", () => {
     it("clears all authorization codes from storage", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
 
       const code1 = generateRandomAuthCode({
         expiresAt: Date.now() + 60000,
@@ -296,8 +301,8 @@ describe("test durable-objects AuthorizationCodeStore", async () => {
 
     it("handles empty store gracefully", async () => {
       // arrange
-      const id = env.AUTH_CODE_STORE.newUniqueId();
-      const object = env.AUTH_CODE_STORE.get(id);
+      const mf = miniflareController.getMiniflare();
+      const object = await getDefaultDurableObjectsFromMiniflare(mf);
       // Ensure empty by calling deleteAll first
       await object.deleteAll();
 
