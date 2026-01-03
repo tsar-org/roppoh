@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
+    "paths": {
+      "@/*": ["./app/*"],
+      "@/test/*": ["./test/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["./worker-configuration.d.ts", "vite/client"],
+    "verbatimModuleSyntax": true
+  },
+  "extends": "../../tsconfig.json",
+  "include": ["src", "worker", "test", "./*.ts"]
+}

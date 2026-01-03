@@ -33,3 +33,7 @@ mise.local.toml
 # dotenv
 .env
 .env.secret
+
+# playwright
+playwright-report
+test-results

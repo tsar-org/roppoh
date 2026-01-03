@@ -77,8 +77,8 @@
     "dev": "bun run migration && bun react-router dev",
     "migration": "wrangler d1 migrations apply roppoh-auth --local",
     "test": "vitest run",
-    "test:unit": "vitest --project unit",
-    "test:visual": "vitest --project visual"
+    "test:unit": "vitest run --project unit",
+    "test:visual": "vitest run --project visual"
   },
   "type": "module"
 }

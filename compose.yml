@@ -8,11 +8,21 @@ services:
       - .:/app
       # Protect node_modules from being overwritten by host
       - node_modules:/app/node_modules
+      - fujimatsu_node_modules:/app/apps/fujimatsu/node_modules
       - roppoh_node_modules:/app/apps/roppoh/node_modules
-      - better_auth_node_modules:/app/packages/better-auth-database/node_modules
-    command: sh -c "bun run test:visual ${VRT_MODE:+--update}"
+      - ura_roppoh_node_modules:/app/apps/ura-roppoh/node_modules
+      - zunpachi_node_modules:/app/apps/zunpachi/node_modules
+      - better_auth_node_modules:/app/packages/better-auth/node_modules
+      - better_auth_database_node_modules:/app/packages/better-auth-database/node_modules
+      - shadcn_node_modules:/app/packages/shadcn/node_modules
+    command: sh -c "sleep infinity"
 
 volumes:
   node_modules:
+  fujimatsu_node_modules:
   roppoh_node_modules:
+  ura_roppoh_node_modules:
+  zunpachi_node_modules:
   better_auth_node_modules:
+  better_auth_database_node_modules:
+  shadcn_node_modules:

@@ -8,3 +8,14 @@ lefthook = "latest"
 
 [settings]
 npm.bun = true
+
+[tasks.update-vrt-screenshots]
+description = "Update VRT screenshots"
+run = [
+  "docker compose up -d --remove-orphans",
+  "docker compose exec linux-vrt sh -c 'cd apps/roppoh && bun run test:visual --update'",
+  "docker compose exec linux-vrt sh -c 'cd apps/ura-roppoh && bun run test'",
+  "docker compose down --remove-orphans",
+  "cd apps/roppoh && bun run test:visual --update && cd ../..",
+  "cd apps/ura-roppoh && bun run test --update-snapshots && cd ../..",
+]
