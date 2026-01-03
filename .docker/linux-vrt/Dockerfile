@@ -13,6 +13,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 COPY apps/roppoh/package.json ./apps/roppoh/
 COPY apps/fujimatsu/package.json ./apps/fujimatsu/
+COPY packages/better-auth/package.json ./packages/better-auth/
 COPY packages/better-auth-database/package.json ./packages/better-auth-database/
 COPY packages/domain/package.json ./packages/domain/
 COPY packages/domain-impl/package.json ./packages/domain-impl/

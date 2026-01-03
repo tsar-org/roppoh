@@ -30,16 +30,14 @@ export const auth: BetterAuth = betterAuth({
   telemetry: { enabled: false },
 });
 
-interface Args {
+export const createBetterAuth = (args: {
   d1: D1Database;
   betterAuthSecret: string;
   discord: {
     clientId: string;
     clientSecret: string;
   };
-}
-
-export const createBetterAuth = (args: Args): BetterAuth =>
+}): BetterAuth =>
   betterAuth({
     database: drizzleAdapter(drizzle(args.d1), { provider: "sqlite" }),
     experimental: { joins: true },
