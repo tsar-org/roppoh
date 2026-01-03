@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "@roppoh/better-auth": "workspace:*",
+    "better-auth": "^1.4.10",
+    "hono": "^4.11.0",
+    "inversify": "^7.10.8",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.17.1",
+    "vite": "^7.2.7",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "^4.0.16",
+    "wrangler": "^4.54.0"
+  },
+  "main": "./src/entry.ts",
+  "name": "@roppoh/zunpachi",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "check:type": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "dev": "vite",
+    "test": "vitest run"
+  },
+  "type": "module",
+  "version": "0.0.0"
+}
