@@ -18,7 +18,12 @@ export class ServerImpl implements Server {
   public constructor(
     args: Pick<
       Server,
-      "id" | "name" | "status" | "description" | "organizationId" | "serverConnectionId"
+      | "id"
+      | "name"
+      | "status"
+      | "description"
+      | "organizationId"
+      | "serverConnectionId"
     > & {
       serverControlService: ServerControlServiceImpl;
     },
