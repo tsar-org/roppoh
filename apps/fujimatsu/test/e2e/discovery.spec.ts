@@ -1,10 +1,18 @@
-import { SELF } from "cloudflare:test";
-import { describe, expect, it } from "vitest";
+import { MiniFlareController } from "@test/helpers/miniflare";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 describe("test /.well-known/openid-configuration", async () => {
+  const miniflareController = new MiniFlareController();
+
+  beforeEach(async () => miniflareController.before());
+  afterEach(async () => miniflareController.after());
+
   it("should return 200", async () => {
+    // arrange
+    const mf = miniflareController.getMiniflare();
+
     // act
-    const res = await SELF.fetch(
+    const res = await mf.dispatchFetch(
       "http://localhost/.well-known/openid-configuration",
     );
 
