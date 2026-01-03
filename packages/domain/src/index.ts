@@ -2,6 +2,7 @@
 export * from "@domain/applications";
 
 // domain
+export * from "@domain/domains/organization";
 export * from "@domain/domains/server";
 export * from "@domain/domains/user";
 

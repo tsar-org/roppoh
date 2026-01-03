@@ -15,6 +15,7 @@ export const composeOneStatus200Error = http.get(
       composeStatus: "error",
       description: "test-description",
       name: "test-name",
+      organizationId: "org-1",
     });
   },
 );

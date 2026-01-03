@@ -5,11 +5,7 @@ import {
   type ComposeStatusType,
 } from "@domain-impl/Infrastructures/clients/dokploy/schema";
 import { ServerControlServiceImpl } from "@domain-impl/services/server-control-service";
-import {
-  type ServerControlService,
-  type ServerRepository,
-  ServerStatus,
-} from "@roppoh/domain";
+import { type ServerRepository, ServerStatus } from "@roppoh/domain";
 import { Effect } from "effect";
 import { inject, injectable, LazyServiceIdentifier } from "inversify";
 import { ServerImpl } from "./server.entity";
@@ -22,7 +18,7 @@ export class ServerRepositoryImpl implements ServerRepository {
     @inject(new LazyServiceIdentifier(() => DokployComposeClient))
     private readonly compose: DokployComposeClient,
     @inject(new LazyServiceIdentifier(() => ServerControlServiceImpl))
-    private readonly control: ServerControlService,
+    private readonly control: ServerControlServiceImpl,
   ) {}
 
   public getById = ({ id }: { id: string }) =>
@@ -33,6 +29,7 @@ export class ServerRepositoryImpl implements ServerRepository {
         description: compose.description,
         id: compose.composeId,
         name: compose.name,
+        organizationId: compose.organizationId || "",
         serverControlService: this.control,
         status: this.convertComposeStatusToServerStatus(compose.composeStatus),
       });
@@ -52,6 +49,7 @@ export class ServerRepositoryImpl implements ServerRepository {
               description: compose.description,
               id: compose.composeId,
               name: compose.name,
+              organizationId: compose.organizationId || "",
               serverControlService: this.control,
               status: this.convertComposeStatusToServerStatus(
                 compose.composeStatus,

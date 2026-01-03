@@ -1,0 +1,632 @@
+{
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  },
+  "dialect": "sqlite",
+  "enums": {},
+  "id": "7efe4f29-4a85-45bf-b1c9-c22576e36e28",
+  "internal": {
+    "indexes": {}
+  },
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "account": {
+      "checkConstraints": {},
+      "columns": {
+        "access_token": {
+          "autoincrement": false,
+          "name": "access_token",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "access_token_expires_at": {
+          "autoincrement": false,
+          "name": "access_token_expires_at",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "account_id": {
+          "autoincrement": false,
+          "name": "account_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "created_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "id_token": {
+          "autoincrement": false,
+          "name": "id_token",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "password": {
+          "autoincrement": false,
+          "name": "password",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "provider_id": {
+          "autoincrement": false,
+          "name": "provider_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "refresh_token": {
+          "autoincrement": false,
+          "name": "refresh_token",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "refresh_token_expires_at": {
+          "autoincrement": false,
+          "name": "refresh_token_expires_at",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "scope": {
+          "autoincrement": false,
+          "name": "scope",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "name": "updated_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "account_user_id_user_id_fk": {
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "name": "account_user_id_user_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "account",
+          "tableTo": "user"
+        }
+      },
+      "indexes": {
+        "account_userId_idx": {
+          "columns": ["user_id"],
+          "isUnique": false,
+          "name": "account_userId_idx"
+        }
+      },
+      "name": "account",
+      "uniqueConstraints": {}
+    },
+    "invitation": {
+      "checkConstraints": {},
+      "columns": {
+        "created_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "expires_at": {
+          "autoincrement": false,
+          "name": "expires_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "inviter_id": {
+          "autoincrement": false,
+          "name": "inviter_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "organization_id": {
+          "autoincrement": false,
+          "name": "organization_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "role": {
+          "autoincrement": false,
+          "name": "role",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "status": {
+          "autoincrement": false,
+          "default": "'pending'",
+          "name": "status",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "invitation_inviter_id_user_id_fk": {
+          "columnsFrom": ["inviter_id"],
+          "columnsTo": ["id"],
+          "name": "invitation_inviter_id_user_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "invitation",
+          "tableTo": "user"
+        },
+        "invitation_organization_id_organization_id_fk": {
+          "columnsFrom": ["organization_id"],
+          "columnsTo": ["id"],
+          "name": "invitation_organization_id_organization_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "invitation",
+          "tableTo": "organization"
+        }
+      },
+      "indexes": {
+        "invitation_email_idx": {
+          "columns": ["email"],
+          "isUnique": false,
+          "name": "invitation_email_idx"
+        },
+        "invitation_organizationId_idx": {
+          "columns": ["organization_id"],
+          "isUnique": false,
+          "name": "invitation_organizationId_idx"
+        }
+      },
+      "name": "invitation",
+      "uniqueConstraints": {}
+    },
+    "member": {
+      "checkConstraints": {},
+      "columns": {
+        "created_at": {
+          "autoincrement": false,
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "organization_id": {
+          "autoincrement": false,
+          "name": "organization_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "role": {
+          "autoincrement": false,
+          "default": "'member'",
+          "name": "role",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "member_organization_id_organization_id_fk": {
+          "columnsFrom": ["organization_id"],
+          "columnsTo": ["id"],
+          "name": "member_organization_id_organization_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "member",
+          "tableTo": "organization"
+        },
+        "member_user_id_user_id_fk": {
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "name": "member_user_id_user_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "member",
+          "tableTo": "user"
+        }
+      },
+      "indexes": {
+        "member_organizationId_idx": {
+          "columns": ["organization_id"],
+          "isUnique": false,
+          "name": "member_organizationId_idx"
+        },
+        "member_userId_idx": {
+          "columns": ["user_id"],
+          "isUnique": false,
+          "name": "member_userId_idx"
+        }
+      },
+      "name": "member",
+      "uniqueConstraints": {}
+    },
+    "organization": {
+      "checkConstraints": {},
+      "columns": {
+        "created_at": {
+          "autoincrement": false,
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "logo": {
+          "autoincrement": false,
+          "name": "logo",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "metadata": {
+          "autoincrement": false,
+          "name": "metadata",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "slug": {
+          "autoincrement": false,
+          "name": "slug",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {
+        "organization_slug_uidx": {
+          "columns": ["slug"],
+          "isUnique": true,
+          "name": "organization_slug_uidx"
+        },
+        "organization_slug_unique": {
+          "columns": ["slug"],
+          "isUnique": true,
+          "name": "organization_slug_unique"
+        }
+      },
+      "name": "organization",
+      "uniqueConstraints": {}
+    },
+    "session": {
+      "checkConstraints": {},
+      "columns": {
+        "active_organization_id": {
+          "autoincrement": false,
+          "name": "active_organization_id",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "created_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "expires_at": {
+          "autoincrement": false,
+          "name": "expires_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "impersonated_by": {
+          "autoincrement": false,
+          "name": "impersonated_by",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "ip_address": {
+          "autoincrement": false,
+          "name": "ip_address",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "token": {
+          "autoincrement": false,
+          "name": "token",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "name": "updated_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "user_agent": {
+          "autoincrement": false,
+          "name": "user_agent",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {
+        "session_user_id_user_id_fk": {
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "name": "session_user_id_user_id_fk",
+          "onDelete": "cascade",
+          "onUpdate": "no action",
+          "tableFrom": "session",
+          "tableTo": "user"
+        }
+      },
+      "indexes": {
+        "session_token_unique": {
+          "columns": ["token"],
+          "isUnique": true,
+          "name": "session_token_unique"
+        },
+        "session_userId_idx": {
+          "columns": ["user_id"],
+          "isUnique": false,
+          "name": "session_userId_idx"
+        }
+      },
+      "name": "session",
+      "uniqueConstraints": {}
+    },
+    "user": {
+      "checkConstraints": {},
+      "columns": {
+        "ban_expires": {
+          "autoincrement": false,
+          "name": "ban_expires",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "ban_reason": {
+          "autoincrement": false,
+          "name": "ban_reason",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "banned": {
+          "autoincrement": false,
+          "default": false,
+          "name": "banned",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "created_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "email_verified": {
+          "autoincrement": false,
+          "default": false,
+          "name": "email_verified",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "image": {
+          "autoincrement": false,
+          "name": "image",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "role": {
+          "autoincrement": false,
+          "name": "role",
+          "notNull": false,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "updated_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {
+        "user_email_unique": {
+          "columns": ["email"],
+          "isUnique": true,
+          "name": "user_email_unique"
+        }
+      },
+      "name": "user",
+      "uniqueConstraints": {}
+    },
+    "verification": {
+      "checkConstraints": {},
+      "columns": {
+        "created_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "created_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "expires_at": {
+          "autoincrement": false,
+          "name": "expires_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "notNull": true,
+          "primaryKey": true,
+          "type": "text"
+        },
+        "identifier": {
+          "autoincrement": false,
+          "name": "identifier",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))",
+          "name": "updated_at",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "integer"
+        },
+        "value": {
+          "autoincrement": false,
+          "name": "value",
+          "notNull": true,
+          "primaryKey": false,
+          "type": "text"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "foreignKeys": {},
+      "indexes": {
+        "verification_identifier_idx": {
+          "columns": ["identifier"],
+          "isUnique": false,
+          "name": "verification_identifier_idx"
+        }
+      },
+      "name": "verification",
+      "uniqueConstraints": {}
+    }
+  },
+  "version": "6",
+  "views": {}
+}

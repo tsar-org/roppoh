@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "drizzle-orm": "^0.44.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251231.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^12.4.1"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "name": "@roppoh/better-auth",
+  "peerDependencies": {
+    "better-auth": "^1.3.32",
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "check:type": "tsc --noEmit",
+    "generate:migration": "bun x drizzle-kit generate --config='./drizzle.config.ts'",
+    "generate:schema": "bun x @better-auth/cli generate --config='./src/auth.ts' --output='./src/auth-schema.ts' --yes"
+  },
+  "type": "module"
+}

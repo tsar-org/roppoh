@@ -6,40 +6,33 @@ import { DokployResponseError } from "./error";
 import { ComposeStatusSchema } from "./schema";
 
 export class DokployComposeClient {
-  private readonly SERVER_URL: string;
-  private readonly API_KEY: string;
-  private readonly header: RequestInit["headers"];
-
   private readonly projectAllResponseSchema = v.object({
     composeId: v.string(),
     composeStatus: ComposeStatusSchema,
     description: v.string(),
     name: v.string(),
+    organizationId: v.optional(v.string()),
   });
-
-  public constructor({
-    serverUrl,
-    apiKey,
-    header,
-  }: {
-    serverUrl: string;
-    apiKey: string;
-    header?: RequestInit["headers"];
-  }) {
-    this.API_KEY = apiKey;
-    this.SERVER_URL = serverUrl;
-    this.header = header;
-  }
 
   /**
    * @see https://docs.dokploy.com/docs/api/compose#compose-one
    */
-  public one = ({ id }: { id: string }) =>
+  public one = ({
+    id,
+    serverUrl,
+    apiKey,
+    header,
+  }: {
+    id: string;
+    serverUrl: string;
+    apiKey: string;
+    header?: RequestInit["headers"];
+  }) =>
     Effect.gen(this, function* () {
       // compose request
-      const url = new URL(`${this.SERVER_URL}/api/compose.one?composeId=${id}`);
+      const url = new URL(`${serverUrl}/api/compose.one?composeId=${id}`);
       const requestInit = {
-        headers: { "x-api-key": this.API_KEY, ...this.header },
+        headers: { "x-api-key": apiKey, ...header },
         method: "GET",
       } satisfies RequestInit;
 
@@ -76,13 +69,23 @@ export class DokployComposeClient {
   /**
    * @see https://docs.dokploy.com/docs/api/compose#compose-start
    */
-  public start = ({ id }: { id: string }) =>
+  public start = ({
+    id,
+    serverUrl,
+    apiKey,
+    header,
+  }: {
+    id: string;
+    serverUrl: string;
+    apiKey: string;
+    header?: RequestInit["headers"];
+  }) =>
     Effect.gen(this, function* () {
       // compose request
-      const url = new URL(`${this.SERVER_URL}/api/compose.start`);
+      const url = new URL(`${serverUrl}/api/compose.start`);
       const requestInit = {
         body: JSON.stringify({ composeId: id }),
-        headers: { "x-api-key": this.API_KEY, ...this.header },
+        headers: { "x-api-key": apiKey, ...header },
         method: "GET",
       } satisfies RequestInit;
 
@@ -96,13 +99,23 @@ export class DokployComposeClient {
   /**
    * @see https://docs.dokploy.com/docs/api/compose#compose-stop
    */
-  public stop = ({ id }: { id: string }) =>
+  public stop = ({
+    id,
+    serverUrl,
+    apiKey,
+    header,
+  }: {
+    id: string;
+    serverUrl: string;
+    apiKey: string;
+    header?: RequestInit["headers"];
+  }) =>
     Effect.gen(this, function* () {
       // compose request
-      const url = new URL(`${this.SERVER_URL}/api/compose.stop`);
+      const url = new URL(`${serverUrl}/api/compose.stop`);
       const requestInit = {
         body: JSON.stringify({ composeId: id }),
-        headers: { "x-api-key": this.API_KEY, ...this.header },
+        headers: { "x-api-key": apiKey, ...header },
         method: "GET",
       } satisfies RequestInit;
 
@@ -116,13 +129,23 @@ export class DokployComposeClient {
   /**
    * @see https://docs.dokploy.com/docs/api/compose#compose-redeploy
    */
-  public redeploy = ({ id }: { id: string }) =>
+  public redeploy = ({
+    id,
+    serverUrl,
+    apiKey,
+    header,
+  }: {
+    id: string;
+    serverUrl: string;
+    apiKey: string;
+    header?: RequestInit["headers"];
+  }) =>
     Effect.gen(this, function* () {
       // compose request
-      const url = new URL(`${this.SERVER_URL}/api/compose.redeploy`);
+      const url = new URL(`${serverUrl}/api/compose.redeploy`);
       const requestInit = {
         body: JSON.stringify({ composeId: id }),
-        headers: { "x-api-key": this.API_KEY, ...this.header },
+        headers: { "x-api-key": apiKey, ...header },
         method: "GET",
       } satisfies RequestInit;
 

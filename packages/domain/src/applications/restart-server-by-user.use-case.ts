@@ -1,19 +1,24 @@
-import type { InvalidServerState } from "@domain/domains/server/server.error";
-import type { ServerRepository } from "@domain/domains/server/server.repository";
+import type { Organization } from "@domain/domains/organization";
 import type {
-  ExternalDependencyFailureError,
-  ResourceNotFoundError,
-} from "@domain/errors";
-import type { Effect } from "effect";
+  Server,
+  ServerPolicy,
+  ServerRepository,
+} from "@domain/domains/server";
+import type { User } from "@domain/domains/user";
+import type { Compose } from "@domain/types/compose";
 
 export interface RestartServerByUserUseCase {
   readonly serverRepository: ServerRepository;
 
   invoke: (args: {
     serverId: string;
-  }) => Effect.Effect<
-    void,
-    ExternalDependencyFailureError | InvalidServerState | ResourceNotFoundError,
-    never
+    user: User;
+    Organization: Organization;
+  }) => Compose<
+    [
+      ServerRepository["getById"],
+      ServerPolicy["restartByUser"],
+      Server["restart"],
+    ]
   >;
 }

@@ -1,0 +1,32 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "ROPPOH_AUTH_DB",
+      "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
+      "database_name": "roppoh-auth",
+      "migrations_dir": "../../packages/better-auth-database/src/migrations"
+    }
+  ],
+  "main": "./src/entry.ts",
+  "name": "zunpachi",
+  "observability": {
+    "enabled": true
+  },
+  "preview_urls": false,
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "zunpachi.tsar-bmb.org",
+      "zone_name": "tsar-bmb.org"
+    }
+  ],
+  "vars": {
+    "CORS_DOMAIN": "https://tsar-bmb.org",
+    "DISCORD_CLIENT_ID": "1320047030717911111",
+    "NODE_ENV": "production"
+  },
+  "workers_dev": false
+}

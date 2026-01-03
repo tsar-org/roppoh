@@ -1,20 +1,19 @@
+import type { Server } from "@domain/domains/server";
+import type { ServerConnection } from "@domain/domains/server-connection";
 import type { ExternalDependencyFailureError } from "@domain/errors/external-dependency-failure.error";
 import type { Effect } from "effect";
 
 export interface ServerControlService {
-  start: ({
-    id,
-  }: {
-    id: string;
+  start: (args: {
+    server: Server;
+    serverConnection: ServerConnection;
   }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
-  stop: ({
-    id,
-  }: {
-    id: string;
+  stop: (args: {
+    server: Server;
+    serverConnection: ServerConnection;
   }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
-  reStart: ({
-    id,
-  }: {
-    id: string;
+  reStart: (args: {
+    server: Server;
+    serverConnection: ServerConnection;
   }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
 }

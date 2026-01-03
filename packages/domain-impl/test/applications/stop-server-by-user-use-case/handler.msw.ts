@@ -15,6 +15,7 @@ export const composeOneStatus200Building = http.get(
       composeStatus: "running",
       description: "test-description",
       name: "test-name",
+      organizationId: "org-1",
     });
   },
 );

@@ -1,4 +1,5 @@
 import { RestartServerByUserUseCaseImpl } from "@domain-impl/applications";
+import { ServerPolicyImpl } from "@domain-impl/domains/server/server.policy";
 import { ServerRepositoryImpl } from "@domain-impl/domains/server/server.repository";
 import { ExternalContractViolationErrorImpl } from "@domain-impl/errors/external-contract-violation.error";
 import { ResourceNotFoundErrorImpl } from "@domain-impl/errors/resource-not-found.error";
@@ -42,6 +43,7 @@ describe("RestartServerByUserUseCaseImpl", () => {
     );
     container.bind(ServerControlServiceImpl).toSelf();
     container.bind(ServerRepositoryImpl).toSelf();
+    container.bind(ServerPolicyImpl).toSelf();
     container.bind(RestartServerByUserUseCaseImpl).toSelf();
 
     return await container.getAsync(RestartServerByUserUseCaseImpl);

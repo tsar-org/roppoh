@@ -1,4 +1,4 @@
-import type { ExternalDependencyFailureError } from "@domain/errors/external-dependency-failure.error";
+import type { ExternalDependencyFailureError } from "@domain/errors";
 import type { Effect } from "effect";
 import type { InvalidServerState } from "./server.error";
 
@@ -10,12 +10,15 @@ export enum ServerStatus {
 }
 
 export interface Server {
-  // property
+  // Property
   readonly id: string;
   readonly name: string;
   status: ServerStatus;
   readonly description: string;
+  readonly organizationId: string;
+  readonly serverConnectionId: string;
 
+  // Behavior
   start: () => Effect.Effect<
     void,
     InvalidServerState | ExternalDependencyFailureError,
@@ -26,5 +29,5 @@ export interface Server {
     InvalidServerState | ExternalDependencyFailureError,
     never
   >;
-  reStart: () => Effect.Effect<void, ExternalDependencyFailureError, never>;
+  restart: () => Effect.Effect<void, ExternalDependencyFailureError, never>;
 }

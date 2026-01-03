@@ -1,4 +1,4 @@
-import { ServerRepositoryImpl } from "@domain-impl/domains/server/server.repository";
+import { ServerRepositoryImpl } from "@domain-impl/domains/server";
 import type {
   GetAllControllableServerUseCase,
   ServerRepository,

@@ -1,5 +1,6 @@
 import { StopServerByUserUseCaseImpl } from "@domain-impl/applications";
 import { InvalidServerStateErrorImpl } from "@domain-impl/domains/server/server.error";
+import { ServerPolicyImpl } from "@domain-impl/domains/server/server.policy";
 import { ServerRepositoryImpl } from "@domain-impl/domains/server/server.repository";
 import { ExternalContractViolationErrorImpl } from "@domain-impl/errors/external-contract-violation.error";
 import { ResourceNotFoundErrorImpl } from "@domain-impl/errors/resource-not-found.error";
@@ -44,6 +45,7 @@ describe("StopServerByUserUseCaseImpl", () => {
     );
     container.bind(ServerControlServiceImpl).toSelf();
     container.bind(ServerRepositoryImpl).toSelf();
+    container.bind(ServerPolicyImpl).toSelf();
     container.bind(StopServerByUserUseCaseImpl).toSelf();
 
     return await container.getAsync(StopServerByUserUseCaseImpl);
@@ -108,10 +110,27 @@ describe("StopServerByUserUseCaseImpl", () => {
     // arrange
     server.use(composeOneStatus200Building);
     const useCase = await di();
+    const user = {
+      email: "test@example.com",
+      id: "user-1",
+      image: "https://example.com/avatar.png",
+      name: "Test User",
+      organizationId: "org-1",
+      role: undefined,
+    };
+    const organization = {
+      id: "org-1",
+      image: "https://example.com/org.png",
+      name: "Test Organization",
+    };
 
     // act
     const actual = await runEffectAndGetError(
-      useCase.invoke({ serverId: "test-compose-id" }),
+      useCase.invoke({
+        Organization: organization,
+        serverId: "test-compose-id",
+        user,
+      }),
     );
 
     // assert
