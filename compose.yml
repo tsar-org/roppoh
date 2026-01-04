@@ -14,6 +14,7 @@ services:
       - zunpachi_node_modules:/app/apps/zunpachi/node_modules
       - better_auth_node_modules:/app/packages/better-auth/node_modules
       - better_auth_database_node_modules:/app/packages/better-auth-database/node_modules
+      - domain_node_modules:/app/packages/domain/node_modules
       - shadcn_node_modules:/app/packages/shadcn/node_modules
     command: sh -c "sleep infinity"
 
@@ -25,4 +26,5 @@ volumes:
   zunpachi_node_modules:
   better_auth_node_modules:
   better_auth_database_node_modules:
+  domain_node_modules:
   shadcn_node_modules:
