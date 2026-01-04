@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "effect": "^3.19.13"
+  },
+  "devDependencies": {},
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "name": "@roppoh/domain",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "check:type": "tsc --noEmit"
+  },
+  "type": "module"
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["./src/*"]
+    },
+    "rootDir": "."
+  },
+  "exclude": [],
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*.ts", "drizzle.config.ts"]
+}

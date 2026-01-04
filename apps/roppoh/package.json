@@ -40,7 +40,7 @@
     "workers-og": "^0.0.27"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.17.1",
+    "@cloudflare/vite-plugin": "^1.19.0",
     "@cloudflare/workers-types": "^4.20250922.0",
     "@react-router/dev": "^7.8.0",
     "@tailwindcss/vite": "^4.1.14",
@@ -63,7 +63,7 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "4.0.3",
     "vitest-browser-react": "^2.0.2",
-    "wrangler": "^4.40.1"
+    "wrangler": "^4.54.0"
   },
   "name": "@roppoh/roppoh",
   "peerDependencies": {

@@ -50,7 +50,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun-turbo
-      - run: bun run test:unit
+      - name: roppoh test
+        run: bun run test:unit
         working-directory: apps/roppoh
-      - run: bun run test
+      - name: fujimatsu test
+        run: bun run test
         working-directory: apps/fujimatsu
+      - name: domain-impl test
+        run: bun run test
+        working-directory: packages/domain-impl

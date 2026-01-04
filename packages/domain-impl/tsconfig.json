@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@domain-impl/*": ["./src/*"],
+      "@domain/*": ["../domain/src/*"],
+      "@test/*": ["./test/*"]
+    },
+    "rootDir": "."
+  },
+  "exclude": [],
+  "extends": "../../tsconfig.json",
+  "include": ["src", "test", "./*.ts"]
+}
