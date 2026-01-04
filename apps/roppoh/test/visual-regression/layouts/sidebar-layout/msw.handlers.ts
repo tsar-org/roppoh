@@ -94,7 +94,7 @@ const handlers = [
       ] satisfies ProjectAllResponse),
   ),
   http.get(
-    `${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/environment.byProjectId?projectId=${project.projectId}`,
+    `${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/environment.byProjectId`,
     () =>
       HttpResponse.json([
         {

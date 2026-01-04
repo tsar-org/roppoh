@@ -5,6 +5,9 @@ import {
   ServiceIdentifier,
 } from "@/middlewares/dependency-injection";
 
+/**
+ * @see https://www.better-auth.com/docs/integrations/hono#mount-the-handler
+ */
 export const betterAuthRoute = new Hono<HonoEnv>().on(
   ["POST", "GET"],
   "",

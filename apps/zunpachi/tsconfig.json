@@ -6,8 +6,7 @@
       "@/*": ["./src/*"],
       "@test/*": ["./test/*"]
     },
-    "rootDir": ".",
-    "types": ["node"]
+    "rootDir": "."
   },
   "extends": ["../../tsconfig.json"],
   "include": ["src", "test", "./*.ts"]

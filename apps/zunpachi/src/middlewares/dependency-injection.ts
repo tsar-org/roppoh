@@ -30,7 +30,7 @@ const injectDependenciesMiddleware: MiddlewareHandler<HonoEnv> = async (
       const module = await import("@roppoh/better-auth");
       const betterAuth = module.createBetterAuth({
         betterAuthSecret: c.env.BETTER_AUTH_SECRET,
-        d1: c.env.ROPPOH_AUTH_DB,
+        d1: c.env.ROPPOH_BETTER_AUTH_DB,
         discord: {
           clientId: c.env.DISCORD_CLIENT_ID,
           clientSecret: c.env.DISCORD_CLIENT_SECRET,

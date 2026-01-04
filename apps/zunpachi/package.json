@@ -2,7 +2,9 @@
   "dependencies": {
     "@roppoh/better-auth": "workspace:*",
     "better-auth": "^1.4.10",
-    "hono": "^4.11.0"
+    "hono": "^4.11.0",
+    "inversify": "^7.10.8",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.17.1",

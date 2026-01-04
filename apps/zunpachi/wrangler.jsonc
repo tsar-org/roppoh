@@ -4,10 +4,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "d1_databases": [
     {
-      "binding": "ROPPOH_AUTH_DB",
-      "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
-      "database_name": "roppoh-auth",
-      "migrations_dir": "../../packages/better-auth-database/src/migrations"
+      "binding": "ROPPOH_BETTER_AUTH_DB",
+      "database_id": "6d92a782-2699-4dd0-9d45-733c1f03b8f7",
+      "database_name": "roppoh-better-auth",
+      "migrations_dir": "../../packages/better-auth/src/migrations"
     }
   ],
   "main": "./src/entry.ts",

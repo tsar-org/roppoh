@@ -8,4 +8,6 @@ bun install --frozen-lockfile
 
 lefthook install
 
+bunx playwright install
+
 cd apps/roppoh && bun react-router typegen
