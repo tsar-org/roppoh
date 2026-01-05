@@ -5,7 +5,7 @@ import type {
   ServerRepository,
 } from "@domain/domains/server";
 import type { User } from "@domain/domains/user";
-import type { Compose } from "@domain/types/compose";
+import type { EffectCompose } from "@domain/types/compose";
 
 export interface RestartServerByUserUseCase {
   readonly serverRepository: ServerRepository;
@@ -14,7 +14,7 @@ export interface RestartServerByUserUseCase {
     serverId: string;
     user: User;
     Organization: Organization;
-  }) => Compose<
+  }) => EffectCompose<
     [
       ServerRepository["getById"],
       ServerPolicy["restartByUser"],

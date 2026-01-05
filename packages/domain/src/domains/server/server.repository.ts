@@ -19,7 +19,7 @@ export interface ServerRepository {
     never
   >;
 
-  getAllControllable: () => Effect.Effect<
+  getAll: () => Effect.Effect<
     Server[],
     ExternalDependencyFailureError | ExternalContractViolationError,
     never

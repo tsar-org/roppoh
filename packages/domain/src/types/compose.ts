@@ -116,7 +116,7 @@ type AllRequirements<Fns extends readonly EffectFunction[]> =
  *
  * @template Fns - readonly array of functions that return Effect
  */
-export type Compose<Fns extends readonly EffectFunction[]> =
+export type EffectCompose<Fns extends readonly EffectFunction[]> =
   Fns extends readonly []
     ? never // Empty array not allowed
     : Effect.Effect<

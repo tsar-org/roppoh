@@ -4,7 +4,7 @@ import type {
   OrganizationPolicy,
 } from "@domain/domains/organization";
 import type { User } from "@domain/domains/user";
-import type { Compose } from "@domain/types/compose";
+import type { EffectCompose } from "@domain/types/compose";
 
 export interface CreateOrganizationUseCase {
   readonly organizationFactory: OrganizationFactory;
@@ -13,7 +13,7 @@ export interface CreateOrganizationUseCase {
   invoke: (args: {
     user: User;
     organization: Organization;
-  }) => Compose<
+  }) => EffectCompose<
     [
       OrganizationPolicy["canCreateOrganizationByUser"],
       OrganizationFactory["create"],
