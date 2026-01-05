@@ -1,6 +1,11 @@
-import type { ExternalDependencyFailureError } from "@domain/errors";
-import type { Effect } from "effect";
+import type { ExternalDependencyFailureError } from "@roppoh/domain/errors";
+import { Brand, type Effect } from "effect";
+import type { Organization } from "../organization";
 import type { InvalidServerState } from "./server.error";
+
+// Define branded type
+type ServerId = string & Brand.Brand<"ServerId">;
+export const serverId = Brand.nominal<ServerId>();
 
 export enum ServerStatus {
   BUILDING = "building",
@@ -11,11 +16,11 @@ export enum ServerStatus {
 
 export interface Server {
   // Property
-  readonly id: string;
+  readonly id: ServerId;
   readonly name: string;
   status: ServerStatus;
   readonly description: string;
-  readonly organizationId: string;
+  readonly organizationId: Organization["id"];
   readonly serverConnectionId: string;
 
   // Behavior

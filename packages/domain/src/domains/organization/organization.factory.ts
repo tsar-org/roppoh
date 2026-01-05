@@ -2,5 +2,9 @@ import type { Effect } from "effect";
 import type { Organization } from "./organization.entity";
 
 export interface OrganizationFactory {
-  create: (args: Organization) => Effect.Effect<Organization, never, never>;
+  reConstructor: (args: {
+    id: string;
+    name: string;
+    image: string;
+  }) => Effect.Effect<Organization, never, never>;
 }

@@ -1,14 +1,19 @@
 import type {
   ExternalDependencyFailureError,
   InvalidRequestError,
-} from "@domain/errors";
-import type { Effect } from "effect";
+} from "@roppoh/domain/errors";
+import { Brand, type Effect } from "effect";
+import type { Organization } from "../organization";
+
+// Define branded type
+type ServerConnectionId = string & Brand.Brand<"ServerConnectionId">;
+export const serverConnectionId = Brand.nominal<ServerConnectionId>();
 
 export enum ServerProvider {
   DOKPLOY = "dokploy",
 }
 
-type ServerConnectionConfig = {
+export type ServerConnectionConfig = {
   provider: ServerProvider.DOKPLOY;
   apiUrl: string;
   apiKey: string;
@@ -17,8 +22,8 @@ type ServerConnectionConfig = {
 
 export interface ServerConnection {
   // Property
-  readonly id: string;
-  readonly organizationId: string;
+  readonly id: ServerConnectionId;
+  readonly organizationId: Organization["id"];
   readonly config: ServerConnectionConfig;
 
   // Behavior
