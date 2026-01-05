@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@domain/*": ["./src/*"]
+      "@roppoh/domain/*": ["./src/*"]
     },
     "rootDir": "."
   },

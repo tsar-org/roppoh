@@ -1,4 +1,4 @@
-import type { OperationNotPermittedError } from "@domain/errors";
+import type { OperationNotPermittedError } from "@roppoh/domain/errors";
 import type { Effect } from "effect";
 import type { Organization } from "../organization";
 import type { User } from "../user";

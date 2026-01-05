@@ -1,9 +1,9 @@
-import type { OperationNotPermittedError } from "@domain/errors";
+import type { OperationNotPermittedError } from "@roppoh/domain/errors";
 import type { Effect } from "effect";
 import type { User } from "../user";
 
-export interface OrganizationPolicy {
-  canCreateOrganizationByUser: (args: {
+export interface ServerConnectionPolicy {
+  createByUser: (args: {
     user: User;
   }) => Effect.Effect<void, OperationNotPermittedError, never>;
 }

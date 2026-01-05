@@ -1,6 +1,6 @@
-import type { Server } from "@domain/domains/server";
-import type { ServerConnection } from "@domain/domains/server-connection";
-import type { ExternalDependencyFailureError } from "@domain/errors/external-dependency-failure.error";
+import type { Server } from "@roppoh/domain/domains/server";
+import type { ServerConnection } from "@roppoh/domain/domains/server-connection";
+import type { ExternalDependencyFailureError } from "@roppoh/domain/errors/external-dependency-failure.error";
 import type { Effect } from "effect";
 
 export interface ServerControlService {

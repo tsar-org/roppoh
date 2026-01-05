@@ -1,14 +1,14 @@
 // UseCase
-export * from "@domain/applications";
+export * from "./applications";
 
 // domain
-export * from "@domain/domains/organization";
-export * from "@domain/domains/server";
-export * from "@domain/domains/server-connection";
-export * from "@domain/domains/user";
+export * from "./domains/organization";
+export * from "./domains/server";
+export * from "./domains/server-connection";
+export * from "./domains/user";
 
 // Error
-export * from "@domain/errors";
+export * from "./errors";
 
 // service
-export * from "@domain/services";
+export * from "./services";

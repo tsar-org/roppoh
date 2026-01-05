@@ -1,8 +1,8 @@
 import type {
   ExternalContractViolationError,
   ResourceNotFoundError,
-} from "@domain/errors";
-import type { ExternalDependencyFailureError } from "@domain/errors/external-dependency-failure.error";
+} from "@roppoh/domain/errors";
+import type { ExternalDependencyFailureError } from "@roppoh/domain/errors/external-dependency-failure.error";
 import type { Effect } from "effect";
 import type { Server } from "./server.entity";
 
