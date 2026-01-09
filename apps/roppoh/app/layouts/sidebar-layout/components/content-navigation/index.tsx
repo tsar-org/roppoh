@@ -12,7 +12,7 @@ import { SidebarContentView } from "./components/sidebar-content-view";
 import type { CollapsibleSidebarContent } from "./type";
 
 export const ContentNavigation = () => {
-  const { LL } = useI18nContext();
+  const { LL, locale } = useI18nContext();
 
   const playground: CollapsibleSidebarContent = {
     icon: () => <Gamepad />,
@@ -20,7 +20,7 @@ export const ContentNavigation = () => {
     items: [
       {
         title: "Unity Sports Resort",
-        url: "/unity-sports-resort",
+        url: `/${locale}/unity-sports-resort`,
       },
     ],
     title: LL.sidebar.content.playground(),
