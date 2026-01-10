@@ -25,7 +25,7 @@
   ],
   "vars": {
     "CORS_DOMAIN": "https://tsar-bmb.org",
-    "DISCORD_CLIENT_ID": "1320047030717911111",
+    "DISCORD_CLIENT_ID": "1457921221051023361",
     "NODE_ENV": "production"
   },
   "workers_dev": false

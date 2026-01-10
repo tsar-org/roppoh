@@ -35,6 +35,7 @@ const injectDependenciesMiddleware: MiddlewareHandler<HonoEnv> = async (
           clientId: c.env.DISCORD_CLIENT_ID,
           clientSecret: c.env.DISCORD_CLIENT_SECRET,
         },
+        isProduction: c.env.NODE_ENV === "production",
       });
       return betterAuth;
     });

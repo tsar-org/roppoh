@@ -4,5 +4,5 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [tsconfigPaths(), cloudflare({ configPath: "./wrangler.jsonc" })],
-  server: { port: 5173 },
+  server: { cors: false, port: 3002 },
 });
