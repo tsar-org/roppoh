@@ -16,7 +16,7 @@
   "main": "./src/entry.ts",
   "name": "@roppoh/zunpachi",
   "peerDependencies": {
-    "typescript": "latest"
+    "typescript": "^5.0.0"
   },
   "private": true,
   "scripts": {
@@ -24,7 +24,8 @@
     "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "dev": "vite",
+    "dev": "bun run migration && bun vite",
+    "migration": "wrangler d1 migrations apply roppoh-better-auth --local",
     "test": "vitest run"
   },
   "type": "module",

@@ -8,13 +8,9 @@ import {
 /**
  * @see https://www.better-auth.com/docs/integrations/hono#mount-the-handler
  */
-export const betterAuthRoute = new Hono<HonoEnv>().on(
-  ["POST", "GET"],
-  "",
-  async (c) => {
-    const betterAuth = await c.env.container.getAsync<BetterAuth>(
-      ServiceIdentifier.BETTER_AUTH,
-    );
-    return betterAuth.handler(c.req.raw);
-  },
-);
+export const betterAuthRoute = new Hono<HonoEnv>().all("", async (c) => {
+  const betterAuth = await c.env.container.getAsync<BetterAuth>(
+    ServiceIdentifier.BETTER_AUTH,
+  );
+  return betterAuth.handler(c.req.raw);
+});
