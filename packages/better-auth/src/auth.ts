@@ -3,12 +3,25 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth/minimal";
 import { admin, organization } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/d1";
+import { schema } from "./schema";
 
 export type BetterAuth = ReturnType<typeof betterAuth>;
 
 // for better-auth cli generate script config
 export const auth: BetterAuth = betterAuth({
-  database: drizzleAdapter({}, { provider: "sqlite" }),
+  advanced: {
+    crossSubDomainCookies: {
+      domain: "zunpachi.tsar-bmb.org",
+      enabled: true,
+    },
+    defaultCookieAttributes: {
+      partitioned: true, // New browser standards will mandate this for foreign cookies
+      sameSite: "none",
+      secure: true,
+    },
+  },
+  baseURL: "https://zunpachi.tsar-bmb.org/api/v1/better-auth",
+  database: drizzleAdapter({}, { provider: "sqlite", schema: schema }),
   experimental: { joins: true },
   plugins: [organization(), admin()],
   secret: "",
@@ -27,7 +40,12 @@ export const auth: BetterAuth = betterAuth({
       clientSecret: "",
     },
   },
-  telemetry: { enabled: false },
+  telemetry: { enabled: true },
+  trustedOrigins: [
+    "https://zunpachi.tsar-bmb.org",
+    "https://ura-roppoh.tsar-bmb.org",
+    "https://roppoh.tsar-bmb.org",
+  ],
 });
 
 export const createBetterAuth = (args: {
@@ -37,9 +55,28 @@ export const createBetterAuth = (args: {
     clientId: string;
     clientSecret: string;
   };
+  isProduction: boolean;
 }): BetterAuth =>
   betterAuth({
-    database: drizzleAdapter(drizzle(args.d1), { provider: "sqlite" }),
+    advanced: {
+      crossSubDomainCookies: {
+        domain: args.isProduction ? "zunpachi.tsar-bmb.org" : "localhost",
+        enabled: true,
+      },
+      defaultCookieAttributes: {
+        partitioned: true, // New browser standards will mandate this for foreign cookies
+        sameSite: "none",
+        secure: true,
+      },
+    },
+    basePath: "/api/v1/better-auth",
+    baseURL: args.isProduction
+      ? "https://zunpachi.tsar-bmb.org"
+      : "http://localhost:3002",
+    database: drizzleAdapter(drizzle(args.d1), {
+      provider: "sqlite",
+      schema: schema,
+    }),
     experimental: { joins: true },
     plugins: [organization(), admin()],
     secret: args.betterAuthSecret,
@@ -58,5 +95,16 @@ export const createBetterAuth = (args: {
         clientSecret: args.discord.clientSecret,
       },
     },
-    telemetry: { enabled: false },
+    telemetry: { enabled: true },
+    trustedOrigins: args.isProduction
+      ? [
+          "https://zunpachi.tsar-bmb.org",
+          "https://ura-roppoh.tsar-bmb.org",
+          "https://roppoh.tsar-bmb.org",
+        ]
+      : [
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "http://localhost:3002",
+        ],
   });
