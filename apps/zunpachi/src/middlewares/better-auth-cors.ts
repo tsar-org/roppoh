@@ -11,9 +11,9 @@ export const betterAuthCorsMiddleware = cors({
   credentials: true,
   exposeHeaders: ["Content-Length"],
   maxAge: 600,
-  origin: async (_, c: Context<HonoEnv>) => {
+  origin: (origin, c: Context<HonoEnv>) => {
     if (c.env.NODE_ENV !== "production") {
-      return "*";
+      return origin;
     }
 
     return c.env.CORS_DOMAIN;
