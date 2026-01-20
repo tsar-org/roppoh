@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "@roppoh/domain": "workspace:*",
+    "effect": "^3.19.13",
+    "inversify": "^7.10.8",
+    "reflect-metadata": "^0.2.2",
+    "valibot": "^1.2.0"
+  },
+  "devDependencies": {
+    "msw": "^2.12.7",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "^4.0.16"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "name": "@roppoh/domain-impl",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "check:type": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "type": "module"
+}

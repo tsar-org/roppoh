@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@trpc/client": "^11.8.1",
+    "@trpc/server": "^11.8.1",
+    "superjson": "^2.2.6",
+    "valibot": "^1.2.0"
+  },
+  "devDependencies": {},
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "name": "@roppoh/presentation-trpc",
+  "peerDependencies": {
+    "typescript": "latest"
+  },
+  "private": true,
+  "scripts": {
+    "check:type": "tsc --noEmit"
+  },
+  "type": "module"
+}
