@@ -35,5 +35,5 @@
     "target": "ESNext",
     "verbatimModuleSyntax": true
   },
-  "include": ["apps", "packages"]
+  "include": ["./*.ts"]
 }

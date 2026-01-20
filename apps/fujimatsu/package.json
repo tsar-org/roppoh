@@ -23,7 +23,7 @@
   "name": "@roppoh/fujimatu",
   "peerDependencies": {
     "@types/node": "22.16.0",
-    "typescript": "latest"
+    "typescript": "^5.0.0"
   },
   "private": true,
   "scripts": {

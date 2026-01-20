@@ -67,7 +67,7 @@
   },
   "name": "@roppoh/roppoh",
   "peerDependencies": {
-    "typescript": "latest"
+    "typescript": "^5.0.0"
   },
   "private": true,
   "scripts": {

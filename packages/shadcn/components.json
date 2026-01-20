@@ -8,8 +8,11 @@
     "utils": "@roppoh/shadcn/lib/utils"
   },
   "iconLibrary": "lucide",
+  "menuAccent": "subtle",
+  "menuColor": "default",
+  "registries": {},
   "rsc": false,
-  "style": "new-york",
+  "style": "base-mira",
   "tailwind": {
     "baseColor": "neutral",
     "config": "",

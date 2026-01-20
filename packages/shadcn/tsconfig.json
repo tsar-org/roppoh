@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "paths": {
       "@roppoh/shadcn/*": ["./src/*"]
     }

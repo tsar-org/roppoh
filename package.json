@@ -8,9 +8,12 @@
   "name": "roppoh",
   "packageManager": "bun@1.2.0",
   "peerDependencies": {
-    "typescript": "latest"
+    "typescript": "^5.0.0"
   },
   "private": true,
+  "scripts": {
+    "knip": "knip --config='knip.config.ts'"
+  },
   "type": "module",
   "workspaces": ["apps/*", "packages/*"]
 }
