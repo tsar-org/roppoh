@@ -12,5 +12,5 @@
     "verbatimModuleSyntax": true
   },
   "extends": "../../tsconfig.json",
-  "include": ["src", "worker", "test", "./*.ts"]
+  "include": ["src", "test", "./*.ts"]
 }

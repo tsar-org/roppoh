@@ -14,8 +14,8 @@ description = "Update VRT screenshots"
 run = [
   "docker compose up -d --remove-orphans",
   "docker compose exec linux-vrt sh -c 'cd apps/roppoh && bun run test:visual --update'",
-  "docker compose exec linux-vrt sh -c 'cd apps/ura-roppoh && bun run test'",
+  "docker compose exec linux-vrt sh -c 'cd apps/ura-roppoh && bun run test:visual --update'",
   "docker compose down --remove-orphans",
-  "cd apps/roppoh && bun run test:visual --update && cd ../..",
-  "cd apps/ura-roppoh && bun run test --update-snapshots && cd ../..",
+  "bun run --cwd apps/roppoh test:visual --update",
+  "bun run --cwd apps/ura-roppoh test:visual --update",
 ]

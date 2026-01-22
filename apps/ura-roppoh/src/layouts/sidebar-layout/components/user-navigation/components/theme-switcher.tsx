@@ -6,7 +6,7 @@ import {
   DropdownMenuSubTrigger,
 } from "@roppoh/shadcn/components/ui/dropdown-menu";
 import { SunMoon } from "lucide-react";
-import { useTheme } from "@/contexts/theme";
+import { useTheme } from "@/root/components/theme-provider";
 
 export function ThemeSwitcher() {
   const { setTheme } = useTheme();
@@ -19,10 +19,10 @@ export function ThemeSwitcher() {
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent>
-          <DropdownMenuItem onClick={() => setTheme("light")}>
+          <DropdownMenuItem onClick={() => setTheme("dark")}>
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <DropdownMenuItem onClick={() => setTheme("light")}>
             Light
           </DropdownMenuItem>
         </DropdownMenuSubContent>
