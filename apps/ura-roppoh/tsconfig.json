@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "lib": ["DOM", "DOM.Iterable", "esnext"],
+    "lib": ["DOM", "DOM.Iterable", "esnext", "WebWorker"],
     "paths": {
-      "@/*": ["./app/*"],
-      "@/test/*": ["./test/*"]
+      "@/*": ["./src/*"],
+      "@/test/*": ["./test/*"],
+      "@roppoh/shadcn/*": ["../../packages/shadcn/src/*"]
     },
     "resolveJsonModule": true,
     "types": ["./worker-configuration.d.ts", "vite/client"],
     "verbatimModuleSyntax": true
   },
   "extends": "../../tsconfig.json",
-  "include": ["src", "worker", "test", "./*.ts"]
+  "include": ["src", "test", "./*.ts"]
 }

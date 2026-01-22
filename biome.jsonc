@@ -21,7 +21,8 @@
       "!**/bun.lock",
       "!**/worker-configuration.d.ts",
       "!apps/roppoh/app/shadcn",
-      "!apps/roppoh/app/i18n/*.ts"
+      "!apps/roppoh/app/i18n/*.ts",
+      "!packages/shadcn/src"
     ]
   },
   "formatter": {

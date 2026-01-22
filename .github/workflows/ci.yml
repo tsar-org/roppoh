@@ -16,7 +16,7 @@ jobs:
       - uses: dprint/check@v2.3
       - run: bun biome ci
       - run: bun turbo check:type
-      - run: bun knip
+      - run: bun run knip
       - run: bun turbo build
 
   playwright-test:
@@ -29,9 +29,9 @@ jobs:
       - name: Run vrt docker container
         run: docker compose up -d
       - name: "roppoh vrt"
-        run: docker compose exec linux-vrt sh -c "cd apps/roppoh && bun run test:visual"
+        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/roppoh test:visual"
       - name: "ura-roppoh vtr"
-        run: docker compose exec linux-vrt sh -c "cd apps/ura-roppoh && bun run test"
+        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/ura-roppoh test:visual"
       - run: docker compose down
       - name: Upload VRT screenshots
         if: always()
@@ -41,6 +41,8 @@ jobs:
           path: |
             apps/roppoh/.vitest-attachments/**/*.png
             apps/roppoh/test/visual-regression/**/__screenshots__/**/*.png
+            apps/ura-roppoh/.vitest-attachments/**/*.png
+            apps/ura-roppoh/test/visual-regression/**/__screenshots__/**/*.png
           retention-days: 7
 
   unit-test:

@@ -24,8 +24,9 @@
     "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "dev": "bun run migration && bun vite",
+    "dev": "bun run reset:wrangler && bun run migration && bun vite",
     "migration": "wrangler d1 migrations apply roppoh-better-auth --local",
+    "reset:wrangler": "rm -rf .wrangler",
     "test": "vitest run"
   },
   "type": "module",
