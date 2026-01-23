@@ -40,7 +40,7 @@ export default defineConfig({
         short_name: "Ura Roppoh",
         theme_color: "#000000",
       },
-      outDir: "dist/client",
+      outDir: "dist",
       registerType: "autoUpdate",
       scope: "/",
       strategies: "generateSW",
@@ -51,5 +51,5 @@ export default defineConfig({
       },
     }),
   ],
-  server: { port: 3000 },
+  server: { port: 51731 },
 });

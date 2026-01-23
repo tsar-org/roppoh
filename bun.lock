@@ -121,7 +121,6 @@
         "@ssgoi/react": "4.2.1",
         "babel-plugin-react-compiler": "^1.0.0",
         "better-auth": "^1.4.10",
-        "framer-motion": "12.28.1",
         "jotai": "2.16.2",
         "lucide-react": "^0.562.0",
         "react": "^19.2.0",

@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "inputs": ["src", "worker", "./*.ts"],
+      "inputs": ["src", "./*.ts"],
       "outputs": ["./dist/**"]
     },
     "cf-typegen": {
@@ -13,7 +13,7 @@
     "check:type": {
       "inputs": [
         "src",
-        "worker",
+        "test",
         "$TURBO_ROOT$/tsconfig.json",
         "./*.ts",
         "./tsconfig.json"

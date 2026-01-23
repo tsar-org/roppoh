@@ -22,7 +22,10 @@ export const auth: BetterAuth = betterAuth({
   },
   baseURL: "https://zunpachi.tsar-bmb.org/api/v1/better-auth",
   database: drizzleAdapter({}, { provider: "sqlite", schema: schema }),
-  experimental: { joins: true },
+  emailAndPassword: {
+    enabled: true,
+  },
+  // experimental: { joins: true },
   plugins: [organization(), admin()],
   secret: "",
   session: {
@@ -77,8 +80,14 @@ export const createBetterAuth = (args: {
       provider: "sqlite",
       schema: schema,
     }),
-    experimental: { joins: true },
-    plugins: [organization(), admin()],
+    emailAndPassword: { enabled: !args.isProduction },
+    // experimental: { joins: true },
+    plugins: [
+      organization(),
+      admin({
+        adminRoles: ["admin"],
+      }),
+    ],
     secret: args.betterAuthSecret,
     session: {
       // FYI: https://www.better-auth.com/docs/guides/optimizing-for-performance
@@ -102,9 +111,5 @@ export const createBetterAuth = (args: {
           "https://ura-roppoh.tsar-bmb.org",
           "https://roppoh.tsar-bmb.org",
         ]
-      : [
-          "http://localhost:3000",
-          "http://localhost:3001",
-          "http://localhost:3002",
-        ],
+      : ["http://localhost:*"],
   });

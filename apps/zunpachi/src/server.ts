@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { logger } from "hono/logger";
 import {
   betterAuthCorsMiddleware,
   injectDependenciesMiddleware,
@@ -9,7 +8,6 @@ import { betterAuthRoute } from "./routes/v1/better-auth";
 
 export const app = new Hono()
   // middleware
-  .use(logger())
   .use("*", injectDependenciesMiddleware)
   .use("/api/v1/better-auth/*", betterAuthCorsMiddleware)
   // health
