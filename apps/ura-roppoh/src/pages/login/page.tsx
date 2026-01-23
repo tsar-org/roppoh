@@ -1,4 +1,3 @@
-import { Button } from "@roppoh/shadcn/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,28 +9,14 @@ import {
   Field,
   FieldDescription,
   FieldGroup,
+  FieldSeparator,
 } from "@roppoh/shadcn/components/ui/field";
-import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
 import { SsgoiTransition } from "@ssgoi/react";
 import { GalleryVerticalEnd } from "lucide-react";
-import { useTransition } from "react";
-import { toast } from "sonner";
-import { authClient } from "@/libs/better-auth";
-import DiscordIconSvg from "./assets/discord-icon.svg";
+import { DiscordLoginButton } from "./components/discord-login-button";
+import { EmailLoginForm } from "./components/email-login-form";
 
 export default function () {
-  const [isPending, startTransition] = useTransition();
-
-  const signIn = async () =>
-    startTransition(async () => {
-      const res = await authClient.signIn.social({
-        callbackURL: `${window.location.origin}/`,
-        provider: "discord",
-        scopes: ["identify", "guilds"],
-      });
-      if (res.error) toast.error(res.error.message);
-    });
-
   return (
     <SsgoiTransition id="/login">
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
@@ -56,34 +41,12 @@ export default function () {
               <CardContent>
                 <FieldGroup>
                   <Field>
-                    <Button
-                      className="gap-3"
-                      disabled={isPending}
-                      onClick={signIn}
-                      type="button"
-                      variant="outline"
-                    >
-                      {isPending && <Spinner />}
-                      <img
-                        alt="discord-icon"
-                        className="size-4"
-                        src={DiscordIconSvg}
-                      />
-                      Login with Discord
-                    </Button>
+                    <DiscordLoginButton />
                   </Field>
-
-                  <Field>
-                    <FieldDescription className="text-center">
-                      Don&apos;t have an account?
-                      <a
-                        className="px-1"
-                        href="https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
-                      >
-                        Sign up
-                      </a>
-                    </FieldDescription>
-                  </Field>
+                  <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                    Or continue with
+                  </FieldSeparator>
+                  <EmailLoginForm />
                 </FieldGroup>
               </CardContent>
             </Card>

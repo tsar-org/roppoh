@@ -1,7 +1,6 @@
 import type { JSX } from "react";
 import { createBrowserRouter } from "react-router";
 import { ErrorBoundary } from "./root/error-boundary";
-import { HydrateFallback } from "./root/hydrate-fallback";
 
 export const router = createBrowserRouter([
   {
@@ -38,7 +37,6 @@ export const router = createBrowserRouter([
       },
     ],
     ErrorBoundary: ErrorBoundary,
-    HydrateFallback: HydrateFallback,
     lazy: {
       Component: async () => (await import("./root")).Root,
     },

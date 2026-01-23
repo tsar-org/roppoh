@@ -23,10 +23,11 @@
     "build": "vite build",
     "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "tsc --noEmit",
-    "deploy": "wrangler deploy",
-    "dev": "bun run reset:wrangler && bun run migration && bun vite",
+    "deploy": "bun run build && wrangler deploy",
+    "dev": "bun run reset:wrangler && bun run migration && bun run seed && bun vite",
     "migration": "wrangler d1 migrations apply roppoh-better-auth --local",
     "reset:wrangler": "rm -rf .wrangler",
+    "seed": "wrangler d1 execute roppoh-better-auth --local --file='../../packages/better-auth/src/seeder/super-admin.sql'",
     "test": "vitest run"
   },
   "type": "module",
