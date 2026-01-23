@@ -9,5 +9,5 @@
     "rootDir": "."
   },
   "extends": ["../../tsconfig.json"],
-  "include": ["src", "test", "scripts", "./*.ts"]
+  "include": ["src", "test", "./*.ts"]
 }
