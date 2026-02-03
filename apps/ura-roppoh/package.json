@@ -2,6 +2,7 @@
   "dependencies": {
     "@roppoh/shadcn": "workspace:*",
     "@ssgoi/react": "4.2.1",
+    "@tanstack/react-query": "5.90.20",
     "babel-plugin-react-compiler": "^1.0.0",
     "better-auth": "^1.4.10",
     "jotai": "2.16.2",
@@ -38,7 +39,7 @@
     "cf-typegen": "wrangler types  --strict-vars=false",
     "check:type": "tsc --noEmit",
     "deploy": "npm run build && wrangler deploy",
-    "dev": "vite",
+    "dev": "vite dev",
     "test": "vitest run",
     "test:visual": "vitest run --project visual"
   },
