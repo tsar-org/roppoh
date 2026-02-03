@@ -119,6 +119,7 @@
       "dependencies": {
         "@roppoh/shadcn": "workspace:*",
         "@ssgoi/react": "4.2.1",
+        "@tanstack/react-query": "5.90.20",
         "babel-plugin-react-compiler": "^1.0.0",
         "better-auth": "^1.4.10",
         "jotai": "2.16.2",
@@ -2536,6 +2537,8 @@
 
     "@roppoh/shadcn/lucide-react": ["lucide-react@0.562.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw=="],
 
+    "@roppoh/ura-roppoh/@tanstack/react-query": ["@tanstack/react-query@5.90.20", "", { "dependencies": { "@tanstack/query-core": "5.90.20" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-vXBxa+qeyveVO7OA0jX1z+DeyCA4JKnThKv411jd5SORpBKgkcVnYKCiBgECvADvniBX7tobwBmg01qq9JmMJw=="],
+
     "@roppoh/ura-roppoh/@vitest/browser-playwright": ["@vitest/browser-playwright@4.0.17", "", { "dependencies": { "@vitest/browser": "4.0.17", "@vitest/mocker": "4.0.17", "tinyrainbow": "^3.0.3" }, "peerDependencies": { "playwright": "*", "vitest": "4.0.17" } }, "sha512-CE9nlzslHX6Qz//MVrjpulTC9IgtXTbJ+q7Rx1HD+IeSOWv4NHIRNHPA6dB4x01d9paEqt+TvoqZfmgq40DxEQ=="],
 
     "@roppoh/ura-roppoh/lucide-react": ["lucide-react@0.562.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw=="],
@@ -2783,6 +2786,8 @@
     "@roppoh/roppoh/vitest/@vitest/utils": ["@vitest/utils@4.0.3", "", { "dependencies": { "@vitest/pretty-format": "4.0.3", "tinyrainbow": "^3.0.3" } }, "sha512-qV6KJkq8W3piW6MDIbGOmn1xhvcW4DuA07alqaQ+vdx7YA49J85pnwnxigZVQFQw3tWnQNRKWwhz5wbP6iv/GQ=="],
 
     "@roppoh/roppoh/vitest/tinyexec": ["tinyexec@0.3.2", "", {}, "sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA=="],
+
+    "@roppoh/ura-roppoh/@tanstack/react-query/@tanstack/query-core": ["@tanstack/query-core@5.90.20", "", {}, "sha512-OMD2HLpNouXEfZJWcKeVKUgQ5n+n3A2JFmBaScpNDUqSrQSjiveC7dKMe53uJUg1nDG16ttFPz2xfilz6i2uVg=="],
 
     "@roppoh/ura-roppoh/@vitest/browser-playwright/@vitest/browser": ["@vitest/browser@4.0.17", "", { "dependencies": { "@vitest/mocker": "4.0.17", "@vitest/utils": "4.0.17", "magic-string": "^0.30.21", "pixelmatch": "7.1.0", "pngjs": "^7.0.0", "sirv": "^3.0.2", "tinyrainbow": "^3.0.3", "ws": "^8.18.3" }, "peerDependencies": { "vitest": "4.0.17" } }, "sha512-cgf2JZk2fv5or3efmOrRJe1V9Md89BPgz4ntzbf84yAb+z2hW6niaGFinl9aFzPZ1q3TGfWZQWZ9gXTFThs2Qw=="],
 
