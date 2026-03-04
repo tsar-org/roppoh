@@ -7,12 +7,12 @@
     },
     "cf-typegen": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^cf-typegen"],
       "outputs": ["worker-configuration.d.ts"]
     },
     "check:type": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^check:type"],
       "outputs": []
     },
     "dev": {
