@@ -1,0 +1,14 @@
+#/-------------------[DOTENV_PUBLIC_KEY]--------------------/
+#/            public-key encryption for .env files          /
+#/       [how it works](https://dotenvx.com/encryption)     /
+#/----------------------------------------------------------/
+DOTENV_PUBLIC_KEY_VARS="026130a7fd578b52e0dd60383643dfb777f6dc33625f67886867aff3093cf396c1" # ../../.env.keys
+
+# .dev.vars
+DISCORD_CLIENT_SECRET="encrypted:BMHKAA6nhVj3q1YqzEUIYSKjPvwmV6y6Fd8ELGsdRcGzzZzPyEgF6t2knuvP2mkkja+g8bfmQEZ3iEb9HcbE5DP8AyulqPxLl8UfjQOKTuZvp+6vwLt4GbOZNfsxaILN3anCuPXQVdWcuebZuA6EnhHskOqCz4MFD6/KB4TIdL3G"
+DISCORD_REDIRECT_URL=encrypted:BNvt73ViNkurYPmCDzC3sUZNzZlbzoe3tjJjNzkUHI7zeVbmwUowvxFuXOyrJQ6pfkm16xJC631ICTexdq99u0a5PGnZ7obj+VRM1FbvHZHVvlTcXERQn7zPOESlO21CXtrqal+cRwN0Sqb349D4XIZ5u6CcaIxC6FTdjdqtmyOVa1FaazpaLfMRpnepDQABQemFXV2VrthufkJmcJNp6P/B
+
+
+
+
+

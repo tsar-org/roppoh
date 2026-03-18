@@ -37,3 +37,9 @@ mise.local.toml
 # playwright
 playwright-report
 test-results
+
+# zed
+.zed/settings.json
+
+# dotenvx
+.env.keys

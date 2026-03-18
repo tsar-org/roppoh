@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Encrypt env files for apps/zunpachi"
+
+dotenvx encrypt --stdout -f apps/zunpachi/.env -fk .env.keys > apps/zunpachi/.env.enc

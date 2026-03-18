@@ -7,7 +7,7 @@
       "outputs": ["./dist/**"]
     },
     "cf-typegen": {
-      "inputs": ["wrangler.jsonc"],
+      "inputs": ["wrangler.jsonc", ".dev.vars"],
       "outputs": ["worker-configuration.d.ts"]
     },
     "check:type": {
