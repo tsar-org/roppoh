@@ -1,9 +1,6 @@
 import { ChevronsUpDown } from "lucide-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/shadcn/components/ui/avatar";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,9 +47,7 @@ export function GuildSwitcher() {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Guilds
-            </DropdownMenuLabel>
+            <DropdownMenuLabel className="text-muted-foreground text-xs">Guilds</DropdownMenuLabel>
             <DropdownMenuItem className="m-3 gap-2 p-2">
               Feature of switching guilds is not implemented yet
             </DropdownMenuItem>

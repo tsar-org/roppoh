@@ -1,14 +1,11 @@
 import { Button } from "@roppoh/shadcn/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldLabel,
-} from "@roppoh/shadcn/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@roppoh/shadcn/components/ui/field";
 import { Input } from "@roppoh/shadcn/components/ui/input";
 import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
 import { useRef, useTransition } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+
 import { authClient } from "@/libs/better-auth";
 
 export function EmailLoginForm() {
@@ -61,12 +58,7 @@ export function EmailLoginForm() {
       </Field>
 
       <Field>
-        <Button
-          disabled={isPending}
-          onClick={signIn}
-          type="submit"
-          variant="outline"
-        >
+        <Button disabled={isPending} onClick={signIn} type="submit" variant="outline">
           {isPending && <Spinner />}
           Login
         </Button>

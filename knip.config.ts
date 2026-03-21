@@ -12,8 +12,8 @@ export default {
   project: [],
   workspaces: {
     ".": {
-      biome: { config: "biome.jsonc" },
-      ignoreDependencies: ["@biomejs/biome", "turbo"],
+      ignoreDependencies: ["turbo"],
+      ignore: ["oxfmt.config.ts", "oxlint.config.ts"],
     },
     "apps/fujimatu": {},
     "apps/roppoh": {

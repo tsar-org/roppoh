@@ -2,8 +2,10 @@
 
 import { type } from "arktype";
 import { redirect } from "react-router";
+
 import { baseLocale, isLocale } from "@/i18n/i18n-util";
 import { userLangCookie } from "@/utils/cookie.server";
+
 import type { Route } from "./+types/redirect-to-i18n-url";
 
 const UserLangCookieSchema = type({

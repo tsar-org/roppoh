@@ -10,10 +10,7 @@ export const action = async ({ request, context }: Route.ActionArgs) =>
 
 type DokployEnv = Pick<
   Cloudflare.Env,
-  | "DOKPLOY_API_URL"
-  | "DOKPLOY_API_TOKEN"
-  | "CF_ACCESS_CLIENT_ID"
-  | "CF_ACCESS_CLIENT_SECRET"
+  "DOKPLOY_API_URL" | "DOKPLOY_API_TOKEN" | "CF_ACCESS_CLIENT_ID" | "CF_ACCESS_CLIENT_SECRET"
 >;
 
 /**
@@ -27,13 +24,7 @@ type DokployEnv = Pick<
  *
  * @returns Response from the Dokploy API
  */
-export function requestProxy({
-  request,
-  env,
-}: {
-  request: Request;
-  env: DokployEnv;
-}) {
+export function requestProxy({ request, env }: { request: Request; env: DokployEnv }) {
   const url = new URL(request.url);
   const apiPath = url.pathname.replace(/^\/api\/dokploy\//, "/api/");
   const proxyUrl = new URL(apiPath + url.search, env.DOKPLOY_API_URL);

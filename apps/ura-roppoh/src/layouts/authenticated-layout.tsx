@@ -1,5 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
+
 import { authClient } from "@/libs/better-auth";
 
 export default function () {
@@ -11,11 +12,7 @@ export default function () {
   if (error) console.error(error);
 
   // when no login
-  if (
-    isPending === false &&
-    data === null &&
-    !location.pathname.startsWith("/login")
-  ) {
+  if (isPending === false && data === null && !location.pathname.startsWith("/login")) {
     return navigate("/login");
   }
 

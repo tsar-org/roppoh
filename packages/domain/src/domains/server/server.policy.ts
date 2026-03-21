@@ -1,13 +1,12 @@
 import type { OperationNotPermittedError } from "@roppoh/domain/errors";
 import type { Effect } from "effect";
+
 import type { Organization } from "../organization";
 import type { User } from "../user";
 import type { Server } from "./server.entity";
 
 export interface ServerPolicy {
-  getByUser: (args: {
-    user: User;
-  }) => Effect.Effect<void, OperationNotPermittedError, never>;
+  getByUser: (args: { user: User }) => Effect.Effect<void, OperationNotPermittedError, never>;
 
   startByUser: (args: {
     organization: Organization;

@@ -1,8 +1,6 @@
 import { Hono } from "hono";
-import {
-  betterAuthCorsMiddleware,
-  injectDependenciesMiddleware,
-} from "./middlewares";
+
+import { betterAuthCorsMiddleware, injectDependenciesMiddleware } from "./middlewares";
 import { health } from "./routes/health";
 import { betterAuthRoute } from "./routes/v1/better-auth";
 

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+
 import { SidebarContext } from "@/shadcn/components/ui/sidebar";
 
 const mockValue = {

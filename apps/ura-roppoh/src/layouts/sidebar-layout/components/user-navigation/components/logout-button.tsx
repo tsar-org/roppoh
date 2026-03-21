@@ -1,6 +1,7 @@
 import { DropdownMenuItem } from "@roppoh/shadcn/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
+
 import { authClient } from "@/libs/better-auth";
 
 export function LogoutButton() {

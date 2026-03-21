@@ -1,6 +1,6 @@
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon } from "lucide-react";
 
-import { cn } from "@/shadcn/lib/utils"
+import { cn } from "@/shadcn/lib/utils";
 
 function Spinner({ className, ...props }: React.ComponentPropsWithoutRef<"svg">) {
   return (
@@ -10,7 +10,7 @@ function Spinner({ className, ...props }: React.ComponentPropsWithoutRef<"svg">)
       className={cn("size-4 animate-spin", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Spinner }
+export { Spinner };

@@ -1,6 +1,7 @@
 import { regex } from "arkregex";
 import { Languages } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
+
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { isLocale } from "@/i18n/i18n-util";
@@ -52,12 +53,8 @@ export function LocaleSwitcher() {
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent>
-          <DropdownMenuItem onClick={() => switchLocale("ar")}>
-            {LOCALE_LABELS.ar}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => switchLocale("en")}>
-            {LOCALE_LABELS.en}
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => switchLocale("ar")}>{LOCALE_LABELS.ar}</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => switchLocale("en")}>{LOCALE_LABELS.en}</DropdownMenuItem>
           <DropdownMenuItem onClick={() => switchLocale("ja-JP")}>
             {LOCALE_LABELS["ja-JP"]}
           </DropdownMenuItem>

@@ -1,6 +1,7 @@
 import { getDefaultDurableObjectsFromMiniflare } from "@test/helpers/durable-objects";
 import { MiniFlareController } from "@test/helpers/miniflare";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+
 import { generateRandomAuthCode } from "../../helpers/authorization-code";
 
 describe("test durable-objects AuthorizationCodeStore", async () => {

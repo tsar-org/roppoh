@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import clsx from "clsx";
 import { Suspense, useState } from "react";
@@ -11,27 +12,19 @@ import {
   useLoaderData,
   useNavigation,
 } from "react-router";
-import {
-  PreventFlashOnWrongTheme,
-  type Theme,
-  ThemeProvider,
-  useTheme,
-} from "remix-themes";
-import {
-  clientSideQueryConfig,
-  persister,
-} from "@/libs/react-query/client.client";
-import type { Route } from "./+types/root";
-import "./tailwind.css";
-import { QueryClient } from "@tanstack/react-query";
+import { PreventFlashOnWrongTheme, type Theme, ThemeProvider, useTheme } from "remix-themes";
+
 import { Loading } from "@/components/loading";
+
+import "./tailwind.css";
+import { clientSideQueryConfig, persister } from "@/libs/react-query/client.client";
 import { Toaster } from "@/shadcn/components/ui/sonner";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
 
-export const links: LinksFunction = () => [
-  { href: "/manifest.webmanifest", rel: "manifest" },
-];
+import type { Route } from "./+types/root";
+
+export const links: LinksFunction = () => [{ href: "/manifest.webmanifest", rel: "manifest" }];
 
 export const meta = ({ loaderData }: Route.MetaArgs) => [
   ...generateBaseMeta({
@@ -76,17 +69,10 @@ export function Html({
         <Links />
       </head>
       <body suppressHydrationWarning>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{ persister }}
-        >
+        <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
           {
             // FYI: https://reactrouter.com/start/framework/pending-ui#global-pending-navigation
-            isNavigating ? (
-              <Loading />
-            ) : (
-              <Suspense fallback={<Loading />}>{children}</Suspense>
-            )
+            isNavigating ? <Loading /> : <Suspense fallback={<Loading />}>{children}</Suspense>
           }
         </PersistQueryClientProvider>
         <Toaster />

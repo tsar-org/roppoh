@@ -1,5 +1,5 @@
-import { useRegisterSW } from "virtual:pwa-register/react";
 import { toast } from "sonner";
+import { useRegisterSW } from "virtual:pwa-register/react";
 
 const SW_TOAST_ID = "sw-update-prompt-toast" as const;
 

@@ -1,8 +1,10 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
+
 import { PageTransition } from "@/components/page-transition";
 import { Progress } from "@/shadcn/components/ui/progress";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
+
 import type { Route } from "./+types/page";
 
 export const meta = ({ loaderData }: Route.MetaArgs) => [
@@ -23,14 +25,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 export default function () {
   const { unityProvider, loadingProgression, isLoaded } = useUnityContext({
-    codeUrl:
-      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.wasm.unityweb",
-    dataUrl:
-      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.data.unityweb",
-    frameworkUrl:
-      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.framework.js.unityweb",
-    loaderUrl:
-      "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.loader.js",
+    codeUrl: "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.wasm.unityweb",
+    dataUrl: "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.data.unityweb",
+    frameworkUrl: "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.framework.js.unityweb",
+    loaderUrl: "https://roppoh-assets.tsar-bmb.org/unity-sports-resort.loader.js",
   });
 
   return (

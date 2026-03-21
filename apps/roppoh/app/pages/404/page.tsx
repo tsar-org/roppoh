@@ -1,9 +1,11 @@
 import { ArrowUpRightIcon } from "lucide-react";
 import { Link } from "react-router";
+
 import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
+
 import type { Route } from "./+types/page";
 
 export async function loader({ request, context }: Route.LoaderArgs) {

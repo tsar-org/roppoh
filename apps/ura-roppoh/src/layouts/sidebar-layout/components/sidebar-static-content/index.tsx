@@ -7,6 +7,7 @@ import {
   SidebarMenuItem,
 } from "@roppoh/shadcn/components/ui/sidebar";
 import { NavLink } from "react-router";
+
 import { sidebarContentList } from "./constant";
 
 export function SidebarStaticContent() {

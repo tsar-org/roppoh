@@ -13,6 +13,7 @@ import {
 } from "@roppoh/shadcn/components/ui/field";
 import { SsgoiTransition } from "@ssgoi/react";
 import { GalleryVerticalEnd } from "lucide-react";
+
 import { DiscordLoginButton } from "./components/discord-login-button";
 import { EmailLoginForm } from "./components/email-login-form";
 
@@ -34,9 +35,7 @@ export default function () {
             <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-xl">Welcome back</CardTitle>
-                <CardDescription>
-                  Login with your Discord account
-                </CardDescription>
+                <CardDescription>Login with your Discord account</CardDescription>
               </CardHeader>
               <CardContent>
                 <FieldGroup>
@@ -51,9 +50,8 @@ export default function () {
               </CardContent>
             </Card>
             <FieldDescription className="px-6 text-center">
-              <a href="/">Ura Roppoh</a> is{" "}
-              <a href="https://roppoh.tsar-bmb.org">Roppoh</a>'s super admin
-              console, accessible only to super administrators.
+              <a href="/">Ura Roppoh</a> is <a href="https://roppoh.tsar-bmb.org">Roppoh</a>'s super
+              admin console, accessible only to super administrators.
             </FieldDescription>
           </div>
         </div>

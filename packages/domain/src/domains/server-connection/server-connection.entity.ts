@@ -1,8 +1,6 @@
-import type {
-  ExternalDependencyFailureError,
-  InvalidRequestError,
-} from "@roppoh/domain/errors";
+import type { ExternalDependencyFailureError, InvalidRequestError } from "@roppoh/domain/errors";
 import { Brand, type Effect } from "effect";
+
 import type { Organization } from "../organization";
 
 // Define branded type
@@ -27,9 +25,5 @@ export interface ServerConnection {
   readonly config: ServerConnectionConfig;
 
   // Behavior
-  verify: () => Effect.Effect<
-    void,
-    InvalidRequestError | ExternalDependencyFailureError,
-    never
-  >;
+  verify: () => Effect.Effect<void, InvalidRequestError | ExternalDependencyFailureError, never>;
 }

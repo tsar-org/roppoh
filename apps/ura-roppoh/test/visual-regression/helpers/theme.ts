@@ -4,5 +4,4 @@ interface Args {
   theme: Theme;
 }
 
-export const setTheme = (args: Args) =>
-  localStorage.setItem("theme", `"${args.theme}"`);
+export const setTheme = (args: Args) => localStorage.setItem("theme", `"${args.theme}"`);

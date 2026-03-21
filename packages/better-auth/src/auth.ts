@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth/minimal";
 import { admin, organization } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/d1";
+
 import { schema } from "./schema";
 
 export type BetterAuth = ReturnType<typeof betterAuth>;
@@ -73,9 +74,7 @@ export const createBetterAuth = (args: {
       },
     },
     basePath: "/api/v1/better-auth",
-    baseURL: args.isProduction
-      ? "https://zunpachi.tsar-bmb.org"
-      : "http://localhost:3002",
+    baseURL: args.isProduction ? "https://zunpachi.tsar-bmb.org" : "http://localhost:3002",
     database: drizzleAdapter(drizzle(args.d1), {
       provider: "sqlite",
       schema: schema,

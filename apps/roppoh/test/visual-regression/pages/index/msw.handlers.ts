@@ -5,6 +5,7 @@ import type {
 } from "dokploy-sdk/models/operations";
 import { HttpResponse, http } from "msw";
 import { setupWorker } from "msw/browser";
+
 import { VRT_ENV } from "../../constant";
 
 const DOKPLOY_PROXY_API_PATH = "/api/dokploy" as const;
@@ -93,37 +94,33 @@ const composeList: EnvironmentByProjectIdCompose[] = [
 ];
 
 const handlers = [
-  http.get(
-    `${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/project.all`,
-    () =>
-      HttpResponse.json([
-        {
-          ...project,
-          environments: [environment],
-        },
-      ] satisfies ProjectAllResponse),
+  http.get(`${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/project.all`, () =>
+    HttpResponse.json([
+      {
+        ...project,
+        environments: [environment],
+      },
+    ] satisfies ProjectAllResponse),
   ),
-  http.get(
-    `${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/environment.byProjectId`,
-    () =>
-      HttpResponse.json([
-        {
-          applications: [],
-          compose: composeList,
-          createdAt: "createdAt",
-          description: "description",
-          env: "env",
-          environmentId: ENVIRONMENT_ID,
-          mariadb: [],
-          mongo: [],
-          mysql: [],
-          name: "environment-name",
-          postgres: [],
-          project: project,
-          projectId: project.projectId,
-          redis: [],
-        },
-      ] satisfies EnvironmentByProjectIdResponse),
+  http.get(`${VRT_ENV.VITE_BASE_URL + DOKPLOY_PROXY_API_PATH}/environment.byProjectId`, () =>
+    HttpResponse.json([
+      {
+        applications: [],
+        compose: composeList,
+        createdAt: "createdAt",
+        description: "description",
+        env: "env",
+        environmentId: ENVIRONMENT_ID,
+        mariadb: [],
+        mongo: [],
+        mysql: [],
+        name: "environment-name",
+        postgres: [],
+        project: project,
+        projectId: project.projectId,
+        redis: [],
+      },
+    ] satisfies EnvironmentByProjectIdResponse),
   ),
 ];
 

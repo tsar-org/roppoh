@@ -1,4 +1,17 @@
 {
+  "name": "@roppoh/roppoh",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "type-check": "react-router typegen && tsc --noEmit",
+    "dev": "bun run migration && bun react-router dev",
+    "migration": "wrangler d1 migrations apply roppoh-auth --local",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:visual": "vitest run --project visual"
+  },
   "dependencies": {
     "@discordjs/core": "^2.3.0",
     "@discordjs/rest": "^2.5.1",
@@ -65,20 +78,7 @@
     "vitest-browser-react": "^2.0.2",
     "wrangler": "^4.40.1"
   },
-  "name": "@roppoh/roppoh",
   "peerDependencies": {
     "typescript": "^5.0.0"
-  },
-  "private": true,
-  "scripts": {
-    "build": "react-router build",
-    "cf-typegen": "wrangler types  --strict-vars=false",
-    "check:type": "react-router typegen && tsc --noEmit",
-    "dev": "bun run migration && bun react-router dev",
-    "migration": "wrangler d1 migrations apply roppoh-auth --local",
-    "test": "vitest run",
-    "test:unit": "vitest run --project unit",
-    "test:visual": "vitest run --project visual"
-  },
-  "type": "module"
+  }
 }

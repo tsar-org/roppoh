@@ -1,9 +1,8 @@
 import { faker } from "@faker-js/faker";
+
 import type { AuthorizationCode } from "@/durable-objects/authorization-code-store";
 
-export function generateRandomAuthCode(
-  override: Partial<AuthorizationCode>,
-): AuthorizationCode {
+export function generateRandomAuthCode(override: Partial<AuthorizationCode>): AuthorizationCode {
   return {
     clientId: faker.string.uuid(),
     code: faker.lorem.words(),

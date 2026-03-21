@@ -1,4 +1,5 @@
 import { Gamepad } from "lucide-react";
+
 import { useI18nContext } from "@/i18n/i18n-react";
 import {
   SidebarGroup,
@@ -6,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuSub,
 } from "@/shadcn/components/ui/sidebar";
+
 import { CollapsibleSidebarContentView } from "./components/collapsible-sidebar-content-view";
 import { ServersContainer } from "./components/servers-container";
 import { SidebarContentView } from "./components/sidebar-content-view";

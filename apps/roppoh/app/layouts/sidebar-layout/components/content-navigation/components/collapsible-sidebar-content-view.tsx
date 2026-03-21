@@ -1,13 +1,12 @@
 import { ChevronRight } from "lucide-react";
+
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/shadcn/components/ui/collapsible";
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/shadcn/components/ui/sidebar";
+import { SidebarMenuButton, SidebarMenuItem } from "@/shadcn/components/ui/sidebar";
+
 import type { CollapsibleSidebarContent } from "../type";
 
 type Props = {

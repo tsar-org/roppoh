@@ -1,9 +1,7 @@
-import type {
-  ExternalContractViolationError,
-  ResourceNotFoundError,
-} from "@roppoh/domain/errors";
+import type { ExternalContractViolationError, ResourceNotFoundError } from "@roppoh/domain/errors";
 import type { ExternalDependencyFailureError } from "@roppoh/domain/errors/external-dependency-failure.error";
 import type { Effect } from "effect";
+
 import type { Server } from "./server.entity";
 
 export interface ServerRepository {
@@ -13,9 +11,7 @@ export interface ServerRepository {
     id: string;
   }) => Effect.Effect<
     Server,
-    | ExternalDependencyFailureError
-    | ResourceNotFoundError
-    | ExternalContractViolationError,
+    ExternalDependencyFailureError | ResourceNotFoundError | ExternalContractViolationError,
     never
   >;
 

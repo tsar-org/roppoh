@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import { Separator } from "@/shadcn/components/ui/separator";
 import { SidebarTrigger } from "@/shadcn/components/ui/sidebar";
 import { Skeleton } from "@/shadcn/components/ui/skeleton";
@@ -10,10 +11,7 @@ export function SiteHeader({ title }: { title: string }) {
         <Suspense fallback={<Skeleton className="size-7" />}>
           <SidebarTrigger className="-ml-1" />
         </Suspense>
-        <Separator
-          className="mx-2 data-[orientation=vertical]:h-4"
-          orientation="vertical"
-        />
+        <Separator className="mx-2 data-[orientation=vertical]:h-4" orientation="vertical" />
         <h1 className="py-4 font-medium text-base"> {title} </h1>
       </div>
     </header>

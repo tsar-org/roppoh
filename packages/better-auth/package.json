@@ -1,4 +1,17 @@
 {
+  "name": "@roppoh/better-auth",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "generate:migration": "drizzle-kit generate --config='./drizzle.config.ts'",
+    "generate:schema": "bun x @better-auth/cli generate --config='./src/auth.ts' --output='./src/auth-schema.ts' --yes"
+  },
   "dependencies": {
     "drizzle-orm": "^0.44.6"
   },
@@ -6,21 +19,8 @@
     "@cloudflare/workers-types": "^4.20251231.0",
     "drizzle-kit": "0.31.8"
   },
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    }
-  },
-  "name": "@roppoh/better-auth",
   "peerDependencies": {
     "better-auth": "^1.3.32",
     "typescript": "^5.0.0"
-  },
-  "private": true,
-  "scripts": {
-    "check:type": "tsc --noEmit",
-    "generate:migration": "drizzle-kit generate --config='./drizzle.config.ts'",
-    "generate:schema": "bun x @better-auth/cli generate --config='./src/auth.ts' --output='./src/auth-schema.ts' --yes"
-  },
-  "type": "module"
+  }
 }

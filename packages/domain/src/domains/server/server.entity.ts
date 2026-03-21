@@ -1,5 +1,6 @@
 import type { ExternalDependencyFailureError } from "@roppoh/domain/errors";
 import { Brand, type Effect } from "effect";
+
 import type { Organization } from "../organization";
 import type { InvalidServerState } from "./server.error";
 
@@ -24,15 +25,7 @@ export interface Server {
   readonly serverConnectionId: string;
 
   // Behavior
-  start: () => Effect.Effect<
-    void,
-    InvalidServerState | ExternalDependencyFailureError,
-    never
-  >;
-  stop: () => Effect.Effect<
-    void,
-    InvalidServerState | ExternalDependencyFailureError,
-    never
-  >;
+  start: () => Effect.Effect<void, InvalidServerState | ExternalDependencyFailureError, never>;
+  stop: () => Effect.Effect<void, InvalidServerState | ExternalDependencyFailureError, never>;
   restart: () => Effect.Effect<void, ExternalDependencyFailureError, never>;
 }
