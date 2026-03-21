@@ -1,4 +1,5 @@
 import { Brand, type Effect } from "effect";
+
 import type { Organization } from "../organization";
 
 // Define branded type

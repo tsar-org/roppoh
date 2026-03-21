@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useTheme } from "remix-themes";
+
 import { themeColorToHexColor } from "@/utils/theme-color-to-hex-color";
 
 export function useMetaThemeColorSync() {

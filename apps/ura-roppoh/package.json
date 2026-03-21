@@ -1,4 +1,17 @@
 {
+  "name": "@roppoh/ura-roppoh",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "type-check": "tsc --noEmit",
+    "deploy": "npm run build && wrangler deploy",
+    "dev": "vite dev",
+    "test": "vitest run",
+    "test:visual": "vitest run --project visual"
+  },
   "dependencies": {
     "@roppoh/shadcn": "workspace:*",
     "@ssgoi/react": "4.2.1",
@@ -29,20 +42,7 @@
     "vitest-browser-react": "2.0.2",
     "wrangler": "^4.54.0"
   },
-  "name": "@roppoh/ura-roppoh",
   "peerDependencies": {
     "typescript": "^5.0.0"
-  },
-  "private": true,
-  "scripts": {
-    "build": "vite build",
-    "cf-typegen": "wrangler types  --strict-vars=false",
-    "check:type": "tsc --noEmit",
-    "deploy": "npm run build && wrangler deploy",
-    "dev": "vite dev",
-    "test": "vitest run",
-    "test:visual": "vitest run --project visual"
-  },
-  "type": "module",
-  "version": "0.0.0"
+  }
 }

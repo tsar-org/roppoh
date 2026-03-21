@@ -1,8 +1,6 @@
 import { Hono } from "hono";
-import {
-  type Env,
-  ServiceIdentifier,
-} from "@/middlewares/dependency-injection";
+
+import { type Env, ServiceIdentifier } from "@/middlewares/dependency-injection";
 import type { KeyPairService } from "@/services/keypair-service";
 import { serverError } from "@/utils/error-response";
 
@@ -19,9 +17,7 @@ export const jwksRoute = new Hono<Env>().get("", async (c) => {
       return serverError(c, "Failed to load keypair");
     }
 
-    const publicKeyJwk = await keyPairService.exportPublicKeyAsJWK(
-      keyPair.publicKey,
-    );
+    const publicKeyJwk = await keyPairService.exportPublicKeyAsJWK(keyPair.publicKey);
 
     return c.json({
       keys: [

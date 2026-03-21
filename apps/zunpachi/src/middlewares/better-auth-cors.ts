@@ -1,5 +1,6 @@
 import type { Context } from "hono";
 import { cors } from "hono/cors";
+
 import type { HonoEnv } from "./dependency-injection";
 
 const ALLOW_DOMAINS = {

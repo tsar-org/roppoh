@@ -1,5 +1,5 @@
-import { useTheme } from "remix-themes";
 import type { ComponentProps } from "react";
+import { useTheme } from "remix-themes";
 import { Toaster as Sonner } from "sonner";
 
 type ToasterProps = ComponentProps<typeof Sonner>;

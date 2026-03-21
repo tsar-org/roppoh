@@ -1,5 +1,6 @@
 import { Skeleton } from "@roppoh/shadcn/components/ui/skeleton";
 import { SsgoiTransition } from "@ssgoi/react";
+
 import { SiteHeader } from "@/components/header";
 
 export default function () {

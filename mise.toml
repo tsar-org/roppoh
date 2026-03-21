@@ -1,12 +1,14 @@
 [tools]
 bun = "1.3.0"
-dprint = "latest"
 lefthook = "latest"
 "npm:turbo" = "latest"
 "npm:@dotenvx/dotenvx" = "latest"
 
 [settings]
 npm.bun = true
+
+[tasks.format]
+run = "bun run oxfmt"
 
 [tasks.update-vrt-screenshots]
 description = "Update VRT screenshots"

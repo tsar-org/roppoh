@@ -10,9 +10,9 @@
       "dependsOn": ["^cf-typegen"],
       "outputs": ["worker-configuration.d.ts"]
     },
-    "check:type": {
+    "type-check": {
       "cache": true,
-      "dependsOn": ["^check:type"],
+      "dependsOn": ["^type-check"],
       "outputs": []
     },
     "dev": {

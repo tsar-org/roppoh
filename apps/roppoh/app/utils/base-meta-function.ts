@@ -1,5 +1,6 @@
 import type { MetaDescriptor } from "react-router";
 import { Theme } from "remix-themes";
+
 import { themeColorToHexColor } from "./theme-color-to-hex-color";
 
 interface Argument {
@@ -8,11 +9,7 @@ interface Argument {
   theme: Theme | null;
 }
 
-export const generateBaseMeta = ({
-  baseUrl,
-  title,
-  theme,
-}: Argument): MetaDescriptor[] => {
+export const generateBaseMeta = ({ baseUrl, title, theme }: Argument): MetaDescriptor[] => {
   const description =
     "Roppoh — The game server management web application. And Play WebGL games right in your browser";
 

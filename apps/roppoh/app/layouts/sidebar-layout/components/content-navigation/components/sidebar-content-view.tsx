@@ -1,8 +1,7 @@
 import { Link } from "react-router";
-import {
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from "@/shadcn/components/ui/sidebar";
+
+import { SidebarMenuSubButton, SidebarMenuSubItem } from "@/shadcn/components/ui/sidebar";
+
 import type { SidebarContent } from "../type";
 
 type Props = {

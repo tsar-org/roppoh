@@ -1,16 +1,11 @@
 import { Hono } from "hono";
 import * as v from "valibot";
-import {
-  type Env,
-  ServiceIdentifier,
-} from "@/middlewares/dependency-injection";
+
+import { type Env, ServiceIdentifier } from "@/middlewares/dependency-injection";
 import type { DiscordService } from "@/services/discord-service";
 import type { OidcStateCodecService } from "@/services/oidc-state-codec-service";
-import {
-  emailNotVerified,
-  invalidState,
-  serverError,
-} from "../utils/error-response";
+
+import { emailNotVerified, invalidState, serverError } from "../utils/error-response";
 import { oidcValidator } from "../utils/oidc-validator";
 
 const querySchema = v.object({
@@ -23,10 +18,9 @@ export const callbackRoute = new Hono<Env>().get(
   oidcValidator("query", querySchema),
   async (c) => {
     // di
-    const oidcStateCodecService =
-      await c.env.container.getAsync<OidcStateCodecService>(
-        ServiceIdentifier.OIDC_STATE_CODEC_SERVICE,
-      );
+    const oidcStateCodecService = await c.env.container.getAsync<OidcStateCodecService>(
+      ServiceIdentifier.OIDC_STATE_CODEC_SERVICE,
+    );
     const discordService = await c.env.container.getAsync<DiscordService>(
       ServiceIdentifier.DISCORD_SERVICE,
     );
@@ -80,10 +74,7 @@ export const callbackRoute = new Hono<Env>().get(
       return c.redirect(redirectUrl);
     } catch (error) {
       console.error("Discord service error:", error);
-      return serverError(
-        c,
-        "Failed to exchange authorization code with Discord",
-      );
+      return serverError(c, "Failed to exchange authorization code with Discord");
     }
   },
 );

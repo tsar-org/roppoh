@@ -21,9 +21,7 @@ type ExtractError<T> = T extends Effect.Effect<any, infer E, any> ? E : never;
 /**
  * Extract environment type R from Effect.Effect<A, E, R>
  */
-type ExtractRequirements<T> = T extends Effect.Effect<any, any, infer R>
-  ? R
-  : never;
+type ExtractRequirements<T> = T extends Effect.Effect<any, any, infer R> ? R : never;
 
 /**
  * Get the return type of a function
@@ -33,9 +31,7 @@ type ReturnEffect<F> = F extends (...args: any[]) => infer R ? R : never;
 /**
  * Get the type of the last element in an array
  */
-type Last<T extends readonly any[]> = T extends readonly [...any[], infer L]
-  ? L
-  : never;
+type Last<T extends readonly any[]> = T extends readonly [...any[], infer L] ? L : never;
 
 /**
  * Extract Effect from each function in array and convert to tuple type
@@ -57,8 +53,9 @@ type AllErrors<Fns extends readonly EffectFunction[]> = ExtractError<
  * Compose environment types of all functions with union
  * @internal
  */
-type AllRequirements<Fns extends readonly EffectFunction[]> =
-  ExtractRequirements<EffectsFromFunctions<Fns>[number]>;
+type AllRequirements<Fns extends readonly EffectFunction[]> = ExtractRequirements<
+  EffectsFromFunctions<Fns>[number]
+>;
 
 /**
  * Derive composed Effect type from array of functions that return Effect (success type is automatically derived)
@@ -116,11 +113,6 @@ type AllRequirements<Fns extends readonly EffectFunction[]> =
  *
  * @template Fns - readonly array of functions that return Effect
  */
-export type EffectCompose<Fns extends readonly EffectFunction[]> =
-  Fns extends readonly []
-    ? never // Empty array not allowed
-    : Effect.Effect<
-        ExtractSuccess<ReturnEffect<Last<Fns>>>,
-        AllErrors<Fns>,
-        AllRequirements<Fns>
-      >;
+export type EffectCompose<Fns extends readonly EffectFunction[]> = Fns extends readonly []
+  ? never // Empty array not allowed
+  : Effect.Effect<ExtractSuccess<ReturnEffect<Last<Fns>>>, AllErrors<Fns>, AllRequirements<Fns>>;

@@ -6,6 +6,7 @@ import { test as testBase } from "vitest";
 export const testWithMswMock = (worker: SetupWorker) =>
   testBase.extend({
     worker: [
+      // oxlint-disable-next-line no-empty-pattern
       async ({}, use) => {
         // Start the worker before the test.
         await worker.start({

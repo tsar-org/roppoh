@@ -10,13 +10,8 @@
       "inputs": ["wrangler.jsonc", ".dev.vars"],
       "outputs": ["worker-configuration.d.ts"]
     },
-    "check:type": {
-      "inputs": [
-        "src",
-        "$TURBO_ROOT$/tsconfig.json",
-        "./*.ts",
-        "./tsconfig.json"
-      ]
+    "type-check": {
+      "inputs": ["src", "$TURBO_ROOT$/tsconfig.json", "./*.ts", "./tsconfig.json"]
     }
   }
 }

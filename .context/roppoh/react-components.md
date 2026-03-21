@@ -327,21 +327,21 @@ export const BadgeContainer = ({ userId }: { userId: string }) => {
 
 ```typescript
 // Container component (data layer)
-FileName-container.tsx
+FileName - container.tsx;
 
 // Presenter component (UI layer)
-FileName-view.tsx
+FileName - view.tsx;
 
 // Utility/helper functions
-fileName.ts
-useFileName.ts  // Custom hooks
+fileName.ts;
+useFileName.ts; // Custom hooks
 
 // Types
-fileName.types.ts  // or fileName.d.ts
+fileName.types.ts; // or fileName.d.ts
 
 // Tests
-FileName.test.tsx
-FileName.test.ts
+FileName.test.tsx;
+FileName.test.ts;
 ```
 
 ### Examples
@@ -421,16 +421,16 @@ import { Player } from '@/types/player';
 
 ```typescript
 // Bad
-import { Button } from '../../../components/Button-container';
-import { Player } from '../../../types/player';
+import { Button } from "../../../components/Button-container";
+import { Player } from "../../../types/player";
 ```
 
 ✅ **Use alias imports**:
 
 ```typescript
 // Good
-import { Button } from '@/components/Button-container';
-import { Player } from '@/types/player';
+import { Button } from "@/components/Button-container";
+import { Player } from "@/types/player";
 ```
 
 ---

@@ -1,5 +1,6 @@
 import { EnvironmentByProjectIdComposeStatus } from "dokploy-sdk/models/operations";
 import { EllipsisVertical } from "lucide-react";
+
 import type { Server } from "@/features/dokploy-server-management";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
@@ -24,18 +25,15 @@ export const ServerActionDropdownView = (props: Props) => {
   const isStartButtonDisabled =
     props.server.status === "fetching" ||
     // serverが停止中(idle)状態のみ押下可能
-    props.server.compose.composeStatus !==
-      EnvironmentByProjectIdComposeStatus.Idle ||
+    props.server.compose.composeStatus !== EnvironmentByProjectIdComposeStatus.Idle ||
     props.isProcessingServerControl;
 
   const isStopButtonDisabled =
     props.server.status === "fetching" ||
     // serverが稼働中(done or running)状態のみ押下可能
     !(
-      props.server.compose.composeStatus ===
-        EnvironmentByProjectIdComposeStatus.Done ||
-      props.server.compose.composeStatus ===
-        EnvironmentByProjectIdComposeStatus.Running
+      props.server.compose.composeStatus === EnvironmentByProjectIdComposeStatus.Done ||
+      props.server.compose.composeStatus === EnvironmentByProjectIdComposeStatus.Running
     ) ||
     props.isProcessingServerControl;
 

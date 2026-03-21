@@ -1,5 +1,7 @@
 import { data, Outlet } from "react-router";
+
 import { createDiscordApiClient } from "@/libs/discord-js/client.server";
+
 import type { Route } from "./+types/layout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
@@ -15,9 +17,7 @@ export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
     const guilds = await client.users.getGuilds();
 
     // check if user is in the specified guild
-    const isMember = guilds.some(
-      (guild) => guild.id === ctx.cf.env.TSAR_GUILD_ID,
-    );
+    const isMember = guilds.some((guild) => guild.id === ctx.cf.env.TSAR_GUILD_ID);
 
     return data(
       { isMember: isMember },
@@ -34,9 +34,7 @@ export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {
  * - 認可条件
  *  - 指定したGuildに参加していること
  */
-export default function GuildAuthorizedLayout({
-  loaderData,
-}: Route.ComponentProps) {
+export default function GuildAuthorizedLayout({ loaderData }: Route.ComponentProps) {
   if (!loaderData.isMember) {
     return <div>You are not a member of this guild.</div>;
   }

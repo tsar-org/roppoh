@@ -12,7 +12,5 @@ export interface StartServerByUserUseCase {
     serverId: string;
     user: User;
     Organization: Organization;
-  }) => EffectCompose<
-    [ServerRepository["getById"], ServerPolicy["startByUser"], Server["start"]]
-  >;
+  }) => EffectCompose<[ServerRepository["getById"], ServerPolicy["startByUser"], Server["start"]]>;
 }

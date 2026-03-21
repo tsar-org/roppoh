@@ -1,11 +1,13 @@
+// oxlint-disable no-empty-pattern
+
 import { Outlet } from "react-router";
+
 import type { Route } from "./+types/layout";
 import { useHtmlTagLangAttribute } from "./hooks/use-html-tag-lang-attribute";
 import { useMetaThemeColorSync } from "./hooks/use-meta-theme-color-sync";
 import { useSwUpdatePrompt } from "./hooks/use-sw-update-prompt";
 import { useUserLangCookie } from "./hooks/use-user-lang-cookie";
 
-// for client side render
 export async function clientLoader({}: Route.ClientLoaderArgs) {}
 
 /**

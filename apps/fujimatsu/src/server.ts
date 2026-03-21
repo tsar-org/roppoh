@@ -1,8 +1,6 @@
 import { Hono } from "hono";
-import {
-  type Env,
-  injectDependenciesMiddleware,
-} from "./middlewares/dependency-injection";
+
+import { type Env, injectDependenciesMiddleware } from "./middlewares/dependency-injection";
 import { authorizeRoute } from "./routes/authorize";
 import { callbackRoute } from "./routes/callback";
 import { discoveryRoute } from "./routes/discovery";

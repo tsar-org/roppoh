@@ -32,9 +32,7 @@ export class AuthorizationCodeStore extends DurableObject<Cloudflare.Env> {
     return await this.ctx.storage.put<AuthorizationCode>(args.code, authCode);
   }
 
-  public async consume(
-    args: Pick<AuthorizationCode, "code" | "clientId" | "redirectUri">,
-  ) {
+  public async consume(args: Pick<AuthorizationCode, "code" | "clientId" | "redirectUri">) {
     const authCode = await this.ctx.storage.get<AuthorizationCode>(args.code);
     if (!authCode) return null;
 

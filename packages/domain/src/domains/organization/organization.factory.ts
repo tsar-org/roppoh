@@ -1,4 +1,5 @@
 import type { Effect } from "effect";
+
 import type { Organization } from "./organization.entity";
 
 export interface OrganizationFactory {

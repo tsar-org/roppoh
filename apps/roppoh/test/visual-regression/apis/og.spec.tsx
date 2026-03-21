@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { type BrowserPage, page } from "vitest/browser";
 import { render } from "vitest-browser-react";
+import { type BrowserPage, page } from "vitest/browser";
+
 import { OG } from "@/apis/og/components/og";
 
 const seOgViewPort = (page: BrowserPage) => page.viewport(1200, 630);
@@ -70,8 +71,7 @@ describe("VRT OG", async () => {
   test("long title", async () => {
     // Arrange
     await seOgViewPort(page);
-    const title =
-      "This is a very long title to verify text wrapping and truncation behavior";
+    const title = "This is a very long title to verify text wrapping and truncation behavior";
 
     // Act
     const screen = await render(

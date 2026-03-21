@@ -1,9 +1,7 @@
 import { Hono } from "hono";
 import * as v from "valibot";
-import {
-  type Env,
-  ServiceIdentifier,
-} from "@/middlewares/dependency-injection";
+
+import { type Env, ServiceIdentifier } from "@/middlewares/dependency-injection";
 import type { DiscordService } from "@/services/discord-service";
 import type { KeyPairService } from "@/services/keypair-service";
 import {
@@ -13,6 +11,7 @@ import {
   unsupportedGrantType,
 } from "@/utils/error-response";
 import { oidcValidator } from "@/utils/oidc-validator";
+
 import * as jwt_lib from "../lib/jwt";
 
 const tokenFormSchema = v.object({
@@ -64,10 +63,7 @@ export const tokenRoute = new Hono<Env>().post(
 
       if (!userInfo.email) {
         c.header("Cache-Control", "no-store");
-        return invalidRequest(
-          c,
-          "User email is required but not available from Discord",
-        );
+        return invalidRequest(c, "User email is required but not available from Discord");
       }
 
       const baseUrl = new URL(c.req.url).origin;

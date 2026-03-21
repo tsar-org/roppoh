@@ -7,16 +7,11 @@ import {
 import { useEffect } from "react";
 import * as v from "valibot";
 
-const ThemeSchema = v.union([
-  v.literal("dark"),
-  v.literal("light"),
-  v.literal("system"),
-]);
+const ThemeSchema = v.union([v.literal("dark"), v.literal("light"), v.literal("system")]);
 
 type Theme = v.InferInput<typeof ThemeSchema>;
 
-const isTheme = (value: unknown): value is Theme =>
-  v.safeParse(ThemeSchema, value).success;
+const isTheme = (value: unknown): value is Theme => v.safeParse(ThemeSchema, value).success;
 
 const themeAtom = atomWithStorage<Theme>(
   "theme",
@@ -41,8 +36,7 @@ function useThemeProvider() {
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
 

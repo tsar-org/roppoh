@@ -21,6 +21,7 @@ import {
   LayoutGridIcon,
 } from "lucide-react";
 import { useState } from "react";
+
 import type { Server } from "@/features/dokploy-server-management";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
@@ -89,36 +90,25 @@ export function DataTable({ columns, data }: DataTableProps) {
             <DropdownMenuTrigger asChild>
               <Button size="sm" variant="outline">
                 <LayoutGridIcon className="size-4" />
-                <span className="hidden lg:inline">
-                  {LL.top.table.customizeColumns.long()}
-                </span>
-                <span className="lg:hidden">
-                  {LL.top.table.customizeColumns.short()}
-                </span>
+                <span className="hidden lg:inline">{LL.top.table.customizeColumns.long()}</span>
+                <span className="lg:hidden">{LL.top.table.customizeColumns.short()}</span>
                 <ChevronDown className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               {table
                 .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide(),
-                )
+                .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
                 .map((column) => {
                   return (
                     <DropdownMenuCheckboxItem
                       checked={column.getIsVisible()}
                       className="capitalize"
                       key={column.id}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
                     >
-                      {LL.top.table.column[
-                        column.id as keyof typeof LL.top.table.column
-                      ]?.() ?? column.id}
+                      {LL.top.table.column[column.id as keyof typeof LL.top.table.column]?.() ??
+                        column.id}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
@@ -141,10 +131,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -154,29 +141,17 @@ export function DataTable({ columns, data }: DataTableProps) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  data-state={row.getIsSelected() && "selected"}
-                  key={row.id}
-                >
+                <TableRow data-state={row.getIsSelected() && "selected"} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{ width: `${cell.column.getSize()}px` }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                    <TableCell key={cell.id} style={{ width: `${cell.column.getSize()}px` }}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  className="h-24 text-center"
-                  colSpan={columns.length}
-                >
+                <TableCell className="h-24 text-center" colSpan={columns.length}>
                   No results.
                 </TableCell>
               </TableRow>

@@ -1,4 +1,17 @@
 {
+  "name": "@roppoh/fujimatu",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/entry.ts",
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "type-check": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "dev": "vite",
+    "test": "wrangler build -c wrangler.jsonc && vitest run"
+  },
   "dependencies": {
     "@discordjs/core": "^2.0.0",
     "@discordjs/rest": "^2.6.0",
@@ -19,21 +32,8 @@
     "vitest": "^4.0.16",
     "wrangler": "^4.54.0"
   },
-  "main": "./src/entry.ts",
-  "name": "@roppoh/fujimatu",
   "peerDependencies": {
     "@types/node": "22.16.0",
     "typescript": "^5.0.0"
-  },
-  "private": true,
-  "scripts": {
-    "build": "vite build",
-    "cf-typegen": "wrangler types  --strict-vars=false",
-    "check:type": "tsc --noEmit",
-    "deploy": "wrangler deploy",
-    "dev": "vite",
-    "test": "wrangler build -c wrangler.jsonc && vitest run"
-  },
-  "type": "module",
-  "version": "0.0.0"
+  }
 }

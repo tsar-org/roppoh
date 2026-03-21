@@ -75,11 +75,11 @@ bun turbo build
 
 ---
 
-### 2. `check:type`
+### 2. `type-check`
 
 **Description**: Type checking across all workspaces
 
-**Task file**: `turbo.json` - `tasks.check:type`
+**Task file**: `turbo.json` - `tasks.type-check`
 
 **What it does**:
 See [turbo.json](./turbo.json) for full configuration
@@ -100,7 +100,7 @@ See [turbo.json](./turbo.json) for full configuration
 **Command**:
 
 ```bash
-bun turbo check:type
+bun turbo type-check
 ```
 
 **What's Checked**:
@@ -115,12 +115,12 @@ bun turbo check:type
 - Fast compared to `build`
 - First run performs full type check
 - Subsequent runs skip unchanged files (cached)
-- Use `bun turbo --force check:type` to re-type-check everything
+- Use `bun turbo --force type-check` to re-type-check everything
 
 **Related Scripts**:
 
-- `apps/roppoh`: `bun run check:type`
-- Root: `turbo check:type` + `react-router typegen`
+- `apps/roppoh`: `bun run type-check`
+- Root: `turbo type-check` + `react-router typegen`
 
 ---
 
@@ -224,7 +224,7 @@ bun turbo test
 ### Cached Tasks ✅
 
 - `build` - Skip if source code unchanged
-- `check:type` - Skip if TypeScript files unchanged
+- `type-check` - Skip if TypeScript files unchanged
 - `cf-typegen` - Skip if CloudFlare config unchanged
 
 ### Non-Cached Tasks ❌
@@ -238,7 +238,7 @@ bun turbo test
 bun turbo --force build
 
 # Re-run type check (ignore cache)
-bun turbo --force check:type
+bun turbo --force type-check
 
 # Re-generate CloudFlare types (ignore cache)
 bun turbo --force cf-typegen

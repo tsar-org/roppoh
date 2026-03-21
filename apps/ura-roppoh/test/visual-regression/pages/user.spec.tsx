@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
+import { page } from "vitest/browser";
+
 import SidebarLayout from "@/layouts/sidebar-layout";
 import Page from "@/pages/user/page";
+
 import { textMatrix } from "../constant";
 import { createRootRouteStub, type RouteChildren } from "../helpers/route-stub";
 import { setTheme } from "../helpers/theme";

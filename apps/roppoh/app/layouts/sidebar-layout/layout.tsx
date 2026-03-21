@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,6 +9,7 @@ import {
   SidebarProvider,
   SidebarRail,
 } from "@/shadcn/components/ui/sidebar";
+
 import { ContentNavigation } from "./components/content-navigation";
 import { GuildSwitcher } from "./components/team-switcher";
 import { UserNavigation } from "./components/user-navigation";

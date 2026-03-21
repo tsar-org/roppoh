@@ -1,4 +1,5 @@
 import { SsgoiTransition } from "@ssgoi/react";
+
 import { SiteHeader } from "@/components/header";
 
 export default function () {

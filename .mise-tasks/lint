@@ -1,6 +1,6 @@
 #\!/usr/bin/env bash
 
-bunx --bun biome lint
+bun oxlint --fix
 
 turbo cf-typegen
 

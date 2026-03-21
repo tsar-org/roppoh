@@ -8,6 +8,7 @@ import {
   SidebarRail,
 } from "@roppoh/shadcn/components/ui/sidebar";
 import { Outlet } from "react-router";
+
 import { Header } from "./components/header";
 import { SidebarStaticContent } from "./components/sidebar-static-content";
 import { UserNavigation } from "./components/user-navigation";

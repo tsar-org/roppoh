@@ -11,7 +11,5 @@ export interface StopServerByUserUseCase {
     serverId: string;
     user: User;
     Organization: Organization;
-  }) => EffectCompose<
-    [ServerRepository["getById"], ServerPolicy["stopByUser"], Server["stop"]]
-  >;
+  }) => EffectCompose<[ServerRepository["getById"], ServerPolicy["stopByUser"], Server["stop"]]>;
 }

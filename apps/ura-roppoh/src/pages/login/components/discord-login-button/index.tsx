@@ -2,7 +2,9 @@ import { Button } from "@roppoh/shadcn/components/ui/button";
 import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
 import { useTransition } from "react";
 import { toast } from "sonner";
+
 import { authClient } from "@/libs/better-auth";
+
 import DiscordIconSvg from "./assets/discord-icon.svg";
 
 export function DiscordLoginButton() {
@@ -19,13 +21,7 @@ export function DiscordLoginButton() {
     });
 
   return (
-    <Button
-      className="gap-3"
-      disabled={isPending}
-      onClick={signIn}
-      type="button"
-      variant="outline"
-    >
+    <Button className="gap-3" disabled={isPending} onClick={signIn} type="button" variant="outline">
       {isPending && <Spinner />}
       <img alt="discord-icon" className="size-4" src={DiscordIconSvg} />
       Login with Discord

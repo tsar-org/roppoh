@@ -1,6 +1,7 @@
 import { EnvironmentByProjectIdComposeStatus } from "dokploy-sdk/models/operations";
 import { BadgeCheck, CirclePause, CircleX, Hammer } from "lucide-react";
 import type { JSX } from "react";
+
 import { Badge } from "@/shadcn/components/ui/badge";
 
 type Props = {

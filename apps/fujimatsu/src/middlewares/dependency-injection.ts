@@ -1,6 +1,7 @@
 import type { MiddlewareHandler } from "hono";
 import type { Bindings, Variables } from "hono/types";
 import { Container } from "inversify";
+
 import type { DiscordService } from "../services/discord-service";
 import type { KeyPairService } from "../services/keypair-service";
 import type { OidcStateCodecService } from "../services/oidc-state-codec-service";
@@ -20,20 +21,15 @@ export enum ServiceIdentifier {
   DISCORD_SERVICE = "DiscordService",
 }
 
-const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
-  c,
-  next,
-) => {
+const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (c, next) => {
   if (!c.env) c.env = {} as Env["Bindings"];
 
   const container = new Container();
 
-  container
-    .bind<KeyPairService>(ServiceIdentifier.KEY_PAIR_SERVICE)
-    .toDynamicValue(async () => {
-      const module = await import("../services/keypair-service");
-      return new module.KeyPairService();
-    });
+  container.bind<KeyPairService>(ServiceIdentifier.KEY_PAIR_SERVICE).toDynamicValue(async () => {
+    const module = await import("../services/keypair-service");
+    return new module.KeyPairService();
+  });
 
   container
     .bind<OidcStateCodecService>(ServiceIdentifier.OIDC_STATE_CODEC_SERVICE)
@@ -42,12 +38,10 @@ const injectDependenciesMiddleware: MiddlewareHandler<Env> = async (
       return new module.OidcStateCodecService();
     });
 
-  container
-    .bind<DiscordService>(ServiceIdentifier.DISCORD_SERVICE)
-    .toDynamicValue(async () => {
-      const module = await import("../services/discord-service");
-      return new module.DiscordService();
-    });
+  container.bind<DiscordService>(ServiceIdentifier.DISCORD_SERVICE).toDynamicValue(async () => {
+    const module = await import("../services/discord-service");
+    return new module.DiscordService();
+  });
 
   c.env.container = container;
 

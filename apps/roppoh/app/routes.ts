@@ -1,9 +1,4 @@
-import {
-  index,
-  layout,
-  type RouteConfig,
-  route,
-} from "@react-router/dev/routes";
+import { index, layout, type RouteConfig, route } from "@react-router/dev/routes";
 
 export default [
   // api
@@ -25,10 +20,7 @@ export default [
           layout("./layouts/sidebar-layout/layout.tsx", [
             route("/:lang", "./pages/index/page.tsx"),
           ]),
-          route(
-            "/:lang/unity-sports-resort",
-            "./pages/unity-sports-resort/page.tsx",
-          ),
+          route("/:lang/unity-sports-resort", "./pages/unity-sports-resort/page.tsx"),
         ]),
       ]),
 

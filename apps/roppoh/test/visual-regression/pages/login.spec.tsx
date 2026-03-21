@@ -1,8 +1,10 @@
 import { Theme } from "remix-themes";
 import { describe, expect, test } from "vitest";
-import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
+import { page } from "vitest/browser";
+
 import LoginPage from "@/pages/login/page";
+
 import { createLayoutRouteStub } from "../helpers/layout-route-stub";
 import { setDesktopViewPort, setMobileViewPort } from "../helpers/view-port";
 

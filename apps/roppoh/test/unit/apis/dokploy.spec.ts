@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { requestProxy } from "../../../app/apis/dokploy";
 
 describe("requestProxy function", () => {
@@ -22,9 +23,7 @@ describe("requestProxy function", () => {
       const actual = requestProxy({ env, request });
 
       // Assert
-      expect(actual.url).toBe(
-        `${env.DOKPLOY_API_URL + DOKPLOY_API_PATH}/servers`,
-      );
+      expect(actual.url).toBe(`${env.DOKPLOY_API_URL + DOKPLOY_API_PATH}/servers`);
     });
 
     it("should preserve query parameters", () => {
@@ -48,16 +47,12 @@ describe("requestProxy function", () => {
       const actual = requestProxy({ env, request });
 
       // Assert
-      expect(actual.url).toBe(
-        `${env.DOKPLOY_API_URL + DOKPLOY_API_PATH}/servers/123/deployments`,
-      );
+      expect(actual.url).toBe(`${env.DOKPLOY_API_URL + DOKPLOY_API_PATH}/servers/123/deployments`);
     });
 
     it("should handle special characters in query parameters", () => {
       // Arrange
-      const request = new Request(
-        `${API_URL}/search?q=hello%20world&tag=foo%26bar`,
-      );
+      const request = new Request(`${API_URL}/search?q=hello%20world&tag=foo%26bar`);
 
       // Act
       const actual = requestProxy({ env, request });
@@ -79,12 +74,8 @@ describe("requestProxy function", () => {
 
       // Assert
       expect(actual.headers.get("x-api-key")).toBe(env.DOKPLOY_API_TOKEN);
-      expect(actual.headers.get("CF-Access-Client-Id")).toBe(
-        env.CF_ACCESS_CLIENT_ID,
-      );
-      expect(actual.headers.get("CF-Access-Client-Secret")).toBe(
-        env.CF_ACCESS_CLIENT_SECRET,
-      );
+      expect(actual.headers.get("CF-Access-Client-Id")).toBe(env.CF_ACCESS_CLIENT_ID);
+      expect(actual.headers.get("CF-Access-Client-Secret")).toBe(env.CF_ACCESS_CLIENT_SECRET);
       expect(actual.headers.get("Accept")).toBe("application/json");
     });
 

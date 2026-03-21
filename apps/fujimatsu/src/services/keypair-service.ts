@@ -40,8 +40,7 @@ export class KeyPairService {
     const stored = await kv.get(KeyPairService.KV_KEY, { type: "json" });
 
     if (stored) {
-      const { publicKey: pubJwk, privateKey: privJwk } =
-        stored as StoredKeyPair;
+      const { publicKey: pubJwk, privateKey: privJwk } = stored as StoredKeyPair;
 
       // JWK から CryptoKey に変換
       const publicKey = (await jose.importJWK(pubJwk, "RS256")) as CryptoKey;
