@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "drizzle-orm": "^0.44.6",
+    "kysely": "0.28.11",
+    "kysely-d1": "0.4.0"
+  },
+  "devDependencies": {
+    "@types/pg": "8.16.0",
+    "drizzle-kit": "0.31.8"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "name": "@roppoh/database",
+  "peerDependencies": {
+    "@types/better-sqlite3": "7.6.13",
+    "better-sqlite3": "12.6.2",
+    "typescript": "^5.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "check:type": "tsc --noEmit",
+    "generate:migration": "drizzle-kit generate --config='./drizzle.config.ts'"
+  },
+  "type": "module"
+}
