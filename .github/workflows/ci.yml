@@ -57,3 +57,5 @@ jobs:
         working-directory: apps/roppoh
       - run: bun run test
         working-directory: apps/fujimatsu
+      - run: bun run test
+        working-directory: apps/neo-fujimatsu

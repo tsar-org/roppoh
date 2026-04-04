@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Encrypt env files for apps/neo-fujimatsu"
+
+dotenvx encrypt --stdout -f apps/neo-fujimatsu/.env -fk .env.keys > apps/neo-fujimatsu/.env.enc

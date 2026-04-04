@@ -7,6 +7,20 @@
       "tag": "20251231132234_red_doctor_strange",
       "version": "6",
       "when": 1767187354434
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1774765475688,
+      "tag": "20260329062435_slimy_azazel",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1775267933052,
+      "tag": "20260404015853_magical_romulus",
+      "breakpoints": true
     }
   ],
   "version": "7"
