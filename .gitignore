@@ -43,3 +43,7 @@ test-results
 
 # dotenvx
 .env.keys
+
+# lefthook
+.lefthook-local.yml
+lefthook-local.yml
