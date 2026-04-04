@@ -11,6 +11,7 @@ services:
       - fujimatsu_node_modules:/app/apps/fujimatsu/node_modules
       - roppoh_node_modules:/app/apps/roppoh/node_modules
       - ura_roppoh_node_modules:/app/apps/ura-roppoh/node_modules
+      - neo_fujimatsu_node_modules:/app/apps/neo-fujimatsu/node_modules
       - zunpachi_node_modules:/app/apps/zunpachi/node_modules
       - better_auth_node_modules:/app/packages/better-auth/node_modules
       - better_auth_database_node_modules:/app/packages/better-auth-database/node_modules
@@ -23,6 +24,7 @@ volumes:
   fujimatsu_node_modules:
   roppoh_node_modules:
   ura_roppoh_node_modules:
+  neo_fujimatsu_node_modules:
   zunpachi_node_modules:
   better_auth_node_modules:
   better_auth_database_node_modules:
