@@ -11,15 +11,15 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json bun.lock ./
-COPY apps/roppoh/package.json ./apps/roppoh/
 COPY apps/fujimatsu/package.json ./apps/fujimatsu/
+COPY apps/roppoh/package.json ./apps/roppoh/
+COPY apps/ura-roppoh/package.json ./apps/ura-roppoh/
+COPY apps/neo-fujimatsu/package.json ./apps/neo-fujimatsu/
+COPY apps/zunpachi/package.json ./apps/zunpachi/
+COPY packages/better-auth/package.json ./packages/better-auth/
 COPY packages/better-auth-database/package.json ./packages/better-auth-database/
+COPY packages/domain/package.json ./packages/domain/
+COPY packages/shadcn/package.json ./packages/shadcn/
 
 # Install dependencies
 RUN bun install --frozen-lockfile
-
-# Set working directory to the app
-WORKDIR /app/apps/roppoh
-
-# Run tests
-CMD ["bun", "run", "test:visual"]

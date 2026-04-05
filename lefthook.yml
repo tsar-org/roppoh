@@ -3,18 +3,21 @@ pre-commit:
   commands:
     install:
       run: bun install --frozen-lockfile
-    format:
+    oxfmt:
       stage_fixed: true
-      run: bunx biome check --fix --unsafe
+      run: bun oxfmt {staged_files} --write
+    oxlint:
+      stage_fixed: true
+      run: bun oxlint {staged_files} --fix
     build:
       run: turbo build
-    type:
-      run: turbo check:type
+    type-check:
+      run: bun run type-check && turbo type-check
     cf-typegen:
       stage_fixed: true
       run: turbo cf-typegen
-    dprint:
-      stage_fixed: true
-      run: dprint fmt
     knip:
-      run: bun knip
+      run: bun run knip
+    env-encrypt:
+      stage_fixed: true
+      run: mise run env-encrypt

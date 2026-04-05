@@ -1,4 +1,5 @@
 import { Gamepad } from "lucide-react";
+
 import { useI18nContext } from "@/i18n/i18n-react";
 import {
   SidebarGroup,
@@ -6,13 +7,14 @@ import {
   SidebarMenu,
   SidebarMenuSub,
 } from "@/shadcn/components/ui/sidebar";
+
 import { CollapsibleSidebarContentView } from "./components/collapsible-sidebar-content-view";
 import { ServersContainer } from "./components/servers-container";
 import { SidebarContentView } from "./components/sidebar-content-view";
 import type { CollapsibleSidebarContent } from "./type";
 
 export const ContentNavigation = () => {
-  const { LL } = useI18nContext();
+  const { LL, locale } = useI18nContext();
 
   const playground: CollapsibleSidebarContent = {
     icon: () => <Gamepad />,
@@ -20,7 +22,7 @@ export const ContentNavigation = () => {
     items: [
       {
         title: "Unity Sports Resort",
-        url: "/unity-sports-resort",
+        url: `/${locale}/unity-sports-resort`,
       },
     ],
     title: LL.sidebar.content.playground(),

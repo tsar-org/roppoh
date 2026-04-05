@@ -1,8 +1,6 @@
 import { createRequestHandler } from "react-router";
-import {
-  type DependencyContainer,
-  dependencyInjection,
-} from "@/utils/dependency-injection.server";
+
+import { type DependencyContainer, dependencyInjection } from "@/utils/dependency-injection.server";
 
 declare module "react-router" {
   export interface AppLoadContext {

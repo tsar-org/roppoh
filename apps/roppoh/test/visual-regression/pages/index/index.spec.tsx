@@ -2,12 +2,14 @@ import { dehydrate } from "@tanstack/react-query";
 import type { createRoutesStub } from "react-router";
 import { Theme } from "remix-themes";
 import { describe, expect } from "vitest";
-import { page } from "vitest/browser";
 import { render } from "vitest-browser-react";
+import { page } from "vitest/browser";
+
 import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
 import { projectAllQueryOption } from "@/libs/react-query/options/dokploy/project";
 import IndexPage, { type loader } from "@/pages/index/page";
+
 import { VRT_ENV } from "../../constant";
 import { createLayoutRouteStub } from "../../helpers/layout-route-stub";
 import { SidebarForTest } from "../../helpers/sidebar-for-test";
@@ -17,9 +19,7 @@ import { worker } from "./msw.handlers";
 
 describe("VRT index page", async () => {
   const PATH = "/";
-  const createRouteChildren = (
-    theme: Theme,
-  ): Parameters<typeof createRoutesStub>[0] => [
+  const createRouteChildren = (theme: Theme): Parameters<typeof createRoutesStub>[0] => [
     {
       Component: SidebarForTest,
       children: [

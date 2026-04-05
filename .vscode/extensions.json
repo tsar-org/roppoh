@@ -4,6 +4,6 @@
     "biomejs.biome",
     "hverlin.mise-vscode",
     "vitest.explorer",
-    "arktypeio.arkdark"
+    "ms-playwright.playwright"
   ]
 }

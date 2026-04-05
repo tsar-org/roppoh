@@ -1,10 +1,7 @@
 import { ChevronsUpDown } from "lucide-react";
+
 import { authClient } from "@/libs/better-auth/auth.client";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/shadcn/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shadcn/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/shadcn/components/ui/sidebar";
+
 import { LocaleSwitcher } from "./components/locale-switcher";
 import { LogoutButton } from "./components/logout-button";
 import { ThemeSwitcher } from "./components/theme-switcher";
@@ -35,18 +33,11 @@ export function UserNavigation() {
               size="lg"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage
-                  alt={`${data?.user.name}-icon`}
-                  src={data?.user.image || ""}
-                />
-                <AvatarFallback className="rounded-lg">
-                  {data?.user.name}
-                </AvatarFallback>
+                <AvatarImage alt={`${data?.user.name}-icon`} src={data?.user.image || ""} />
+                <AvatarFallback className="rounded-lg">{data?.user.name}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {data?.user.name}
-                </span>
+                <span className="truncate font-semibold">{data?.user.name}</span>
                 <span className="truncate text-xs">{data?.user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />

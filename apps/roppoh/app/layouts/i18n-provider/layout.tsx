@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Outlet, redirect, useLoaderData } from "react-router";
+
 import { Loading } from "@/components/loading";
 import TypesafeI18n from "@/i18n/i18n-react";
 import { isLocale } from "@/i18n/i18n-util";
 import { loadLocaleAsync } from "@/i18n/i18n-util.async";
+
 import type { Route } from "./+types/layout";
 
 export async function loader({ params }: Route.LoaderArgs) {

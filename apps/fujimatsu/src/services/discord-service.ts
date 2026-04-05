@@ -12,10 +12,7 @@ export class DiscordService {
   private readonly restOption: Partial<RESTOptions> = {
     authPrefix: "Bearer",
     makeRequest: (url, init) =>
-      globalThis.fetch(
-        url,
-        init as globalThis.RequestInit,
-      ) as Promise<ResponseLike>,
+      globalThis.fetch(url, init as globalThis.RequestInit) as Promise<ResponseLike>,
   };
 
   public async generateAuthorizationURL(
@@ -36,11 +33,7 @@ export class DiscordService {
     return await oauth.tokenExchange(args);
   }
 
-  public async getUserInfo({
-    accessToken,
-  }: {
-    accessToken: string;
-  }): Promise<APIUser> {
+  public async getUserInfo({ accessToken }: { accessToken: string }): Promise<APIUser> {
     const rest = new REST(this.restOption).setToken(accessToken);
     const users = new UsersAPI(rest);
 

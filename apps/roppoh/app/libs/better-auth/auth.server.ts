@@ -6,19 +6,11 @@ export type BetterAuthInstance = ReturnType<typeof betterAuth>;
 /**
  * CloudFlare Workers環境では、global scopeで環境変数を参照できないため、envを引数として受け取る
  */
-export const createBetterAuthInstance = ({
-  env,
-}: {
-  env: Cloudflare.Env;
-}): BetterAuthInstance =>
+export const createBetterAuthInstance = ({ env }: { env: Cloudflare.Env }): BetterAuthInstance =>
   betterAuth({
     advanced: {
       ipAddress: {
-        ipAddressHeaders: [
-          "x-client-ip",
-          "x-forwarded-for",
-          "cf-connecting-ip",
-        ],
+        ipAddressHeaders: ["x-client-ip", "x-forwarded-for", "cf-connecting-ip"],
       },
       useSecureCookies: false,
     },

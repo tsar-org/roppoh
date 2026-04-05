@@ -1,4 +1,5 @@
 import { Theme, useTheme } from "remix-themes";
+
 import { PageTransition } from "@/components/page-transition";
 import { ToggleThemeButton } from "@/components/toggle-theme-button";
 import { TsarOrganizationLink } from "@/components/tsar-organization-link";
@@ -7,6 +8,7 @@ import { authClient } from "@/libs/better-auth/auth.client";
 import { Button } from "@/shadcn/components/ui/button";
 import { generateBaseMeta } from "@/utils/base-meta-function";
 import { themeSessionResolver } from "@/utils/sessions.server";
+
 import type { Route } from "./+types/page";
 import discordMarkBlack from "./assets/discord-mark-black.svg";
 import discordMarkWhite from "./assets/discord-mark-white.svg";
@@ -50,23 +52,13 @@ export default function () {
           <div className="mt-1 flex w-full flex-1 flex-col items-center justify-center gap-6">
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="font-bold text-4xl">Roppoh</h1>
-              <p className="text-balance text-muted-foreground text-sm">
-                {LL.login.description()}
-              </p>
+              <p className="text-balance text-muted-foreground text-sm">{LL.login.description()}</p>
             </div>
             <Button className="w-xs cursor-pointer" onClick={signIn}>
               {theme === Theme.LIGHT ? (
-                <img
-                  alt="discord-mark-white"
-                  src={discordMarkWhite}
-                  width={20}
-                />
+                <img alt="discord-mark-white" src={discordMarkWhite} width={20} />
               ) : (
-                <img
-                  alt="discord-mark-white"
-                  src={discordMarkBlack}
-                  width={20}
-                />
+                <img alt="discord-mark-white" src={discordMarkBlack} width={20} />
               )}
               {LL.login.loginButton()}
             </Button>

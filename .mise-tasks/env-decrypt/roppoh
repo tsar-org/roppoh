@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Decrypt env files for apps/roppoh"
+
+dotenvx decrypt --stdout -f apps/roppoh/.dev.vars.enc -fk .env.keys > apps/roppoh/.dev.vars

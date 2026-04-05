@@ -1,15 +1,15 @@
 import type { ColumnDef } from "@tanstack/react-table";
+
 import type { Server } from "@/features/dokploy-server-management";
 import type { TranslationFunctions } from "@/i18n/i18n-types";
 import { Badge } from "@/shadcn/components/ui/badge";
 import { Checkbox } from "@/shadcn/components/ui/checkbox";
 import { Skeleton } from "@/shadcn/components/ui/skeleton";
+
 import { ComposeStatusBadge } from "./components/compose-status-badge";
 import { ServerActionDropdownContainer } from "./components/server-action-dropdown";
 
-export const ServerTableColumns = (
-  LL: TranslationFunctions,
-): ColumnDef<Server>[] =>
+export const ServerTableColumns = (LL: TranslationFunctions): ColumnDef<Server>[] =>
   [
     {
       cell: ({ row }) => (
@@ -33,9 +33,7 @@ export const ServerTableColumns = (
               (table.getIsSomePageRowsSelected() && "indeterminate")
             }
             className="border-foreground/20"
-            onCheckedChange={(value: boolean) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
+            onCheckedChange={(value: boolean) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
       ),
@@ -45,14 +43,9 @@ export const ServerTableColumns = (
     {
       accessorKey: "name",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-[150px]" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-[150px]" />;
 
-        return (
-          <div className="truncate font-medium">
-            {row.original.compose.name}
-          </div>
-        );
+        return <div className="truncate font-medium">{row.original.compose.name}</div>;
       },
       enableHiding: false,
       enableResizing: true,
@@ -62,8 +55,7 @@ export const ServerTableColumns = (
     {
       accessorKey: "project",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-20" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-20" />;
 
         return <div>{row.original.project.name}</div>;
       },
@@ -74,14 +66,10 @@ export const ServerTableColumns = (
     {
       accessorKey: "environment",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-[100px]" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-[100px]" />;
 
         return (
-          <Badge
-            className="truncate px-1.5 text-muted-foreground"
-            variant="outline"
-          >
+          <Badge className="truncate px-1.5 text-muted-foreground" variant="outline">
             {row.original.environment.name}
           </Badge>
         );
@@ -93,8 +81,7 @@ export const ServerTableColumns = (
     {
       accessorKey: "status",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-[90px]" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-[90px]" />;
 
         return <ComposeStatusBadge type={row.original.compose.composeStatus} />;
       },
@@ -105,8 +92,7 @@ export const ServerTableColumns = (
     {
       accessorKey: "type",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-[130px]" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-[130px]" />;
 
         return (
           <Badge className="px-1.5 text-muted-foreground" variant="outline">
@@ -121,8 +107,7 @@ export const ServerTableColumns = (
     {
       accessorKey: "description",
       cell: ({ row }) => {
-        if (row.original.status === "fetching")
-          return <Skeleton className="h-6 w-[300px]" />;
+        if (row.original.status === "fetching") return <Skeleton className="h-6 w-[300px]" />;
 
         return (
           <div className="truncate text-muted-foreground text-sm">
@@ -136,9 +121,7 @@ export const ServerTableColumns = (
       size: 300,
     },
     {
-      cell: ({ row }) => (
-        <ServerActionDropdownContainer server={row.original} />
-      ),
+      cell: ({ row }) => <ServerActionDropdownContainer server={row.original} />,
       id: "actions",
       size: 40,
     },

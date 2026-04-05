@@ -1,10 +1,10 @@
 import type { FetchQueryOptions } from "@tanstack/react-query";
+
 import { DokployError, isDokployError } from "@/libs/dokploy-sdk/error";
+
 import type { DokployQueryOptionBase } from "./type";
 
-export const projectAllQueryOption = ({
-  dokployClient,
-}: DokployQueryOptionBase) =>
+export const projectAllQueryOption = ({ dokployClient }: DokployQueryOptionBase) =>
   ({
     queryFn: async () => {
       const res = await dokployClient.project.getAll();

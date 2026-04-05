@@ -1,9 +1,7 @@
 import { Hono } from "hono";
 import * as v from "valibot";
-import {
-  type Env,
-  ServiceIdentifier,
-} from "@/middlewares/dependency-injection";
+
+import { type Env, ServiceIdentifier } from "@/middlewares/dependency-injection";
 import type { DiscordService } from "@/services/discord-service";
 import type { OidcStateCodecService } from "@/services/oidc-state-codec-service";
 import { invalidClient } from "@/utils/error-response";
@@ -22,17 +20,15 @@ export const authorizeRoute = new Hono<Env>().get(
   oidcValidator("query", authorizeQuerySchema),
   async (c) => {
     // di
-    const oidcStateCodecService =
-      await c.env.container.getAsync<OidcStateCodecService>(
-        ServiceIdentifier.OIDC_STATE_CODEC_SERVICE,
-      );
+    const oidcStateCodecService = await c.env.container.getAsync<OidcStateCodecService>(
+      ServiceIdentifier.OIDC_STATE_CODEC_SERVICE,
+    );
     const discordService = await c.env.container.getAsync<DiscordService>(
       ServiceIdentifier.DISCORD_SERVICE,
     );
 
     // parse request
-    const { client_id, redirect_uri, response_type, scope, state } =
-      c.req.valid("query");
+    const { client_id, redirect_uri, response_type, scope, state } = c.req.valid("query");
 
     if (client_id !== c.env.DISCORD_CLIENT_ID) {
       return invalidClient(c, "Invalid client_id");
@@ -41,10 +37,7 @@ export const authorizeRoute = new Hono<Env>().get(
     if (response_type !== "code") {
       const errorUrl = new URL(redirect_uri);
       errorUrl.searchParams.set("error", "unsupported_response_type");
-      errorUrl.searchParams.set(
-        "error_description",
-        "Only code flow is supported",
-      );
+      errorUrl.searchParams.set("error_description", "Only code flow is supported");
       if (state) errorUrl.searchParams.set("state", state);
       return c.redirect(errorUrl.toString());
     }
@@ -59,10 +52,7 @@ export const authorizeRoute = new Hono<Env>().get(
     if (!discordState) {
       const errorUrl = new URL(redirect_uri);
       errorUrl.searchParams.set("error", "server_error");
-      errorUrl.searchParams.set(
-        "error_description",
-        "Failed to encode state parameter",
-      );
+      errorUrl.searchParams.set("error_description", "Failed to encode state parameter");
       if (state) errorUrl.searchParams.set("state", state);
       return c.redirect(errorUrl.toString());
     }

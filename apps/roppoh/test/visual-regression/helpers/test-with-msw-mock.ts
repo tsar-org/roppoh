@@ -6,9 +6,13 @@ import { test as testBase } from "vitest";
 export const testWithMswMock = (worker: SetupWorker) =>
   testBase.extend({
     worker: [
+      // oxlint-disable-next-line no-empty-pattern
       async ({}, use) => {
         // Start the worker before the test.
-        await worker.start();
+        await worker.start({
+          onUnhandledRequest: "bypass",
+          quiet: true,
+        });
 
         // Expose the worker object on the test's context.
         await use(worker);
@@ -16,6 +20,9 @@ export const testWithMswMock = (worker: SetupWorker) =>
         // Remove any request handlers added in individual test cases.
         // This prevents them from affecting unrelated tests.
         worker.resetHandlers();
+
+        // Stop the worker after the test.
+        worker.stop();
       },
       {
         auto: true,

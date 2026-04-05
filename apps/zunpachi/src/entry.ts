@@ -1,0 +1,6 @@
+import "reflect-metadata";
+import { app } from "./server";
+
+export default {
+  fetch: app.fetch,
+} satisfies ExportedHandler<Cloudflare.Env>;

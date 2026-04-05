@@ -4,8 +4,7 @@ import type { BaseTranslation } from "../i18n-types.js";
 const ar = {
   login: {
     loginButton: "تسجيل الدخول باستخدام Discord",
-    description:
-      "تطبيق ويب لإدارة خادم الألعاب. العب ألعاب WebGL مباشرة في متصفحك",
+    description: "تطبيق ويب لإدارة خادم الألعاب. العب ألعاب WebGL مباشرة في متصفحك",
   },
   sidebar: {
     content: {

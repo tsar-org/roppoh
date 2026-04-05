@@ -1,0 +1,34 @@
+{
+  "name": "@roppoh/neo-fujimatsu",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/entry.ts",
+  "scripts": {
+    "build": "vite build",
+    "cf-typegen": "wrangler types  --strict-vars=false",
+    "type-check": "tsc --noEmit",
+    "dev": "bun run reset:wrangler && bun run migration && bun vite dev",
+    "migration": "printf \"y\\n\" | wrangler d1 migrations apply roppoh-better-auth --local",
+    "reset:wrangler": "rm -rf .wrangler",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@roppoh/better-auth": "workspace:*",
+    "better-auth": "^1.4.10",
+    "drizzle-orm": "0.45.2",
+    "hono": "^4.11.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.17.1",
+    "@cloudflare/vitest-pool-workers": "0.14.1",
+    "cloudflare": "5.2.0",
+    "vite": "^7.2.7",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "^4.0.16",
+    "wrangler": "^4.54.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

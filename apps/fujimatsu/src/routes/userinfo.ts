@@ -1,10 +1,8 @@
 import { Hono } from "hono";
 import { jwtVerify } from "jose";
 import * as v from "valibot";
-import {
-  type Env,
-  ServiceIdentifier,
-} from "@/middlewares/dependency-injection";
+
+import { type Env, ServiceIdentifier } from "@/middlewares/dependency-injection";
 import type { KeyPairService } from "@/services/keypair-service";
 import { invalidToken } from "@/utils/error-response";
 import { oidcValidator } from "@/utils/oidc-validator";
@@ -12,10 +10,7 @@ import { oidcValidator } from "@/utils/oidc-validator";
 const userinfoHeaderSchema = v.object({
   authorization: v.pipe(
     v.string(),
-    v.regex(
-      /^Bearer .+$/,
-      "Authorization header must be in format: Bearer <token>",
-    ),
+    v.regex(/^Bearer .+$/, "Authorization header must be in format: Bearer <token>"),
   ),
 });
 

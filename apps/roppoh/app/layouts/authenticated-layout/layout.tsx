@@ -1,6 +1,8 @@
 import { Outlet, redirect } from "react-router";
 import { navigatorDetector } from "typesafe-i18n/detectors";
+
 import { detectLocale } from "@/i18n/i18n-util";
+
 import type { Route } from "./+types/layout";
 
 export async function loader({ request: req, context: ctx }: Route.LoaderArgs) {

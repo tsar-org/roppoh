@@ -33,3 +33,17 @@ mise.local.toml
 # dotenv
 .env
 .env.secret
+
+# playwright
+playwright-report
+test-results
+
+# zed
+.zed/settings.json
+
+# dotenvx
+.env.keys
+
+# lefthook
+.lefthook-local.yml
+lefthook-local.yml

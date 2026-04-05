@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+
 import { useI18nContext } from "@/i18n/i18n-react";
 import { Button } from "@/shadcn/components/ui/button";
 import {
@@ -30,9 +31,7 @@ export const UnitySportsResortCard = () => {
       </CardHeader>
       <CardContent>
         <Link to={`/${locale}/unity-sports-resort`}>
-          <Button className="w-full cursor-pointer">
-            {LL.unitySportsResortCard.play()}
-          </Button>
+          <Button className="w-full cursor-pointer">{LL.unitySportsResortCard.play()}</Button>
         </Link>
       </CardContent>
     </Card>

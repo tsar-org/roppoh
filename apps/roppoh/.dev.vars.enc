@@ -1,0 +1,29 @@
+#/-------------------[DOTENV_PUBLIC_KEY]--------------------/
+#/            public-key encryption for .env files          /
+#/       [how it works](https://dotenvx.com/encryption)     /
+#/----------------------------------------------------------/
+DOTENV_PUBLIC_KEY_VARS="026130a7fd578b52e0dd60383643dfb777f6dc33625f67886867aff3093cf396c1" # ../../.env.keys
+
+# .dev.vars
+# vite
+VITE_BASE_URL="encrypted:BHRPxybCMg0RAVILT3KnGggmpZUd/HtQPoJrxeqEC0Rc+LMFOj6I1dwuSFs+4WG/UMkPlbi2bIk/K7qUds6BFBGLjybSJZrmQfDOzgc934FQoxYM+FILsQh/YTFoSRolDxSDpnUdzyXvme+qeK6OjXayuZ42lQ=="
+
+# better-auth
+BETTER_AUTH_SECRET="encrypted:BPD/kYSwA5/UGVIcaxtWpu2ryHXyAsnpmy9CYUpURfanJhCVMHxRhD1gQf2SWnousruCNrdnt2jlZAQr23bfWvCiNGCF3kkX5TDhdYGCPx9pkPCQoi1ymcFJxP3b30NboVcpbcH36Ou0yUVUnc1uLiGUXKA+RGIWAO3b5n6KYjiy"
+
+# discord
+DISCORD_CLIENT_SECRET="encrypted:BLZAN16LF+xjSFJSdibLeRvmeBt5GC9BUoY0P4KFdiVWHK6w6aeGEEGrc8+mBtPNPwHvSjWeFUjxtkhQ0ndl+0K+awtyr5fbazYOXICUdhFkIuIL08jd8XjLYkv5rQzd0xpE7BHoJoH1PO9fFIBdvZ22uFsIhI5MAOFvSju1WHJX"
+
+# cloudflare servise-auth
+CF_ACCESS_CLIENT_ID="encrypted:BCuZRm+Z/fPWWduahlFGt9/r7OQj15R0w/2mkGsCqJgPe2j2vT8YemSgjHHVhoRTVB8P/lnstwOuAV9aoPzSM3uTubtVZTashFnx4V6rNYAyr8N5vUR7bF/edqhmRIQZYiTrkzJTJIYgKSheMoZbqOqD6LWi7iP28FnE4oESTA9nT0tm49yqoA=="
+CF_ACCESS_CLIENT_SECRET="encrypted:BEUP4PKqizzuB/D4ovd7z5XrWYv195xRYz3CnEuFplSWApou1HSlCkcdBSy98hsC9yH8rjMq8Y2H6co/zGfTvxr9yX///5MvlMqUu9vyfLpzULAVi/I7xYSMRT5u3D39ib856327yAjh4Qe2uZ37rycRriaVc23L2zca4bYbvVq89LIQ9AG9kvIRomYbHWBYh8yLvWk4wpubnjU8SmfLpBk="
+
+# dokploy
+DOKPLOY_API_TOKEN="encrypted:BLbQ/V74/OvoH8a0PdQTFOI5nXAOT9ASjCqZecOVqPUjFOjNUcxsWs+A7jyylbvSfW42Qfmnm2UXw3ea4Fdd1plG79kOlaDNeW5x+s0aR0/CW6Jc+vVEgcvHrsgm2UWCBf+411+Dq+UVeS44cWxJcZ3eZz0KFUezpSLr+jQV5+WVvsr61AA3rq0OFPs8dmVhtpNJV69pDMk/iYqxXB0VNXc="
+
+
+
+
+
+
+

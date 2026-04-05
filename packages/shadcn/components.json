@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "aliases": {
+    "components": "@roppoh/shadcn/components",
+    "hooks": "@roppoh/shadcn/hooks",
+    "lib": "@roppoh/shadcn/lib",
+    "ui": "@roppoh/shadcn/components/ui",
+    "utils": "@roppoh/shadcn/lib/utils"
+  },
+  "iconLibrary": "lucide",
+  "menuAccent": "subtle",
+  "menuColor": "default",
+  "registries": {},
+  "rsc": false,
+  "style": "base-mira",
+  "tailwind": {
+    "baseColor": "neutral",
+    "config": "",
+    "css": "./src/global.css",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "tsx": true
+}

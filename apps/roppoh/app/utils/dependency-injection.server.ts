@@ -1,10 +1,8 @@
 import type { QueryClient } from "@tanstack/react-query";
 import type { Dokploy } from "dokploy-sdk";
 import type { Logger } from "pino";
-import {
-  type BetterAuthInstance,
-  createBetterAuthInstance,
-} from "@/libs/better-auth/auth.server";
+
+import { type BetterAuthInstance, createBetterAuthInstance } from "@/libs/better-auth/auth.server";
 import { newDokployClient } from "@/libs/dokploy-sdk/dokploy";
 import { createLogger } from "@/libs/pino/logger.server";
 import { newServerSideReactQueryClient } from "@/libs/react-query/client.server";
@@ -16,11 +14,7 @@ export type DependencyContainer = Readonly<{
   dokployClient: Dokploy;
 }>;
 
-export const dependencyInjection = ({
-  env,
-}: {
-  env: Cloudflare.Env;
-}): DependencyContainer => ({
+export const dependencyInjection = ({ env }: { env: Cloudflare.Env }): DependencyContainer => ({
   betterAuth: createBetterAuthInstance({ env }),
   dokployClient: newDokployClient(),
   logger: createLogger(),

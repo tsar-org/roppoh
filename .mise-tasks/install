@@ -6,6 +6,10 @@ mise install
 
 bun install --frozen-lockfile
 
+mise run env-decrypt
+
 lefthook install
+
+bunx playwright install
 
 cd apps/roppoh && bun react-router typegen

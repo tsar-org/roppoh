@@ -1,5 +1,0 @@
-#\!/usr/bin/env bash
-
-dprint fmt
-
-bunx --bun biome check --fix --unsafe

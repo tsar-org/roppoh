@@ -1,6 +1,7 @@
 import { vValidator } from "@hono/valibot-validator";
 import type { ValidationTargets } from "hono/types";
 import type { GenericSchema, GenericSchemaAsync } from "valibot";
+
 import { oidcError } from "./error-response";
 
 export const oidcValidator = <

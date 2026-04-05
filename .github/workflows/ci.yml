@@ -13,10 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun-turbo
-      - uses: dprint/check@v2.3
-      - run: bun biome ci
-      - run: bun turbo check:type
-      - run: bun knip
+      - run: bun --bun oxfmt --check
+      - run: bun --bun oxlint --deny-warnings --format=github
+      - run: bun run type-check
+      - run: bun turbo type-check
+      - run: bun run knip
       - run: bun turbo build
 
   playwright-test:
@@ -25,17 +26,24 @@ jobs:
     needs: lint-and-build
     steps:
       - uses: actions/checkout@v6
-      - uses: docker/setup-buildx-action@v3
-      - name: Run VRT tests with Docker
-        run: docker compose up --build --exit-code-from linux-vrt
+      - uses: docker/setup-buildx-action@v4
+      - name: Run vrt docker container
+        run: docker compose up -d
+      - name: "roppoh vrt"
+        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/roppoh test:visual"
+      - name: "ura-roppoh vtr"
+        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/ura-roppoh test:visual"
+      - run: docker compose down
       - name: Upload VRT screenshots
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: vrt-diff-screenshots
           path: |
             apps/roppoh/.vitest-attachments/**/*.png
             apps/roppoh/test/visual-regression/**/__screenshots__/**/*.png
+            apps/ura-roppoh/.vitest-attachments/**/*.png
+            apps/ura-roppoh/test/visual-regression/**/__screenshots__/**/*.png
           retention-days: 7
 
   unit-test:
@@ -49,3 +57,5 @@ jobs:
         working-directory: apps/roppoh
       - run: bun run test
         working-directory: apps/fujimatsu
+      - run: bun run test
+        working-directory: apps/neo-fujimatsu
