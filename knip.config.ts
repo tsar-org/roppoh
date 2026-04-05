@@ -13,7 +13,6 @@ export default {
   workspaces: {
     ".": {
       ignoreDependencies: ["turbo"],
-      ignore: ["oxfmt.config.ts", "oxlint.config.ts"],
     },
     "apps/fujimatu": {},
     "apps/roppoh": {
@@ -35,23 +34,13 @@ export default {
       vite: { config: ["vite.config.ts"] },
       wrangler: { config: ["wrangler.jsonc"] },
     },
-    "packages/better-auth": {
-      ignore: [
-        // drizzle config file
-        "./drizzle.config.ts",
-        // generated database schema file
-        "./src/auth-schema.ts",
-        // better-auth config file
-        "./src/auth.ts",
-      ],
-    },
+    "packages/better-auth": {},
     "packages/better-auth-database": {
       entry: ["src/auth.ts"],
       ignore: [
         // generated code
         "src/relations.ts",
       ],
-      ignoreDependencies: ["@better-auth/cli"],
     },
   },
 } satisfies KnipConfig;
