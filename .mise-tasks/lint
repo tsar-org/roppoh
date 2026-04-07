@@ -4,7 +4,7 @@ bun oxlint --fix
 
 turbo cf-typegen
 
-turbo check:type
+turbo type-check
 
 turbo build
 

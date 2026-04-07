@@ -28,6 +28,12 @@ export const router = createBrowserRouter([
                 },
                 path: "/user",
               },
+              {
+                lazy: {
+                  Component: async () => (await import("./pages/oidc-client/page")).default,
+                },
+                path: "/oidc-client",
+              },
             ],
             lazy: {
               Component: async () => (await import("./layouts/sidebar-layout")).default,
