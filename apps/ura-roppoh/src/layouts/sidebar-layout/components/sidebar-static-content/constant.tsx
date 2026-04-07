@@ -1,4 +1,4 @@
-import { Building, Users, UserKey } from "lucide-react";
+import { Building, Users, Key } from "lucide-react";
 import type { JSX } from "react";
 
 interface SidebarContent {
@@ -16,7 +16,7 @@ export const sidebarContentList = [
     items: [
       {
         href: "/oidc-client",
-        icon: () => <UserKey />,
+        icon: () => <Key />,
         title: "OIDC client",
       },
       {
