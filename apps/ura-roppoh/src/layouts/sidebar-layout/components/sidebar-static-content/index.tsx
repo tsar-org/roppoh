@@ -20,10 +20,12 @@ export function SidebarStaticContent() {
             <SidebarMenu className="gap-1">
               {item.items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton>
-                    <item.icon />
-                    <NavLink to={item.href}>{item.title}</NavLink>
-                  </SidebarMenuButton>
+                  <NavLink to={item.href}>
+                    <SidebarMenuButton>
+                      <item.icon />
+                      {item.title}
+                    </SidebarMenuButton>
+                  </NavLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>

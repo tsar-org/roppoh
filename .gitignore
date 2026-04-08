@@ -29,6 +29,8 @@ mise.local.toml
 
 # vitest
 .vitest-attachments
+**/__screenshots__/**/*.png
+!**/__screenshots__/**/*-linux.png
 
 # dotenv
 .env

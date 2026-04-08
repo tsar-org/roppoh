@@ -26,7 +26,6 @@ export const config = {
   plugins: [
     admin(),
     jwt(),
-    // oAuthProxy({ productionURL: "https://neo-fujimatsu.tsar-bmb.org" }),
     oauthProvider({
       loginPage: "/sign-in",
       consentPage: "/consent",
