@@ -11,10 +11,10 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "effect": "^3.19.13"
+    "effect": "3.21.0"
   },
   "devDependencies": {},
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "5.9.3"
   }
 }
