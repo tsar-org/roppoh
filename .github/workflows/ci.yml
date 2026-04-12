@@ -12,7 +12,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup-bun-turbo
+      - uses: ./.github/actions/setup-bun
+      - uses: ./.github/actions/setup-turbo
       - run: bun --bun oxfmt --check
       - run: bun --bun oxlint --deny-warnings --format=github
       - run: bun run type-check
@@ -52,7 +53,7 @@ jobs:
     needs: lint-and-build
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup-bun-turbo
+      - uses: ./.github/actions/setup-bun
       - name: Test apps/roppoh
         run: bun run test:unit
         working-directory: apps/roppoh
