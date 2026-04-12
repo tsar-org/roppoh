@@ -1,4 +1,6 @@
 import type { OAuthClient } from "@better-auth/oauth-provider";
+import { withNuqsTestingAdapter } from "nuqs/adapters/testing";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
@@ -12,6 +14,11 @@ import { createRootRouteStub, type RouteChildren } from "../helpers/route-stub";
 import { setTheme } from "../helpers/theme";
 import { setViewPort } from "../helpers/view-port";
 
+// NuqsTestingAdapter を使うため、react-router adapter を no-op に差し替える
+vi.mock("nuqs/adapters/react-router/v7", () => ({
+  NuqsAdapter: ({ children }: { children: ReactNode }) => children,
+}));
+
 vi.mock("@/libs/better-auth", () => ({
   authClient: {
     useSession: vi.fn().mockReturnValue({
@@ -21,6 +28,7 @@ vi.mock("@/libs/better-auth", () => ({
     }),
     oauth2: {
       getClients: vi.fn(),
+      getClient: vi.fn(),
     },
   },
 }));
@@ -50,6 +58,14 @@ const mockClients: OAuthClient[] = [
   },
 ];
 
+const mockClient: OAuthClient = {
+  client_id: "client-1-id",
+  client_name: "Test Client 1",
+  disabled: false,
+  redirect_uris: ["http://localhost:3000/callback"],
+  client_secret: "secret-1",
+};
+
 describe("VRT oidc-client page - with clients data", async () => {
   beforeEach(() => {
     vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
@@ -65,7 +81,9 @@ describe("VRT oidc-client page - with clients data", async () => {
     const Stub = createRootRouteStub({ routeChildren });
 
     // Act
-    const { container } = await render(<Stub initialEntries={[PATH]} />);
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter(),
+    });
 
     // Assert
     await expect(container).toMatchScreenshot();
@@ -84,7 +102,152 @@ describe("VRT oidc-client page - skeleton loading", async () => {
     const Stub = createRootRouteStub({ routeChildren });
 
     // Act
-    const { container } = await render(<Stub initialEntries={[PATH]} />);
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter(),
+    });
+
+    // Assert
+    await expect(container).toMatchScreenshot();
+  });
+});
+
+describe("VRT oidc-client page - create dialog", async () => {
+  beforeEach(() => {
+    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+      data: mockClients,
+      error: null,
+    });
+  });
+
+  it.each(textMatrix)("$name", async ({ theme, device }) => {
+    // Arrange
+    await setViewPort({ page, type: device });
+    setTheme({ theme });
+    const Stub = createRootRouteStub({ routeChildren });
+
+    // Act
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter({ searchParams: { dialog: "create" } }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Assert
+    await expect(container).toMatchScreenshot();
+  });
+});
+
+describe("VRT oidc-client page - update dialog - with client data", async () => {
+  beforeEach(() => {
+    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+      data: mockClients,
+      error: null,
+    });
+    vi.mocked(authClient.oauth2.getClient).mockResolvedValue({
+      data: mockClient,
+      error: null,
+    });
+  });
+
+  it.each(textMatrix)("$name", async ({ theme, device }) => {
+    // Arrange
+    await setViewPort({ page, type: device });
+    setTheme({ theme });
+    const Stub = createRootRouteStub({ routeChildren });
+
+    // Act
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter({
+        searchParams: { dialog: "edit", client_id: "client-1-id" },
+      }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Assert
+    await expect(container).toMatchScreenshot();
+  });
+});
+
+describe("VRT oidc-client page - update dialog - skeleton loading", async () => {
+  beforeEach(() => {
+    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+      data: mockClients,
+      error: null,
+    });
+    vi.mocked(authClient.oauth2.getClient).mockReturnValue(new Promise(() => {}));
+  });
+
+  it.each(textMatrix)("$name", async ({ theme, device }) => {
+    // Arrange
+    await setViewPort({ page, type: device });
+    setTheme({ theme });
+    const Stub = createRootRouteStub({ routeChildren });
+
+    // Act
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter({
+        searchParams: { dialog: "edit", client_id: "client-1-id" },
+      }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Assert
+    await expect(container).toMatchScreenshot();
+  });
+});
+
+describe("VRT oidc-client page - delete dialog - with client data", async () => {
+  beforeEach(() => {
+    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+      data: mockClients,
+      error: null,
+    });
+    vi.mocked(authClient.oauth2.getClient).mockResolvedValue({
+      data: mockClient,
+      error: null,
+    });
+  });
+
+  it.each(textMatrix)("$name", async ({ theme, device }) => {
+    // Arrange
+    await setViewPort({ page, type: device });
+    setTheme({ theme });
+    const Stub = createRootRouteStub({ routeChildren });
+
+    // Act
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter({
+        searchParams: { dialog: "delete", client_id: "client-1-id" },
+      }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Assert
+    await expect(container).toMatchScreenshot();
+  });
+});
+
+describe("VRT oidc-client page - delete dialog - skeleton loading", async () => {
+  beforeEach(() => {
+    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+      data: mockClients,
+      error: null,
+    });
+    vi.mocked(authClient.oauth2.getClient).mockReturnValue(new Promise(() => {}));
+  });
+
+  it.each(textMatrix)("$name", async ({ theme, device }) => {
+    // Arrange
+    await setViewPort({ page, type: device });
+    setTheme({ theme });
+    const Stub = createRootRouteStub({ routeChildren });
+
+    // Act
+    const { container } = await render(<Stub initialEntries={[PATH]} />, {
+      wrapper: withNuqsTestingAdapter({
+        searchParams: { dialog: "delete", client_id: "client-1-id" },
+      }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();

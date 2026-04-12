@@ -1,6 +1,7 @@
 import { Toaster } from "@roppoh/shadcn/components/ui/sonner";
 import { Ssgoi } from "@ssgoi/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import { Outlet, ScrollRestoration } from "react-router";
 
 import { config } from "@/libs/ssgoi";
@@ -14,13 +15,15 @@ export function Root() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <Ssgoi config={config}>
-          <div style={{ minHeight: "100vh", position: "relative" }}>
-            <Outlet />
-          </div>
-        </Ssgoi>
-      </QueryClientProvider>
+      <NuqsAdapter>
+        <QueryClientProvider client={queryClient}>
+          <Ssgoi config={config}>
+            <div style={{ minHeight: "100vh", position: "relative" }}>
+              <Outlet />
+            </div>
+          </Ssgoi>
+        </QueryClientProvider>
+      </NuqsAdapter>
       <Toaster useTheme={useTheme} />
       <ScrollRestoration />
     </>

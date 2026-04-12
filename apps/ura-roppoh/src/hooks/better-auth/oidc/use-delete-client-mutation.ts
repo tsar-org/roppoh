@@ -5,7 +5,7 @@ import type { Prettify } from "better-auth";
 import { authClient } from "@/libs/better-auth";
 
 import { BetterAuthError } from "../error";
-import { KEY as USE_CLIENTS_KEY } from "./use-clients";
+import { USE_OIDC_CLIENTS_KEY as USE_CLIENTS_KEY } from "./use-clients";
 
 interface Args {
   onError?: (args: { error: Error; variables: Prettify<OAuthClient> }) => void | Promise<void>;

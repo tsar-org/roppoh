@@ -18,6 +18,3 @@ pre-commit:
       run: turbo cf-typegen
     knip:
       run: bun run knip
-    env-encrypt:
-      stage_fixed: true
-      run: mise run env-encrypt
