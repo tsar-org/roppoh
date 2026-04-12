@@ -27,8 +27,8 @@ export const config = {
     admin(),
     jwt(),
     oauthProvider({
-      loginPage: "/sign-in",
-      consentPage: "/consent",
+      loginPage: "https://ura-roppoh.tsar-bmb.org/login",
+      consentPage: "https://ura-roppoh.tsar-bmb.org/consent",
     }),
   ] as const,
   secret: "",
