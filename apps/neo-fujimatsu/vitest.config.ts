@@ -15,6 +15,9 @@ export default defineConfig({
           include: ["./test/e2e/**/*.spec.ts"],
           name: "e2e",
           testTimeout: 15000,
+          env: {
+            BETTER_AUTH_SECRET: "test-secret",
+          },
         },
       },
     ],
