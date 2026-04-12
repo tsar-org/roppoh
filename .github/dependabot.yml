@@ -19,6 +19,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 1
     commit-message:
       prefix: "⬆️ "
       prefix-development: "⬆️ "
