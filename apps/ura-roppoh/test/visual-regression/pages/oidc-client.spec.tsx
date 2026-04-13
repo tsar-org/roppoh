@@ -129,7 +129,6 @@ describe("VRT oidc-client page - create dialog", async () => {
     const { container } = await render(<Stub initialEntries={[PATH]} />, {
       wrapper: withNuqsTestingAdapter({ searchParams: { dialog: "create" } }),
     });
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();
@@ -160,7 +159,6 @@ describe("VRT oidc-client page - update dialog - with client data", async () => 
         searchParams: { dialog: "edit", client_id: "client-1-id" },
       }),
     });
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();
@@ -188,7 +186,6 @@ describe("VRT oidc-client page - update dialog - skeleton loading", async () => 
         searchParams: { dialog: "edit", client_id: "client-1-id" },
       }),
     });
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();
@@ -219,7 +216,6 @@ describe("VRT oidc-client page - delete dialog - with client data", async () => 
         searchParams: { dialog: "delete", client_id: "client-1-id" },
       }),
     });
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();
@@ -247,7 +243,6 @@ describe("VRT oidc-client page - delete dialog - skeleton loading", async () => 
         searchParams: { dialog: "delete", client_id: "client-1-id" },
       }),
     });
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert
     await expect(container).toMatchScreenshot();
