@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { type HonoEnv } from "@/middlewares/dependency-injection";
+import { type HonoEnv } from "@/server/middlewares/dependency-injection";
 
 /**
  * @see https://www.better-auth.com/docs/integrations/hono#mount-the-handler
