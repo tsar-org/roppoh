@@ -10,10 +10,13 @@
       "migrations_dir": "../../packages/better-auth/src/migrations",
     },
   ],
-  "main": "./src/entry.ts",
+  "main": "./src/server/entry.ts",
   "name": "neo-fujimatsu",
-  "observability": {
-    "enabled": true,
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "./dist/client",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/health", "/api/*"],
   },
   "preview_urls": false,
   "routes": [

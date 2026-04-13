@@ -2,11 +2,13 @@
   "compilerOptions": {
     // package option
     "baseUrl": ".",
+    "lib": ["DOM", "DOM.Iterable", "esnext", "WebWorker"],
     "paths": {
       "@/*": ["./src/*"],
       "@test/*": ["./test/*"]
     },
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["./worker-configuration.d.ts", "vite/client"]
   },
   "extends": ["../../tsconfig.json"],
   "include": ["src", "test", "./*.ts"]
