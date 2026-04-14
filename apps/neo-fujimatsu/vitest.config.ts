@@ -9,7 +9,7 @@ export default defineConfig({
       {
         plugins: [
           tsconfigPaths(),
-          cloudflareTest({ wrangler: { configPath: "./wrangler.jsonc" } }),
+          cloudflareTest({ wrangler: { configPath: "./wrangler.test.jsonc" } }),
         ],
         test: {
           include: ["./test/e2e/**/*.spec.ts"],
