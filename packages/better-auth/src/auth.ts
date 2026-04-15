@@ -7,17 +7,17 @@ import type { Auth } from "better-auth/types";
 import * as schema from "./auth-schema";
 
 export const config = {
-  advanced: {
-    crossSubDomainCookies: {
-      domain: "zunpachi.tsar-bmb.org",
-      enabled: true,
-    },
-    defaultCookieAttributes: {
-      partitioned: true, // New browser standards will mandate this for foreign cookies
-      sameSite: "none",
-      secure: true,
-    },
-  },
+  // advanced: {
+  //   crossSubDomainCookies: {
+  //     domain: "zunpachi.tsar-bmb.org",
+  //     enabled: true,
+  //   },
+  //   defaultCookieAttributes: {
+  //     partitioned: true, // New browser standards will mandate this for foreign cookies
+  //     sameSite: "none",
+  //     secure: true,
+  //   },
+  // },
   // baseURL: "https://zunpachi.tsar-bmb.org/api/v1/better-auth",
   basePath: "",
   baseURL: "https://zunpachi.tsar-bmb.org",

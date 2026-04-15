@@ -16,7 +16,7 @@ export default function () {
   const [params] = useQueryStates(consentPageParams);
 
   useEffect(() => {
-    if (!params.cancel_uri || !params.client_id || !params.redirect_uri || !params.scope)
+    if (!params.client_id || !params.redirect_uri || !params.scope)
       return void navigate("/sign-in");
   }, [params]);
 

@@ -10,15 +10,17 @@ import DiscordIconSvg from "./assets/discord-icon.svg";
 
 export function DiscordLoginButton() {
   const [isPending, startTransition] = useTransition();
-  const params = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const signIn = async () =>
     startTransition(async () => {
+      const redirect = searchParams.get("redirect");
+      // oauthProvider 方式: /sign-in?client_id=...&sig=... で来た場合は consent URL を再構築
+      // authenticated-layout 方式: /sign-in?redirect=/consent?... で来た場合はそのまま使用
+      const callbackURL = redirect ?? (searchParams.has("sig") ? `/consent?${searchParams}` : "/");
       const res = await authClient.signIn.social({
-        callbackURL: `${window.location.origin}/`,
+        callbackURL,
         provider: "discord",
-        scopes: ["identify", "guilds"],
-        fetchOptions: { params },
       });
       if (res.error) toast.error(res.error.statusText);
     });

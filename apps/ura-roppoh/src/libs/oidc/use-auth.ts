@@ -78,25 +78,31 @@ export const useAuth = () => {
 
     try {
       const currentUrl = new URL(window.location.href);
-      const callbackParams = oauth.validateAuthResponse(as, client, currentUrl, state);
+      // throws on error in v3
+      const params = oauth.validateAuthResponse(as, client, currentUrl, state);
 
       const authorizationResponse = await oauth.authorizationCodeGrantRequest(
         as,
         client,
         oauth.None(),
-        callbackParams,
+        params,
         redirectUri,
         code_verifier,
       );
 
+      // throws WWWAuthenticateChallengeError / ResponseBodyError in v3
       const result = await oauth.processAuthorizationCodeResponse(
         as,
         client,
         authorizationResponse,
         {
           expectedNonce: nonce,
+          requireIdToken: true,
         },
       );
+
+      setAccessToken(result.access_token);
+      if (result.id_token) setIdToken(result.id_token);
 
       const claims = oauth.getValidatedIdTokenClaims(result);
       if (!claims) {
@@ -105,9 +111,7 @@ export const useAuth = () => {
         return;
       }
 
-      setAccessToken(result.access_token);
-      if (result.id_token) setIdToken(result.id_token);
-
+      // throws WWWAuthenticateChallengeError in v3
       const userInfoResponse = await oauth.userInfoRequest(as, client, result.access_token);
       const userInfo = await oauth.processUserInfoResponse(
         as,
