@@ -8,6 +8,6 @@ interface Args {
 }
 
 export const setTheme = async (args: Args) =>
-  await args.page
-    .context()
-    .addInitScript(() => void localStorage.setItem("theme", `"${args.theme}"`));
+  await args.page.context().addInitScript((theme) => {
+    localStorage.setItem("theme", `"${theme}"`);
+  }, args.theme);
