@@ -11,8 +11,8 @@
     "dev": "bun run reset:wrangler && bun run migration && bun vite dev",
     "migration": "printf \"y\\n\" | wrangler d1 migrations apply roppoh-better-auth --local",
     "reset:wrangler": "rm -rf .wrangler",
-    "test": "vitest run",
-    "playwright": "playwright test"
+    "test:e2e": "vitest run",
+    "test:vrt": "playwright test"
   },
   "dependencies": {
     "@better-auth/oauth-provider": "1.6.2",

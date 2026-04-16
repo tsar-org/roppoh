@@ -16,5 +16,6 @@ run = [
   "docker compose up -d --remove-orphans --build",
   "docker compose exec linux-vrt sh -c 'cd apps/roppoh && bun run test:visual --update'",
   "docker compose exec linux-vrt sh -c 'cd apps/ura-roppoh && bun run test:visual --update'",
+  "docker compose exec linux-vrt sh -c 'cd apps/neo-fujimatsu && bun run test:vrt --update-snapshots'",
   "docker compose down --remove-orphans --volumes",
 ]
