@@ -9,7 +9,7 @@ import * as v from "valibot";
 
 const ThemeSchema = v.union([v.literal("dark"), v.literal("light"), v.literal("system")]);
 
-type Theme = v.InferInput<typeof ThemeSchema>;
+export type Theme = v.InferInput<typeof ThemeSchema>;
 
 const isTheme = (value: unknown): value is Theme => v.safeParse(ThemeSchema, value).success;
 

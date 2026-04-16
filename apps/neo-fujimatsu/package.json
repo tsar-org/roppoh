@@ -8,11 +8,11 @@
     "build": "vite build",
     "cf-typegen": "wrangler types  --strict-vars=false",
     "type-check": "tsc --noEmit",
-    "dev": "bun run reset:wrangler && bun run migration && bun run seed && bun vite dev",
+    "dev": "bun run reset:wrangler && bun run migration && bun vite dev",
     "migration": "printf \"y\\n\" | wrangler d1 migrations apply roppoh-better-auth --local",
     "reset:wrangler": "rm -rf .wrangler",
-    "seed": "wrangler d1 execute roppoh-better-auth --local --file='../../packages/better-auth/src/seeder/super-admin.sql' && wrangler d1 execute roppoh-better-auth --local --file='../../packages/better-auth/src/seeder/oidc-clients.sql'",
-    "test": "vitest run"
+    "test:e2e": "vitest run",
+    "test:vrt": "playwright test"
   },
   "dependencies": {
     "@better-auth/oauth-provider": "1.6.2",
@@ -34,11 +34,14 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.31.0",
     "@cloudflare/vitest-pool-workers": "0.14.1",
+    "@playwright/test": "1.56.0",
     "@tailwindcss/vite": "4.2.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.2.0",
     "cloudflare": "5.2.0",
+    "msw": "2.13.3",
+    "playwright-msw": "3.0.1",
     "tailwindcss": "4.2.2",
     "vite": "7.3.1",
     "vite-tsconfig-paths": "6.1.1",
