@@ -9,6 +9,13 @@ import {
 import { Field, FieldError, FieldGroup } from "@roppoh/shadcn/components/ui/field";
 import { Input } from "@roppoh/shadcn/components/ui/input";
 import { Label } from "@roppoh/shadcn/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@roppoh/shadcn/components/ui/select";
 import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { Plus, X } from "lucide-react";
@@ -18,7 +25,7 @@ import { toast } from "sonner";
 import { useCreateClientMutation } from "@/hooks/better-auth/oidc/use-create-client-mutation";
 import { dialogSearchParams } from "@/pages/oidc-client/params";
 
-import { defaultValues, schema } from "../form-field";
+import { TOKEN_ENDPOINT_AUTH_METHODS, defaultValues, schema } from "../form-field";
 
 export const Form = () => {
   const [, setParams] = useQueryStates(dialogSearchParams);
@@ -66,6 +73,33 @@ export const Form = () => {
                 onBlur={field.handleBlur}
                 aria-invalid={!field.state.meta.isValid}
               />
+              <FieldError errors={field.state.meta.errors} />
+            </Field>
+          )}
+        </form.Field>
+
+        {/* token_endpoint_auth_method */}
+        <form.Field name="token_endpoint_auth_method">
+          {(field) => (
+            <Field>
+              <Label htmlFor={field.name}>Token Endpoint Auth Method</Label>
+              <Select
+                value={field.state.value}
+                onValueChange={(value) =>
+                  field.handleChange(value as (typeof TOKEN_ENDPOINT_AUTH_METHODS)[number])
+                }
+              >
+                <SelectTrigger id={field.name} className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TOKEN_ENDPOINT_AUTH_METHODS.map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {method}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FieldError errors={field.state.meta.errors} />
             </Field>
           )}
