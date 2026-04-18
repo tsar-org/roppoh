@@ -5,6 +5,7 @@ pre-commit:
       run: bun install --frozen-lockfile
     oxfmt:
       stage_fixed: true
+      exclude: "**/*.png"
       run: bun oxfmt {staged_files} --write
     oxlint:
       stage_fixed: true
