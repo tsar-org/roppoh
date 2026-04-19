@@ -50,11 +50,11 @@ export default function () {
             <div className="w-16 h-16 rounded-full overflow-hidden">
               <Avatar className="hidden h-16 w-16 sm:flex ">
                 <AvatarImage
-                  src={session?.user.image || "#"}
+                  src={session?.user?.image || "#"}
                   alt="Avatar"
                   className="object-cover"
                 />
-                <AvatarFallback>{session?.user.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{session?.user?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
           </div>
@@ -67,8 +67,8 @@ export default function () {
             <CardContent className="p-6">
               <div className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg mb-6">
                 <div>
-                  <div className="font-medium">{session?.user.name}</div>
-                  <div className="text-zinc-400">{session?.user.email}</div>
+                  <div className="font-medium">{session?.user?.name}</div>
+                  <div className="text-zinc-400">{session?.user?.email}</div>
                 </div>
                 <ArrowUpRight className="h-5 w-5 text-zinc-400" />
               </div>

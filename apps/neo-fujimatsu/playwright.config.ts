@@ -8,7 +8,7 @@ export default defineConfig({
   workers: undefined,
 
   use: {
-    baseURL: "http://localhost:3002",
+    baseURL: "http://127.0.0.1:3002",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -17,12 +17,10 @@ export default defineConfig({
 
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 
-  // 開発サーバー自動起動
   webServer: {
     command: "bun run dev",
-    url: "http://localhost:3002",
+    url: "http://127.0.0.1:3002",
     reuseExistingServer: false,
     timeout: 120 * 1000,
-    env: {},
   },
 });

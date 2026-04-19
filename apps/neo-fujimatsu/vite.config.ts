@@ -11,5 +11,5 @@ export default defineConfig({
     tailwindcss(),
     cloudflare({ configPath: "./wrangler.jsonc" }),
   ],
-  server: { cors: false, port: 3002 },
+  server: { cors: false, host: "127.0.0.1", port: 3002 },
 });

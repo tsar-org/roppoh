@@ -5,7 +5,7 @@ import { betterAuthRoute, health } from "./routes";
 import { openidConfigurationRoute } from "./routes/.well-known/openid-configuration";
 
 export const app = new Hono()
-  // health
+  .get("/", (c) => c.redirect("/sign-in"))
   .route("/health", health)
   // middleware
   .use("*", injectDependenciesMiddleware)
@@ -13,5 +13,5 @@ export const app = new Hono()
   // .use("/api/auth/*", betterAuthCorsMiddleware)
   // .use("/.well-known/*", betterAuthCorsMiddleware)
   // handler
-  .route("/.well-known/openid-configuration", openidConfigurationRoute)
-  .route("*", betterAuthRoute);
+  .route("/api/.well-known/openid-configuration", openidConfigurationRoute)
+  .route("/api/*", betterAuthRoute);

@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import type { RequestHandler } from "msw";
 
 export const handlers = [
-  http.get("*/api/auth/get-session", () => {
+  http.get("*/get-session", () => {
     return HttpResponse.json({
       user: {
         id: "user-1",
@@ -24,7 +24,7 @@ export const handlers = [
       },
     });
   }),
-  http.get("*/api/auth/oauth2/get-client", () => {
+  http.get("*/oauth2/get-client", () => {
     return HttpResponse.json({
       client_id: "test-client-id",
       client_name: "Test Application",

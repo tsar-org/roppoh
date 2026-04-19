@@ -22,7 +22,7 @@ export const injectDependenciesMiddleware: MiddlewareHandler<HonoEnv> = async (c
   c.env.betterAuth = createBetterAuth({
     ...config,
     secret: c.env.BETTER_AUTH_SECRET,
-    basePath: "/",
+    basePath: "/api",
     baseURL: prd ? "https://neo-fujimatsu.tsar-bmb.org" : "http://localhost:3002",
     database: drizzleAdapter(drizzle(c.env.ROPPOH_BETTER_AUTH_DB), {
       provider: "sqlite",
