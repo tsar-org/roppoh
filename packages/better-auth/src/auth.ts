@@ -1,5 +1,6 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { oauthProvider } from "@better-auth/oauth-provider";
+import { passkey } from "@better-auth/passkey";
 import { betterAuth, type BetterAuthOptions } from "better-auth/minimal";
 import { jwt, admin } from "better-auth/plugins";
 import type { Auth } from "better-auth/types";
@@ -23,6 +24,9 @@ export const config = {
     oauthProvider({
       loginPage: "/sign-in",
       consentPage: "/consent",
+    }),
+    passkey({
+      rpName: "Fujimatsu",
     }),
   ] as const,
   secret: "",

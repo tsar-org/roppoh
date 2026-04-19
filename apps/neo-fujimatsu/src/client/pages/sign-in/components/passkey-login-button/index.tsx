@@ -1,35 +1,34 @@
 import { Button } from "@roppoh/shadcn/components/ui/button";
 import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
+import { Fingerprint } from "lucide-react";
 import { useTransition } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 
+import { extractErrorMessage } from "@/client/hooks/better-auth";
 import { authClient } from "@/client/libs/better-auth";
 
 import { resolveRedirectUrl } from "../../utils/resolve-redirect";
-import DiscordIconSvg from "./assets/discord-icon.svg";
 
-export function DiscordLoginButton() {
+export function PasskeyLoginButton() {
   const [isPending, startTransition] = useTransition();
   const [searchParams] = useSearchParams();
 
-  const signIn = async () =>
+  const signIn = () =>
     startTransition(async () => {
-      // oauthProvider 方式: /sign-in?client_id=...&sig=... で来た場合は consent URL を再構築
-      // authenticated-layout 方式: /sign-in?redirect=/consent?... で来た場合はそのまま使用
       const callbackURL = resolveRedirectUrl(searchParams);
-      const res = await authClient.signIn.social({
-        callbackURL,
-        provider: "discord",
-      });
-      if (res.error) toast.error(res.error.statusText);
+      const res = await authClient.signIn.passkey();
+      if (res?.error) {
+        toast.error(extractErrorMessage(res.error.message) ?? "Failed to sign in with passkey");
+        return;
+      }
+      window.location.href = callbackURL;
     });
 
   return (
     <Button className="gap-3" disabled={isPending} onClick={signIn} type="button" variant="outline">
-      {isPending && <Spinner />}
-      <img alt="discord-icon" className="size-4" src={DiscordIconSvg} />
-      Login with Discord
+      {isPending ? <Spinner /> : <Fingerprint className="size-4" />}
+      Sign in with Passkey
     </Button>
   );
 }

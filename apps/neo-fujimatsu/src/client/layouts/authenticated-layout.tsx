@@ -13,7 +13,8 @@ export default function () {
     if (session) return;
     const redirectTo = location.pathname + location.search + location.hash;
     navigate(`/sign-in?redirect=${encodeURIComponent(redirectTo)}`);
-  }, [session]);
+  }, [session, isPending]);
 
+  if (isPending || !session) return null;
   return <Outlet />;
 }

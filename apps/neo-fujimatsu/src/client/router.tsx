@@ -11,7 +11,14 @@ export const router = createBrowserRouter([
         },
       },
       {
-        children: [],
+        children: [
+          {
+            path: "/account",
+            lazy: {
+              Component: async () => (await import("./pages/account/page")).default,
+            },
+          },
+        ],
         lazy: {
           Component: async () =>
             (await import("./layouts/authenticated-layout")).default as () => JSX.Element,

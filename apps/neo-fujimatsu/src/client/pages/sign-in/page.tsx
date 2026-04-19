@@ -9,6 +9,7 @@ import { Field, FieldDescription, FieldGroup } from "@roppoh/shadcn/components/u
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { DiscordLoginButton } from "./components/discord-login-button";
+import { PasskeyLoginButton } from "./components/passkey-login-button";
 
 export default function () {
   return (
@@ -33,6 +34,9 @@ export default function () {
               <FieldGroup>
                 <Field>
                   <DiscordLoginButton />
+                </Field>
+                <Field>
+                  <PasskeyLoginButton />
                 </Field>
               </FieldGroup>
             </CardContent>
