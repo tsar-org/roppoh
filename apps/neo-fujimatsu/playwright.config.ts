@@ -18,7 +18,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 
   webServer: {
-    command: "bun run dev",
+    command: "bun run dev -- --host 127.0.0.1",
     url: "http://127.0.0.1:3002",
     reuseExistingServer: false,
     timeout: 120 * 1000,
