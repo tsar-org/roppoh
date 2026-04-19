@@ -8,21 +8,15 @@ import * as schema from "./auth-schema";
 
 export const config = {
   advanced: {
-    crossSubDomainCookies: {
-      domain: "zunpachi.tsar-bmb.org",
-      enabled: true,
-    },
     defaultCookieAttributes: {
-      partitioned: true, // New browser standards will mandate this for foreign cookies
       sameSite: "none",
       secure: true,
     },
   },
-  // baseURL: "https://zunpachi.tsar-bmb.org/api/v1/better-auth",
   basePath: "",
   baseURL: "https://zunpachi.tsar-bmb.org",
   database: drizzleAdapter({}, { provider: "sqlite", schema: schema }) as any,
-  disabledPaths: ["/token"],
+  // disabledPaths: ["/token"],
   plugins: [
     admin(),
     jwt(),
@@ -46,11 +40,7 @@ export const config = {
     discord: { clientId: "DISCORD_CLIENT_ID", clientSecret: "DISCORD_CLIENT_SECRET" },
   },
   telemetry: { enabled: true },
-  trustedOrigins: [
-    "https://zunpachi.tsar-bmb.org",
-    "https://ura-roppoh.tsar-bmb.org",
-    "https://roppoh.tsar-bmb.org",
-  ],
+  trustedOrigins: ["*"],
 } satisfies BetterAuthOptions;
 
 // for better-auth cli generate script config

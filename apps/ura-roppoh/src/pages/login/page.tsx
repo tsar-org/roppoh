@@ -5,17 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@roppoh/shadcn/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldSeparator,
-} from "@roppoh/shadcn/components/ui/field";
+import { Field, FieldDescription, FieldGroup } from "@roppoh/shadcn/components/ui/field";
 import { SsgoiTransition } from "@ssgoi/react";
 import { GalleryVerticalEnd } from "lucide-react";
 
-import { DiscordLoginButton } from "./components/discord-login-button";
-import { EmailLoginForm } from "./components/email-login-form";
+import { LoginButton } from "./components/login-button";
 
 export default function () {
   return (
@@ -35,17 +29,13 @@ export default function () {
             <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-xl">Welcome back</CardTitle>
-                <CardDescription>Login with your Discord account</CardDescription>
+                <CardDescription>Login with your account to continue</CardDescription>
               </CardHeader>
               <CardContent>
                 <FieldGroup>
                   <Field>
-                    <DiscordLoginButton />
+                    <LoginButton />
                   </Field>
-                  <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                    Or continue with
-                  </FieldSeparator>
-                  <EmailLoginForm />
                 </FieldGroup>
               </CardContent>
             </Card>

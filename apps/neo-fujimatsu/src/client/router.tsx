@@ -11,17 +11,16 @@ export const router = createBrowserRouter([
         },
       },
       {
-        children: [
-          {
-            path: "/consent",
-            lazy: {
-              Component: async () => (await import("./pages/consent/page")).default,
-            },
-          },
-        ],
+        children: [],
         lazy: {
           Component: async () =>
             (await import("./layouts/authenticated-layout")).default as () => JSX.Element,
+        },
+      },
+      {
+        path: "/consent",
+        lazy: {
+          Component: async () => (await import("./pages/consent/page")).default,
         },
       },
       {

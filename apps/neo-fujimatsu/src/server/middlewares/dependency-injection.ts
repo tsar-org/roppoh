@@ -21,15 +21,8 @@ export const injectDependenciesMiddleware: MiddlewareHandler<HonoEnv> = async (c
 
   c.env.betterAuth = createBetterAuth({
     ...config,
-    advanced: {
-      ...config.advanced,
-      crossSubDomainCookies: {
-        domain: prd ? "tsar-bmb.org" : "localhost",
-        enabled: true,
-      },
-    },
     secret: c.env.BETTER_AUTH_SECRET,
-    basePath: "/api/auth",
+    basePath: "/api",
     baseURL: prd ? "https://neo-fujimatsu.tsar-bmb.org" : "http://localhost:3002",
     database: drizzleAdapter(drizzle(c.env.ROPPOH_BETTER_AUTH_DB), {
       provider: "sqlite",
@@ -38,7 +31,6 @@ export const injectDependenciesMiddleware: MiddlewareHandler<HonoEnv> = async (c
     socialProviders: {
       discord: { clientId: c.env.DISCORD_CLIENT_ID, clientSecret: c.env.DISCORD_CLIENT_SECRET },
     },
-    trustedOrigins: prd ? config.trustedOrigins : ["http://localhost:*"],
   });
 
   return next();

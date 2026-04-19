@@ -2,12 +2,14 @@ import { Hono } from "hono";
 
 import { betterAuthCorsMiddleware, injectDependenciesMiddleware } from "./middlewares";
 import { betterAuthRoute, health } from "./routes";
+import { openidConfigurationRoute } from "./routes/.well-known/openid-configuration";
 
 export const app = new Hono()
-  // health
+  .get("/", (c) => c.redirect("/sign-in"))
   .route("/health", health)
   // middleware
   .use("*", injectDependenciesMiddleware)
-  .use("/api/auth/*", betterAuthCorsMiddleware)
+  .use("*", betterAuthCorsMiddleware)
   // handler
-  .route("/api/auth/*", betterAuthRoute);
+  .route("/api/.well-known/openid-configuration", openidConfigurationRoute)
+  .route("/api/*", betterAuthRoute);

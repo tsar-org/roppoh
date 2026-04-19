@@ -51,6 +51,18 @@ export const router = createBrowserRouter([
         },
         path: "/login",
       },
+      {
+        lazy: {
+          Component: async () => (await import("./pages/callback/page")).default,
+        },
+        path: "/callback",
+      },
+      {
+        lazy: {
+          Component: async () => (await import("./pages/consent/page")).default,
+        },
+        path: "/consent",
+      },
     ],
     ErrorBoundary: ErrorBoundary,
     lazy: {
