@@ -10,8 +10,6 @@ export const app = new Hono()
   // middleware
   .use("*", injectDependenciesMiddleware)
   .use("*", betterAuthCorsMiddleware)
-  // .use("/api/auth/*", betterAuthCorsMiddleware)
-  // .use("/.well-known/*", betterAuthCorsMiddleware)
   // handler
   .route("/api/.well-known/openid-configuration", openidConfigurationRoute)
   .route("/api/*", betterAuthRoute);
