@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-#MISE description="Encrypt env files for apps/fujimatsu"
-
-dotenvx encrypt --stdout -f apps/fujimatsu/.dev.vars -fk .env.keys > apps/fujimatsu/.dev.vars.enc

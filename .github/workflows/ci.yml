@@ -61,9 +61,6 @@ jobs:
       - name: Test apps/roppoh
         run: bun run test:unit
         working-directory: apps/roppoh
-      - name: Test apps/fujimatsu
-        run: bun run test
-        working-directory: apps/fujimatsu
       - name: Test apps/neo-fujimatsu
         run: bun run test:e2e
         working-directory: apps/neo-fujimatsu

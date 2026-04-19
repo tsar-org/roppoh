@@ -14,7 +14,6 @@ export default {
     ".": {
       ignoreDependencies: ["turbo"],
     },
-    "apps/fujimatu": {},
     "apps/roppoh": {
       entry: [],
       ignore: ["app/shadcn/**", "app/i18n/*.{ts,tsx}"],
