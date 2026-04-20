@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-#MISE description="Decrypt env files for apps/fujimatsu"
-
-dotenvx decrypt --stdout -f apps/fujimatsu/.dev.vars.enc -fk .env.keys > apps/fujimatsu/.dev.vars
