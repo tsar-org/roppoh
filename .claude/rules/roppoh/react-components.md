@@ -586,6 +586,6 @@ new-feature/
 
 ## Related Documentation
 
-- `.context/roppoh/directory-structure.md` - Overall project structure
+- `.claude/rules/roppoh/directory-structure.md` - Overall project structure
 - React Router v7 docs - Layout and route patterns
 - React Query docs - Data fetching in containers
