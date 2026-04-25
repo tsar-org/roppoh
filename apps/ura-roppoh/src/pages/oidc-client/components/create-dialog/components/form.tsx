@@ -1,3 +1,4 @@
+import type { OAuthClient } from "@better-auth/oauth-provider";
 import { Button } from "@roppoh/shadcn/components/ui/button";
 import {
   DialogClose,
@@ -27,12 +28,17 @@ import { dialogSearchParams } from "@/pages/oidc-client/params";
 
 import { TOKEN_ENDPOINT_AUTH_METHODS, defaultValues, schema } from "../form-field";
 
-export const Form = () => {
+interface Props {
+  onSuccess?: (data: OAuthClient) => void;
+}
+
+export const Form = (props: Props) => {
   const [, setParams] = useQueryStates(dialogSearchParams);
 
   const mutate = useCreateClientMutation({
     onError: () => void toast.error("Failed create OIDC client mutation."),
-    onSuccess: () => void setParams({ dialog: null, client_id: null }),
+    onSuccess: ({ data }) =>
+      props.onSuccess ? props.onSuccess(data) : void setParams({ dialog: null, client_id: null }),
   });
 
   const form = useForm({
