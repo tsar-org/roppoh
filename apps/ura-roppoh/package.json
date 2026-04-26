@@ -13,7 +13,7 @@
     "test:visual": "vitest run --project visual"
   },
   "dependencies": {
-    "@better-auth/oauth-provider": "1.5.6",
+    "@better-auth/oauth-provider": "1.6.2",
     "@roppoh/shadcn": "workspace:*",
     "@ssgoi/react": "4.2.1",
     "@tanstack/react-form": "1.28.6",
