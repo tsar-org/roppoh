@@ -1,3 +1,22 @@
-export const VRT_ENV = {
-  VITE_BASE_URL: "http://localhost:3000",
-} as const;
+export const textMatrix = [
+  {
+    device: "desktop",
+    name: "desktop dark",
+    theme: "dark",
+  },
+  {
+    device: "desktop",
+    name: "desktop light",
+    theme: "light",
+  },
+  {
+    device: "mobile",
+    name: "mobile dark",
+    theme: "dark",
+  },
+  {
+    device: "mobile",
+    name: "mobile light",
+    theme: "light",
+  },
+] as const;

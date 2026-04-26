@@ -1,6 +1,15 @@
 import type { BrowserPage } from "vitest/browser";
 
-type setViewPort = (page: BrowserPage) => Promise<void>;
+interface Args {
+  type: "desktop" | "mobile";
+  page: BrowserPage;
+}
 
-export const setDesktopViewPort: setViewPort = (page: BrowserPage) => page.viewport(1280, 720);
-export const setMobileViewPort: setViewPort = (page: BrowserPage) => page.viewport(375, 667);
+export function setViewPort(args: Args) {
+  switch (args.type) {
+    case "desktop":
+      return args.page.viewport(1280, 720);
+    case "mobile":
+      return args.page.viewport(375, 667);
+  }
+}
