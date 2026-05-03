@@ -13,8 +13,8 @@
     "generate:schema": "bun x @better-auth/cli generate --config='./src/auth.ts' --output='./src/auth-schema.ts' --yes"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.5.6",
-    "@better-auth/oauth-provider": "1.5.6",
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@better-auth/oauth-provider": "catalog:",
     "@better-auth/passkey": "catalog:",
     "drizzle-orm": "0.44.7"
   },
@@ -23,7 +23,7 @@
     "drizzle-kit": "catalog:"
   },
   "peerDependencies": {
-    "better-auth": "1.5.6",
+    "better-auth": "catalog:",
     "typescript": "catalog:"
   }
 }

@@ -1,40 +1,16 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": ".",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "lib": ["DOM", "DOM.Iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
+    "lib": ["DOM", "DOM.Iterable", "esnext", "WebWorker"],
     "paths": {
-      "@/*": ["./app/*"],
-      "@/test/*": ["./test/*"]
+      "@/*": ["./src/*"],
+      "@/test/*": ["./test/*"],
+      "@roppoh/shadcn/*": ["../../packages/shadcn/src/*"]
     },
     "resolveJsonModule": true,
-    "rootDirs": [".", "./.react-router/types"],
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "esnext",
-    "types": [
-      "node",
-      "vite/client",
-      "./worker-configuration.d.ts",
-      "vite-plugin-pwa/client",
-      "vite-plugin-pwa/react"
-    ],
+    "types": ["./worker-configuration.d.ts", "vite/client"],
     "verbatimModuleSyntax": true
   },
   "extends": "../../tsconfig.json",
-  "include": [
-    "*.ts",
-    "./app/**/*.ts",
-    "./app/**/*.tsx",
-    "./test/**/*.ts",
-    "./test/**/*.tsx",
-    ".react-router/types/**/*"
-  ]
+  "include": ["src", "test", "./*.ts"]
 }

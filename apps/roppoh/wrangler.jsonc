@@ -1,27 +1,24 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "assets": {
-    "directory": "./build/client",
+    "not_found_handling": "single-page-application",
   },
-  "compatibility_date": "2025-05-07",
-  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"],
-  "d1_databases": [
-    {
-      "binding": "ROPPOH_AUTH_DB",
-      "database_id": "f05eb9ed-9747-479f-8c78-7bba151c4777",
-      "database_name": "roppoh-auth",
-      "migrations_dir": "../../packages/better-auth-database/src/migrations",
-    },
-  ],
-  "dev": { "port": 3000 },
-  "main": "./server.ts",
+  "compatibility_date": "2025-11-27",
   "name": "roppoh",
   "observability": {
     "enabled": true,
   },
+  "preview_urls": false,
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "roppoh.tsar-bmb.org",
+      "zone_name": "tsar-bmb.org",
+    },
+  ],
+  "workers_dev": false,
   "vars": {
-    "DISCORD_CLIENT_ID": "1320047030717911111",
-    "DOKPLOY_API_URL": "https://dokploy.tsar-bmb.org/api",
-    "TSAR_GUILD_ID": "695466655152734228",
+    "VITE_OIDC_ISSUER": "https://neo-fujimatsu.tsar-bmb.org/api",
+    "VITE_OIDC_CLIENT_ID": "ZagxZfQuBthqZGMZZNPzSMKSmAfTVAXy",
   },
 }

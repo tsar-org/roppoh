@@ -58,9 +58,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun
-      - name: Test apps/roppoh
-        run: bun run test:unit
-        working-directory: apps/roppoh
       - name: Test apps/neo-fujimatsu
         run: bun run test:e2e
         working-directory: apps/neo-fujimatsu

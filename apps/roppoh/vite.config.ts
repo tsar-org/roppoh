@@ -1,19 +1,26 @@
 import { cloudflare } from "@cloudflare/vite-plugin";
-import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import devtoolsJson from "vite-plugin-devtools-json";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  build: {},
   plugins: [
+    tsconfigPaths(),
+    react({
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
+    tailwindcss(),
+    cloudflare({ configPath: "./wrangler.jsonc" }),
     devtoolsJson(),
     VitePWA({
       base: "/",
       devOptions: { enabled: false },
-      includeAssets: [],
+      includeAssets: ["public/**"],
       manifest: {
         background_color: "#000000",
         display: "standalone",
@@ -33,27 +40,16 @@ export default defineConfig({
         short_name: "Roppoh",
         theme_color: "#000000",
       },
-      outDir: "build/client",
+      outDir: "dist",
       registerType: "autoUpdate",
       scope: "/",
       strategies: "generateSW",
       workbox: {
-        globDirectory: "build/client",
-        globPatterns: ["**/*.{css,svg,js}"],
+        globDirectory: "dist",
+        globPatterns: ["**/*.{css,svg,js,html}"],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-        navigateFallback: "offline.html",
       },
     }),
-    cloudflare({
-      configPath: "./wrangler.jsonc",
-      viteEnvironment: { name: "ssr" },
-    }),
-    reactRouter(),
-    tailwindcss(),
-    tsconfigPaths(),
   ],
-  publicDir: "./public",
-  server: {
-    port: 3000,
-  },
+  server: { port: 51730 },
 });
