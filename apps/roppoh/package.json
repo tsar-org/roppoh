@@ -16,36 +16,41 @@
     "@better-auth/oauth-provider": "1.6.2",
     "@roppoh/shadcn": "workspace:*",
     "@ssgoi/react": "4.2.1",
-    "@tanstack/react-query": "5.90.20",
+    "@tanstack/react-query": "5.96.1",
     "babel-plugin-react-compiler": "1.0.0",
     "better-auth": "1.5.6",
     "jotai": "2.16.2",
     "lucide-react": "1.7.0",
     "nuqs": "2.8.9",
     "oauth4webapi": "3.8.5",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-router": "7.14.0",
-    "sonner": "2.0.7",
-    "valibot": "1.3.1"
+    "sonner": "catalog:",
+    "valibot": "1.3.1",
+    "workbox-window": "7.4.0"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.31.0",
+    "@cloudflare/vite-plugin": "catalog:",
+    "@cloudflare/workers-types": "4.20260401.1",
     "@tailwindcss/vite": "4.2.2",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3",
+    "@types/node": "22.16.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "5.2.0",
     "@vitest/browser-playwright": "4.0.17",
-    "tailwindcss": "4.2.2",
-    "vite": "7.3.1",
+    "@vitest/ui": "4.0.3",
+    "playwright": "1.56.0",
+    "tailwindcss": "catalog:",
+    "vite": "catalog:",
     "vite-plugin-devtools-json": "1.0.0",
     "vite-plugin-pwa": "1.2.0",
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "4.0.17",
-    "vitest-browser-react": "2.0.2",
-    "wrangler": "4.80.0"
+    "vitest-browser-react": "2.1.0",
+    "wrangler": "catalog:"
   },
   "peerDependencies": {
-    "typescript": "5.9.3"
+    "typescript": "catalog:"
   }
 }

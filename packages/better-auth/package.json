@@ -15,15 +15,15 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.5.6",
     "@better-auth/oauth-provider": "1.6.2",
-    "@better-auth/passkey": "1.5.6",
+    "@better-auth/passkey": "catalog:",
     "drizzle-orm": "0.44.7"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20260401.1",
-    "drizzle-kit": "0.31.8"
+    "drizzle-kit": "catalog:"
   },
   "peerDependencies": {
     "better-auth": "1.5.6",
-    "typescript": "5.9.3"
+    "typescript": "catalog:"
   }
 }
