@@ -16,7 +16,7 @@
     "@better-auth/drizzle-adapter": "catalog:",
     "@better-auth/oauth-provider": "catalog:",
     "@better-auth/passkey": "catalog:",
-    "drizzle-orm": "0.44.7"
+    "drizzle-orm": "0.45.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20260401.1",
