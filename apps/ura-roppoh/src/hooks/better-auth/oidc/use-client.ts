@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { authClient } from "@/libs/better-auth";
+import { auth } from "@/libs/better-auth";
 
 import { BetterAuthError } from "../error";
 
@@ -12,7 +12,7 @@ interface Args {
 
 export const useOidcClient = (args: Args) => {
   const queryFn = async () => {
-    const { data, error } = await authClient.oauth2.getClient({
+    const { data, error } = await auth.oauth2.getClient({
       query: { client_id: args.client_id! },
     });
 

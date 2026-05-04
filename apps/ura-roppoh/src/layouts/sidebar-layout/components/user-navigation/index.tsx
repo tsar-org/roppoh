@@ -13,14 +13,14 @@ import {
 } from "@roppoh/shadcn/components/ui/sidebar";
 import { ChevronsUpDown } from "lucide-react";
 
-import { authClient } from "@/libs/better-auth";
+import { auth } from "@/libs/better-auth";
 
 import { LogoutButton } from "./components/logout-button";
 import { ThemeSwitcher } from "./components/theme-switcher";
 
 export function UserNavigation() {
   const { isMobile } = useSidebar();
-  const { data } = authClient.useSession();
+  const { data } = auth.useSession();
 
   return (
     <SidebarMenu>
