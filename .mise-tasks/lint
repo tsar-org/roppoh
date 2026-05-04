@@ -1,4 +1,7 @@
 #\!/usr/bin/env bash
+#MISE description="Lint all code"
+
+set -euo pipefail
 
 bun oxlint --fix
 

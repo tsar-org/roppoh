@@ -6,10 +6,10 @@ pre-commit:
     oxfmt:
       stage_fixed: true
       exclude: "**/*.png"
-      run: bun oxfmt {staged_files} --write
+      run: bun run oxfmt
     oxlint:
       stage_fixed: true
-      run: bun oxlint {staged_files} --fix
+      run: bun run oxlint
     build:
       run: turbo build
     type-check:
