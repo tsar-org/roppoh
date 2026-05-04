@@ -2,7 +2,7 @@ import type { OAuthClient } from "@better-auth/oauth-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Prettify } from "better-auth";
 
-import { authClient } from "@/libs/better-auth";
+import { auth } from "@/libs/better-auth";
 
 import { BetterAuthError } from "../error";
 import { USE_OIDC_CLIENTS_KEY as USE_CLIENTS_KEY } from "./use-clients";
@@ -16,9 +16,9 @@ export const useDeleteClientMutation = (args: Args) => {
   const query = useQueryClient();
 
   const mutationFn = async (
-    args: Parameters<NonNullable<(typeof authClient)["oauth2"]["deleteClient"]>>[0],
+    args: Parameters<NonNullable<(typeof auth)["oauth2"]["deleteClient"]>>[0],
   ) => {
-    const { data, error } = await authClient.oauth2.deleteClient(args);
+    const { data, error } = await auth.oauth2.deleteClient(args);
 
     if (error) {
       console.log(error);

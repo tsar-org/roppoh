@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-import { useAuth } from "@/libs/oidc/use-auth";
+import { useAuth } from "@/root/components/auth-provider";
 
 export default function () {
   const { isAuthenticated, isLoading } = useAuth();

@@ -6,7 +6,7 @@ import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 
 import SidebarLayout from "@/layouts/sidebar-layout";
-import { authClient } from "@/libs/better-auth";
+import { auth } from "@/libs/better-auth";
 import Page from "@/pages/oidc-client/page";
 
 import { textMatrix } from "../constant";
@@ -20,7 +20,7 @@ vi.mock("nuqs/adapters/react-router/v7", () => ({
 }));
 
 vi.mock("@/libs/better-auth", () => ({
-  authClient: {
+  auth: {
     useSession: vi.fn().mockReturnValue({
       data: null,
       isPending: false,
@@ -68,7 +68,7 @@ const mockClient: OAuthClient = {
 
 describe("VRT oidc-client page - with clients data", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
@@ -92,7 +92,7 @@ describe("VRT oidc-client page - with clients data", async () => {
 
 describe("VRT oidc-client page - skeleton loading", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockReturnValue(new Promise(() => {}));
+    vi.mocked(auth.oauth2.getClients).mockReturnValue(new Promise(() => {}));
   });
 
   it.each(textMatrix)("$name", async ({ theme, device }) => {
@@ -113,7 +113,7 @@ describe("VRT oidc-client page - skeleton loading", async () => {
 
 describe("VRT oidc-client page - create dialog", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
@@ -137,11 +137,11 @@ describe("VRT oidc-client page - create dialog", async () => {
 
 describe("VRT oidc-client page - update dialog - with client data", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
-    vi.mocked(authClient.oauth2.getClient).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClient).mockResolvedValue({
       data: mockClient,
       error: null,
     });
@@ -167,11 +167,11 @@ describe("VRT oidc-client page - update dialog - with client data", async () => 
 
 describe("VRT oidc-client page - update dialog - skeleton loading", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
-    vi.mocked(authClient.oauth2.getClient).mockReturnValue(new Promise(() => {}));
+    vi.mocked(auth.oauth2.getClient).mockReturnValue(new Promise(() => {}));
   });
 
   it.each(textMatrix)("$name", async ({ theme, device }) => {
@@ -194,11 +194,11 @@ describe("VRT oidc-client page - update dialog - skeleton loading", async () => 
 
 describe("VRT oidc-client page - delete dialog - with client data", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
-    vi.mocked(authClient.oauth2.getClient).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClient).mockResolvedValue({
       data: mockClient,
       error: null,
     });
@@ -224,11 +224,11 @@ describe("VRT oidc-client page - delete dialog - with client data", async () => 
 
 describe("VRT oidc-client page - delete dialog - skeleton loading", async () => {
   beforeEach(() => {
-    vi.mocked(authClient.oauth2.getClients).mockResolvedValue({
+    vi.mocked(auth.oauth2.getClients).mockResolvedValue({
       data: mockClients,
       error: null,
     });
-    vi.mocked(authClient.oauth2.getClient).mockReturnValue(new Promise(() => {}));
+    vi.mocked(auth.oauth2.getClient).mockReturnValue(new Promise(() => {}));
   });
 
   it.each(textMatrix)("$name", async ({ theme, device }) => {
