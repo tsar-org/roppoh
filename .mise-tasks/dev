@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="run development server"
 
-cd "$MISE_ORIGINAL_CWD"
+set -euo pipefail
 
-cd apps/roppoh
-bun run migration
-bun run dev
-
+turbo dev --ui tui

@@ -2,7 +2,7 @@ import { Button } from "@roppoh/shadcn/components/ui/button";
 import { Spinner } from "@roppoh/shadcn/components/ui/spinner";
 import { useTransition } from "react";
 
-import { useAuth } from "@/libs/oidc/use-auth";
+import { useAuth } from "@/root/components/auth-provider";
 
 export function LoginButton() {
   const [isPending, startTransition] = useTransition();

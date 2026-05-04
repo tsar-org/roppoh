@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import { Outlet, ScrollRestoration } from "react-router";
 
-import { AuthProvider } from "@/libs/oidc/provider";
 import { config } from "@/libs/ssgoi";
+import { AuthProvider } from "@/root/components/auth-provider";
 
 import { useTheme, useThemeProvider } from "./components/theme-provider";
 
