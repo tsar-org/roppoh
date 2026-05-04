@@ -11,7 +11,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { useSearchParams } from "react-router";
 
 import { useOidcClient } from "@/hooks/better-auth/oidc/use-client";
-import { authClient } from "@/libs/better-auth";
+import { auth } from "@/libs/better-auth";
 
 export default function () {
   const [searchParams] = useSearchParams();
@@ -22,7 +22,7 @@ export default function () {
   const { data: clientData, isPending } = useOidcClient({ client_id });
 
   const handleConsent = async (accept: boolean) => {
-    const { data } = await authClient.oauth2.consent({ accept });
+    const { data } = await auth.oauth2.consent({ accept });
     if (data?.redirect && data?.url) {
       window.location.href = data.url;
     }

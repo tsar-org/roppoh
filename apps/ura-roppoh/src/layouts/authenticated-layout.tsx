@@ -9,7 +9,7 @@ export default function () {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      void navigate("/login");
+      return void navigate("/login");
     }
   }, [isLoading, isAuthenticated]);
 
