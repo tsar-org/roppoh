@@ -1,6 +1,5 @@
 # https://docs.github.com/ja/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
-enable-beta-ecosystems: true
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -15,7 +14,7 @@ updates:
       - "dependencies"
       - "github-actions"
 
-  - package-ecosystem: "npm"
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -28,7 +27,7 @@ updates:
       separator: "/"
     labels:
       - "dependencies"
-      - "npm"
+      - "bun"
     groups:
       react:
         patterns:

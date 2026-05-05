@@ -49,3 +49,6 @@ test-results
 # lefthook
 .lefthook-local.yml
 lefthook-local.yml
+
+# claude
+.claude/worktrees
