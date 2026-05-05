@@ -1,4 +1,3 @@
-import { Building, Users, Key } from "lucide-react";
 import type { JSX } from "react";
 
 interface SidebarContent {
@@ -10,25 +9,9 @@ interface SidebarContent {
   }>;
 }
 
-export const sidebarContentList = [
+export const sidebarContentList: Array<SidebarContent> = [
   {
     groupTitle: "Management",
-    items: [
-      {
-        href: "/oidc-client",
-        icon: () => <Key />,
-        title: "OIDC client",
-      },
-      {
-        href: "/organization",
-        icon: () => <Building />,
-        title: "Organization",
-      },
-      {
-        href: "/user",
-        icon: () => <Users />,
-        title: "User",
-      },
-    ],
+    items: [],
   },
-] as const satisfies Array<SidebarContent>;
+];
