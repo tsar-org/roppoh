@@ -35,7 +35,7 @@
     "@types/node": "22.16.0",
     "knip": "latest",
     "oxfmt": "0.41.0",
-    "oxlint": "1.56.0",
+    "oxlint": "1.62.0",
     "turbo": "2.9.8"
   },
   "peerDependencies": {
