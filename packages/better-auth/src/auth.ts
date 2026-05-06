@@ -17,11 +17,12 @@ export const config = {
   basePath: "",
   baseURL: "https://zunpachi.tsar-bmb.org",
   database: drizzleAdapter({}, { provider: "sqlite", schema: schema }),
+  disabledPaths: ["/token"],
   plugins: [
     admin(),
     jwt({
       disableSettingJwtHeader: true,
-      keyPairConfig: { alg: "ES256" },
+      jwks: { keyPairConfig: { alg: "RS256" } },
     }),
     oauthProvider({
       loginPage: "/sign-in",
