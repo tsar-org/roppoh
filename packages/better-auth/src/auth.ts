@@ -17,6 +17,7 @@ export const config = {
   basePath: "",
   baseURL: "https://zunpachi.tsar-bmb.org",
   database: drizzleAdapter({}, { provider: "sqlite", schema: schema }),
+  disabledPaths: ["/token"],
   plugins: [
     admin(),
     jwt({
