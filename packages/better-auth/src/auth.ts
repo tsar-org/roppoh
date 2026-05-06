@@ -21,7 +21,7 @@ export const config = {
     admin(),
     jwt({
       disableSettingJwtHeader: true,
-      keyPairConfig: { alg: "ES256" },
+      jwks: { keyPairConfig: { alg: "RS256" } },
     }),
     oauthProvider({
       loginPage: "/sign-in",
