@@ -21,35 +21,44 @@ jobs:
       - run: bun run knip
       - run: bun turbo build
 
-  playwright-test:
+  visual-regression-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: lint-and-build
+    strategy:
+      matrix:
+        include:
+          - app: neo-fujimatsu
+            package: "@roppoh/neo-fujimatsu"
+            test_script: test:vrt
+            vrt_dir: apps/neo-fujimatsu/test/vrt
+          - app: roppoh
+            package: "@roppoh/roppoh"
+            test_script: test:visual
+            vrt_dir: apps/roppoh/test/visual-regression
+          - app: ura-roppoh
+            package: "@roppoh/ura-roppoh"
+            test_script: test:visual
+            vrt_dir: apps/ura-roppoh/test/visual-regression
     steps:
       - uses: actions/checkout@v6
-      - uses: docker/setup-buildx-action@v4
-      - name: Run vrt docker container
-        run: docker compose up -d
-      - name: "roppoh vrt"
-        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/roppoh test:visual"
-      - name: "ura-roppoh vtr"
-        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/ura-roppoh test:visual"
-      - name: "neo-fujimatsu vrt"
-        run: docker compose exec linux-vrt sh -c "bun run --cwd apps/neo-fujimatsu test:vrt"
-      - run: docker compose down
-      - name: Upload VRT screenshots
-        if: always()
-        uses: actions/upload-artifact@v7
+      - uses: docker/setup-buildx-action@v3
+      - name: Build playwright image
+        uses: docker/build-push-action@v6
         with:
-          name: vrt-diff-screenshots
-          path: |
-            apps/roppoh/.vitest-attachments/**/*.png
-            apps/roppoh/test/visual-regression/**/__screenshots__/**/*.png
-            apps/ura-roppoh/.vitest-attachments/**/*.png
-            apps/ura-roppoh/test/visual-regression/**/__screenshots__/**/*.png
-            apps/neo-fujimatsu/test/vrt/**/*-snapshots/**/*.png
-            apps/neo-fujimatsu/test-results/**/*.png
-          retention-days: 7
+          context: .
+          file: .docker/playwright/Dockerfile
+          push: false
+          load: true
+          tags: roppoh-playwright:latest
+          cache-from: type=gha,scope=playwright
+          cache-to: type=gha,mode=max,scope=playwright
+      - name: Run ${{ matrix.app }} VRT
+        run: |
+          docker run --rm \
+            -v "$PWD/${{ matrix.vrt_dir }}":/app/${{ matrix.vrt_dir }} \
+            roppoh-playwright:latest \
+            bun run --filter ${{ matrix.package }} ${{ matrix.test_script }}
 
   unit-test:
     runs-on: ubuntu-latest
