@@ -37,7 +37,7 @@
     "knip": "latest",
     "oxfmt": "0.41.0",
     "oxlint": "1.62.0",
-    "turbo": "2.9.8"
+    "turbo": "2.9.9"
   },
   "peerDependencies": {
     "typescript": "catalog:"
