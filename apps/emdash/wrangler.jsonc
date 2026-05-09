@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "roppoh-emdash",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-02-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "roppoh-emdash-database",
+      "database_id": "6907dbfb-8bd3-463e-8851-376ed590473b",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "roppoh-emdash-media",
+    },
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "4c1cbb5b6eb44bc99a23b8d97036f726",
+    },
+  ],
+  "worker_loaders": [
+    {
+      "binding": "LOADER",
+    },
+  ],
+  "preview_urls": false,
+  "workers_dev": false,
+  "routes": [
+    {
+      "custom_domain": true,
+      "pattern": "emdash.tsar-bmb.org",
+      "zone_name": "tsar-bmb.org",
+    },
+  ],
+}

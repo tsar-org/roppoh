@@ -52,3 +52,10 @@ lefthook-local.yml
 
 # claude
 .claude/worktrees
+
+# astro
+.astro
+
+# emdash
+uploads
+data.db
