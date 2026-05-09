@@ -11,17 +11,19 @@ export default {
   ignoreDependencies: [],
   project: [],
   workspaces: {
-    ".": {
-      ignoreDependencies: ["turbo"],
-    },
+    ".": { ignoreDependencies: ["turbo"] },
     "apps/roppoh": {},
     "packages/better-auth": {},
     "packages/better-auth-database": {
       entry: ["src/auth.ts"],
-      ignore: [
-        // generated code
-        "src/relations.ts",
-      ],
+      ignore: ["src/relations.ts"], // generated code
+    },
+    "apps/emdash": {
+      ignore: ["src/**"],
+      astro: {
+        config: ["astro.config.mts"],
+        entry: ["src/pages/**/*.{astro,mdx,js,ts}"],
+      },
     },
   },
 } satisfies KnipConfig;
