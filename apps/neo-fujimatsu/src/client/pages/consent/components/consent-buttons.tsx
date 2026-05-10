@@ -21,8 +21,10 @@ export function ConsentBtns() {
             const res = await authClient.oauth2.consent({
               accept: true,
             });
+
             if (res.data?.redirect && res.data.url) {
-              return void navigate(res.data.url);
+              await navigate(res.data.url);
+              return;
             }
             toast.error("Failed to authorize");
           });
@@ -38,7 +40,8 @@ export function ConsentBtns() {
               accept: false,
             });
             if (res.data?.redirect && res.data.url) {
-              return void navigate(res.data.url);
+              await navigate(res.data.url);
+              return;
             }
             toast.error("Failed to cancel");
           });

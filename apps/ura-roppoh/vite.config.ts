@@ -51,5 +51,5 @@ export default defineConfig({
       },
     }),
   ],
-  server: { port: 51731 },
+  server: { port: 51_731 },
 });

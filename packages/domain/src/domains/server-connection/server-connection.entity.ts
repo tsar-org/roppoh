@@ -1,4 +1,5 @@
 import type { ExternalDependencyFailureError, InvalidRequestError } from "@roppoh/domain/errors";
+
 import { Brand, type Effect } from "effect";
 
 import type { Organization } from "../organization";
@@ -11,12 +12,12 @@ export enum ServerProvider {
   DOKPLOY = "dokploy",
 }
 
-export type ServerConnectionConfig = {
+export interface ServerConnectionConfig {
   provider: ServerProvider.DOKPLOY;
   apiUrl: string;
   apiKey: string;
   header?: Record<string, string>;
-};
+}
 
 export interface ServerConnection {
   // Property
@@ -25,5 +26,5 @@ export interface ServerConnection {
   readonly config: ServerConnectionConfig;
 
   // Behavior
-  verify: () => Effect.Effect<void, InvalidRequestError | ExternalDependencyFailureError, never>;
+  verify: () => Effect.Effect<void, InvalidRequestError | ExternalDependencyFailureError>;
 }

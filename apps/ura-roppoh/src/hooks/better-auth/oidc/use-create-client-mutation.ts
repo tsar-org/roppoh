@@ -1,6 +1,7 @@
 import type { OAuthClient } from "@better-auth/oauth-provider";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Prettify } from "better-auth";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { auth } from "@/libs/better-auth";
 
@@ -19,9 +20,9 @@ export const useCreateClientMutation = (args: Args) => {
   const query = useQueryClient();
 
   const mutationFn = async (
-    args: Parameters<NonNullable<(typeof auth)["oauth2"]["createClient"]>>[0],
+    params: Parameters<NonNullable<(typeof auth)["oauth2"]["createClient"]>>[0],
   ) => {
-    const { data, error } = await auth.oauth2.createClient(args);
+    const { data, error } = await auth.oauth2.createClient(params);
 
     if (error) {
       console.log(error);
@@ -32,13 +33,13 @@ export const useCreateClientMutation = (args: Args) => {
   };
 
   return useMutation({
-    mutationFn: mutationFn,
+    mutationFn,
     onError: async (error, variables, onMutateResult, context) => {
-      console.error({ error, variables, onMutateResult, context });
+      console.error({ context, error, onMutateResult, variables });
       await args.onError?.({ error, variables });
     },
     onSuccess: async (data, variables) => {
-      query.invalidateQueries({ queryKey: [USE_CLIENTS_KEY] });
+      await query.invalidateQueries({ queryKey: [USE_CLIENTS_KEY] });
       await args.onSuccess?.({ data, variables });
     },
   });

@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: Generic type utilities require any for type parameters */
+/** Biome-ignore-all lint/suspicious/noExplicitAny: Generic type utilities require any for type parameters */
 
 import type { Effect } from "effect";
 

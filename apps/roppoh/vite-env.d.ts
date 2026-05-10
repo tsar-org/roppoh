@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: type definition file */
+/** Biome-ignore-all lint/correctness/noUnusedVariables: type definition file */
 
 interface ViteTypeOptions {
   strictImportMetaEnv: unknown;

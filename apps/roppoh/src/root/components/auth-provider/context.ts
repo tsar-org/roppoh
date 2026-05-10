@@ -1,5 +1,6 @@
-import { RESET } from "jotai/utils";
+import type { RESET } from "jotai/utils";
 import type { AuthorizationServer, Client } from "oauth4webapi";
+
 import { createContext } from "react";
 
 import type { OidcStoredState } from "./constant";
@@ -11,15 +12,15 @@ type SetStored = (
     | ((prev: OidcStoredState) => OidcStoredState | typeof RESET),
 ) => void;
 
-type AuthContextType = {
+interface AuthContextType {
   as?: AuthorizationServer;
   client: Client;
   stored: OidcStoredState;
   setStored: SetStored;
-};
+}
 
 export const AuthContext = createContext<AuthContextType>({
   client: { client_id: "", token_endpoint_auth_method: "none" },
-  stored: {},
   setStored: () => {},
+  stored: {},
 });

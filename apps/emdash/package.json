@@ -9,7 +9,8 @@
     "deploy": "astro build && wrangler deploy",
     "type-check": "astro check",
     "bootstrap": "emdash init && emdash seed",
-    "seed": "emdash seed"
+    "seed": "emdash seed",
+    "cf-typegen": "wrangler types  --strict-vars=false"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.7",

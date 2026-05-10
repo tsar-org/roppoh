@@ -1,4 +1,5 @@
 import type { OAuthClient } from "@better-auth/oauth-provider";
+
 import { Button } from "@roppoh/shadcn/components/ui/button";
 import {
   DialogClose,
@@ -38,14 +39,14 @@ export const Form = (props: Props) => {
   const mutate = useCreateClientMutation({
     onError: () => void toast.error("Failed create OIDC client mutation."),
     onSuccess: ({ data }) =>
-      props.onSuccess ? props.onSuccess(data) : void setParams({ dialog: null, client_id: null }),
+      props.onSuccess ? props.onSuccess(data) : void setParams({ client_id: null, dialog: null }),
   });
 
   const form = useForm({
-    defaultValues: defaultValues,
+    defaultValues,
+    onSubmit: async ({ value }) => mutate.mutateAsync(value),
     validationLogic: revalidateLogic(),
     validators: { onDynamic: schema },
-    onSubmit: async ({ value }) => mutate.mutateAsync(value),
   });
 
   return (
@@ -53,7 +54,7 @@ export const Form = (props: Props) => {
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        void form.handleSubmit();
       }}
     >
       {/* Header */}
@@ -66,7 +67,7 @@ export const Form = (props: Props) => {
 
       {/* Body */}
       <FieldGroup className="py-6">
-        {/* client_name */}
+        {/* Client_name */}
         <form.Field name="client_name">
           {(field) => (
             <Field>
@@ -84,16 +85,19 @@ export const Form = (props: Props) => {
           )}
         </form.Field>
 
-        {/* token_endpoint_auth_method */}
+        {/* Token_endpoint_auth_method */}
         <form.Field name="token_endpoint_auth_method">
           {(field) => (
             <Field>
               <Label htmlFor={field.name}>Token Endpoint Auth Method</Label>
               <Select
                 value={field.state.value}
-                onValueChange={(value) =>
-                  field.handleChange(value as (typeof TOKEN_ENDPOINT_AUTH_METHODS)[number])
-                }
+                onValueChange={(value) => {
+                  const method = TOKEN_ENDPOINT_AUTH_METHODS.find((m) => m === value);
+                  if (method) {
+                    field.handleChange(method);
+                  }
+                }}
               >
                 <SelectTrigger id={field.name} className="w-full">
                   <SelectValue />
@@ -111,7 +115,7 @@ export const Form = (props: Props) => {
           )}
         </form.Field>
 
-        {/* redirect_uris */}
+        {/* Redirect_uris */}
         <form.Field name="redirect_uris">
           {(field) => (
             <>

@@ -24,7 +24,7 @@ export default function () {
   const handleConsent = async (accept: boolean) => {
     const { data } = await auth.oauth2.consent({ accept });
     if (data?.redirect && data?.url) {
-      window.location.href = data.url;
+      globalThis.location.href = data.url;
     }
   };
 

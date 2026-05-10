@@ -11,13 +11,11 @@ export interface ServerRepository {
     id: string;
   }) => Effect.Effect<
     Server,
-    ExternalDependencyFailureError | ResourceNotFoundError | ExternalContractViolationError,
-    never
+    ExternalDependencyFailureError | ResourceNotFoundError | ExternalContractViolationError
   >;
 
   getAll: () => Effect.Effect<
     Server[],
-    ExternalDependencyFailureError | ExternalContractViolationError,
-    never
+    ExternalDependencyFailureError | ExternalContractViolationError
   >;
 }

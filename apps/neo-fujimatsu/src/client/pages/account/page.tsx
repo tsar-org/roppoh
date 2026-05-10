@@ -8,20 +8,19 @@ import {
   CardTitle,
 } from "@roppoh/shadcn/components/ui/card";
 import { ItemGroup } from "@roppoh/shadcn/components/ui/item";
-import { Skeleton } from "@roppoh/shadcn/components/ui/skeleton";
 import { Plus } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { lazy, Suspense } from "react";
+import { Suspense, lazy } from "react";
 
 import { useUserPasskeys } from "@/client/hooks/better-auth";
 
-import { PasskeyItem } from "./components/passkey-item";
+import { PasskeyListView } from "./components/passkey-list-view";
 import { dialogSearchParams } from "./params";
 
-const AddPasskeyDialog = lazy(() =>
+const AddPasskeyDialog = lazy(async () =>
   import("./components/add-passkey-dialog").then((m) => ({ default: m.AddPasskeyDialog })),
 );
-const DeletePasskeyDialog = lazy(() =>
+const DeletePasskeyDialog = lazy(async () =>
   import("./components/delete-passkey-dialog").then((m) => ({ default: m.DeletePasskeyDialog })),
 );
 
@@ -52,15 +51,7 @@ export default function () {
         </CardHeader>
         <CardContent>
           <ItemGroup>
-            {isPending ? (
-              <Skeleton className="h-16 w-full" />
-            ) : data && data.length > 0 ? (
-              data.map((entry) => <PasskeyItem key={entry.id} passkey={entry} />)
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                You have not registered any passkeys yet.
-              </p>
-            )}
+            <PasskeyListView isPending={isPending} data={data} />
           </ItemGroup>
         </CardContent>
       </Card>

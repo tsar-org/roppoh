@@ -1,5 +1,5 @@
 import { exports } from "cloudflare:workers";
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("/health", () => {
   it("responds 200", async () => {

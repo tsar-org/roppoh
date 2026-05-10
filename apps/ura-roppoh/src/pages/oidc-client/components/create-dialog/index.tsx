@@ -11,7 +11,7 @@ export const CreateClientDialog = () => {
   const [, setParams] = useQueryStates(dialogSearchParams);
   const [createdSecret, setCreatedSecret] = useState<string | null>(null);
 
-  const handleClose = () => void setParams({ dialog: null, client_id: null });
+  const handleClose = () => void setParams({ client_id: null, dialog: null });
 
   if (createdSecret) {
     return (
@@ -28,8 +28,11 @@ export const CreateClientDialog = () => {
       <DialogContent className="sm:max-w-sm">
         <Form
           onSuccess={(data) => {
-            if (data.client_secret) return void setCreatedSecret(data.client_secret);
-            return void handleClose();
+            if (data.client_secret) {
+              setCreatedSecret(data.client_secret);
+              return;
+            }
+            handleClose();
           }}
         />
       </DialogContent>

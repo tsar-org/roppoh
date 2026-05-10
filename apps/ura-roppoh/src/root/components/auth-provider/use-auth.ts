@@ -1,3 +1,4 @@
+// oxlint-disable max-statements
 // This code is based on: https://github.com/better-auth/better-auth/tree/main/demo/oidc-client
 
 import { RESET } from "jotai/utils";
@@ -10,10 +11,10 @@ import { AuthContext } from "./context";
 
 const WEB_STORAGE_KEY = "oidc:auth";
 
-type LoginParams = {
+interface LoginParams {
   scope?: string;
   redirectUri?: string;
-};
+}
 
 export const useAuth = () => {
   const { stored, setStored, client, as } = useContext(AuthContext);
@@ -21,7 +22,7 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const login = async (params?: LoginParams) => {
-    if (!as) {
+    if (!as || !as.authorization_endpoint) {
       toast.error("Authentication server info dose not found.");
       return;
     }
@@ -29,14 +30,15 @@ export const useAuth = () => {
     const scope = params?.scope || "openid profile email";
     let redirectUri = params?.redirectUri;
     if (!redirectUri && Array.isArray(client.redirect_uris) && client.redirect_uris.length > 0) {
-      redirectUri = client.redirect_uris[0]?.toString();
+      const [firstUri] = client.redirect_uris;
+      redirectUri = typeof firstUri === "string" ? firstUri : undefined;
     }
-    redirectUri = redirectUri || `${window.location.origin}/callback`;
+    redirectUri = redirectUri || `${globalThis.location.origin}/callback`;
 
     const code_verifier = oauth.generateRandomCodeVerifier();
     const code_challenge = await oauth.calculatePKCECodeChallenge(code_verifier);
 
-    const authorizationUrl = new URL(as.authorization_endpoint!);
+    const authorizationUrl = new URL(as.authorization_endpoint);
     authorizationUrl.searchParams.set("client_id", client.client_id);
     authorizationUrl.searchParams.set("redirect_uri", redirectUri);
     authorizationUrl.searchParams.set("response_type", "code");
@@ -52,10 +54,10 @@ export const useAuth = () => {
 
     sessionStorage.setItem(
       WEB_STORAGE_KEY,
-      JSON.stringify({ code_verifier, state, nonce, redirectUri }),
+      JSON.stringify({ code_verifier, nonce, redirectUri, state }),
     );
 
-    window.location.assign(authorizationUrl.toString());
+    globalThis.location.assign(authorizationUrl.toString());
   };
 
   const handleLoginRedirect = async () => {
@@ -75,8 +77,8 @@ export const useAuth = () => {
     const { code_verifier, state, nonce, redirectUri } = JSON.parse(storage);
 
     try {
-      const currentUrl = new URL(window.location.href);
-      // throws on error in v3
+      const currentUrl = new URL(globalThis.location.href);
+      // Throws on error in v3
       const params = oauth.validateAuthResponse(as, client, currentUrl, state);
 
       const authorizationResponse = await oauth.authorizationCodeGrantRequest(
@@ -88,7 +90,7 @@ export const useAuth = () => {
         code_verifier,
       );
 
-      // throws WWWAuthenticateChallengeError / ResponseBodyError in v3
+      // Throws WWWAuthenticateChallengeError / ResponseBodyError in v3
       const result = await oauth.processAuthorizationCodeResponse(
         as,
         client,
@@ -100,7 +102,9 @@ export const useAuth = () => {
       );
 
       setStored((prev) => ({ ...prev, accessToken: result.access_token }));
-      if (result.id_token) setStored((prev) => ({ ...prev, idToken: result.id_token }));
+      if (result.id_token) {
+        setStored((prev) => ({ ...prev, idToken: result.id_token }));
+      }
 
       const claims = oauth.getValidatedIdTokenClaims(result);
       if (!claims) {
@@ -109,7 +113,7 @@ export const useAuth = () => {
         return;
       }
 
-      // throws WWWAuthenticateChallengeError in v3
+      // Throws WWWAuthenticateChallengeError in v3
       const userInfoResponse = await oauth.userInfoRequest(as, client, result.access_token);
       const userInfo = await oauth.processUserInfoResponse(
         as,
@@ -119,7 +123,11 @@ export const useAuth = () => {
       );
       setStored((prev) => ({ ...prev, user: userInfo as Record<string, unknown> }));
 
-      window.history.replaceState({}, document.title, redirectUri || window.location.origin);
+      globalThis.history.replaceState(
+        {},
+        document.title,
+        redirectUri || globalThis.location.origin,
+      );
     } catch (error) {
       console.error("Error handling login redirect", error);
     } finally {
@@ -128,42 +136,47 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-    if (!as || !stored.idToken) return;
+    if (!as || !stored.idToken || !as.end_session_endpoint) {
+      toast.error("Authentication server info dose not found.");
+      return;
+    }
 
-    const endSessionUrl = new URL(as.end_session_endpoint!);
-    endSessionUrl.searchParams.set("post_logout_redirect_uri", window.location.origin);
+    const endSessionUrl = new URL(as.end_session_endpoint);
+    endSessionUrl.searchParams.set("post_logout_redirect_uri", globalThis.location.origin);
     endSessionUrl.searchParams.set("id_token_hint", stored.idToken);
 
     setStored(RESET);
     localStorage.removeItem(OIDC_STORAGE_KEY);
 
-    window.location.assign(endSessionUrl.toString());
+    globalThis.location.assign(endSessionUrl.toString());
   };
 
   useEffect(() => {
-    if (!as || !client) return;
+    if (!as || !client) {
+      return;
+    }
 
-    if (!window.location.search.includes("code=")) {
+    if (!globalThis.location.search.includes("code=")) {
       setIsLoading(false);
       return;
     }
 
     void handleLoginRedirect()
-      .catch((error) => {
+      .catch((error: unknown) => {
         console.error("Failed to handle login redirect", error);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [window.location.search, as, client]);
+  }, [globalThis.location.search, as, client]);
 
   return {
-    user: stored.user,
-    isAuthenticated: !!stored.user,
-    isLoading,
     accessToken: stored.accessToken,
-    login,
     handleLoginRedirect,
+    isAuthenticated: Boolean(stored.user),
+    isLoading,
+    login,
     logout,
+    user: stored.user,
   };
 };

@@ -15,21 +15,21 @@ import { Plus, X } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { toast } from "sonner";
 
-import { useUpdateClientMutation, type useOidcClient } from "@/hooks/better-auth";
+import { type useOidcClient, useUpdateClientMutation } from "@/hooks/better-auth";
 import { dialogSearchParams } from "@/pages/oidc-client/params";
 
 import { schema } from "./form-field";
 
-type Props = {
+interface Props {
   client: NonNullable<ReturnType<typeof useOidcClient>["data"]>;
-};
+}
 
 export const Form = (props: Props) => {
   const [, setParams] = useQueryStates(dialogSearchParams);
 
   const mutate = useUpdateClientMutation({
     onError: () => void toast.error("Failed update OIDC client mutation."),
-    onSuccess: () => void setParams({ dialog: null, client_id: null }),
+    onSuccess: () => void setParams({ client_id: null, dialog: null }),
   });
 
   const form = useForm({
@@ -37,10 +37,10 @@ export const Form = (props: Props) => {
       client_name: props.client.client_name ?? "",
       redirect_uris: props.client.redirect_uris ?? ([] satisfies string[]),
     },
-    validationLogic: revalidateLogic(),
-    validators: { onDynamic: schema },
     onSubmit: async ({ value }) =>
       await mutate.mutateAsync({ client_id: props.client.client_id, update: value }),
+    validationLogic: revalidateLogic(),
+    validators: { onDynamic: schema },
   });
 
   return (
@@ -48,7 +48,7 @@ export const Form = (props: Props) => {
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        void form.handleSubmit();
       }}
     >
       {/* Header */}
@@ -59,7 +59,7 @@ export const Form = (props: Props) => {
 
       {/* Body */}
       <FieldGroup className="py-6">
-        {/* client_name */}
+        {/* Client_name */}
         <form.Field name="client_name">
           {(field) => (
             <Field>
@@ -77,7 +77,7 @@ export const Form = (props: Props) => {
           )}
         </form.Field>
 
-        {/* redirect_uris */}
+        {/* Redirect_uris */}
         <form.Field name="redirect_uris">
           {(field) => (
             <>

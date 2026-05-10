@@ -1,47 +1,46 @@
-import { http, HttpResponse } from "msw";
 import type { RequestHandler } from "msw";
 
-const sessionHandler = http.get("*/get-session", () => {
-  return HttpResponse.json({
+import { HttpResponse, http } from "msw";
+
+const sessionHandler = http.get("*/get-session", () =>
+  HttpResponse.json({
+    session: {
+      createdAt: "2024-01-01T00:00:00.000Z",
+      expiresAt: "2099-01-01T00:00:00.000Z",
+      id: "session-1",
+      ipAddress: null,
+      updatedAt: "2024-01-01T00:00:00.000Z",
+      userAgent: null,
+      userId: "user-1",
+    },
     user: {
-      id: "user-1",
-      name: "Test User",
+      createdAt: "2024-01-01T00:00:00.000Z",
       email: "test@example.com",
       emailVerified: true,
+      id: "user-1",
       image: null,
-      createdAt: "2024-01-01T00:00:00.000Z",
+      name: "Test User",
       updatedAt: "2024-01-01T00:00:00.000Z",
     },
-    session: {
-      id: "session-1",
-      userId: "user-1",
-      expiresAt: "2099-01-01T00:00:00.000Z",
-      createdAt: "2024-01-01T00:00:00.000Z",
-      updatedAt: "2024-01-01T00:00:00.000Z",
-      ipAddress: null,
-      userAgent: null,
-    },
-  });
-});
+  }),
+);
 
 export const handlersEmpty = [
   sessionHandler,
-  http.get("*/passkey/list-user-passkeys", () => {
-    return HttpResponse.json([]);
-  }),
+  http.get("*/passkey/list-user-passkeys", () => HttpResponse.json([])),
 ] satisfies RequestHandler[];
 
 export const handlersWithPasskeys = [
   sessionHandler,
-  http.get("*/passkey/list-user-passkeys", () => {
-    return HttpResponse.json([
+  http.get("*/passkey/list-user-passkeys", () =>
+    HttpResponse.json([
       {
-        id: "passkey-1",
-        name: "My MacBook",
-        deviceType: "platform",
         backedUp: true,
         createdAt: "2024-01-01T00:00:00.000Z",
+        deviceType: "platform",
+        id: "passkey-1",
+        name: "My MacBook",
       },
-    ]);
-  }),
+    ]),
+  ),
 ] satisfies RequestHandler[];

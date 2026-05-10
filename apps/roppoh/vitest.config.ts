@@ -19,7 +19,7 @@ export default defineConfig({
           env: {},
           include: ["test/visual-regression/**/*.spec.{ts,tsx}"],
           name: "visual",
-          testTimeout: 10000,
+          testTimeout: 10_000,
         },
       },
     ],

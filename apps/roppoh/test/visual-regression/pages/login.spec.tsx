@@ -5,7 +5,7 @@ import { page } from "vitest/browser";
 import Page from "@/pages/login/page";
 
 import { textMatrix } from "../constant";
-import { createRootRouteStub, type RouteChildren } from "../helpers/route-stub";
+import { type RouteChildren, createRootRouteStub } from "../helpers/route-stub";
 import { setTheme } from "../helpers/theme";
 import { setViewPort } from "../helpers/view-port";
 

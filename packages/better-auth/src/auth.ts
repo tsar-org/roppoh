@@ -1,9 +1,10 @@
+import type { Auth } from "better-auth/types";
+
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { oauthProvider } from "@better-auth/oauth-provider";
 import { passkey } from "@better-auth/passkey";
-import { betterAuth, type BetterAuthOptions } from "better-auth/minimal";
-import { jwt, admin } from "better-auth/plugins";
-import type { Auth } from "better-auth/types";
+import { type BetterAuthOptions, betterAuth } from "better-auth/minimal";
+import { admin, jwt } from "better-auth/plugins";
 
 import * as schema from "./auth-schema";
 
@@ -16,7 +17,7 @@ export const config = {
   },
   basePath: "",
   baseURL: "https://zunpachi.tsar-bmb.org",
-  database: drizzleAdapter({}, { provider: "sqlite", schema: schema }),
+  database: drizzleAdapter({}, { provider: "sqlite", schema }),
   disabledPaths: ["/token"],
   plugins: [
     admin(),
@@ -25,8 +26,8 @@ export const config = {
       jwks: { keyPairConfig: { alg: "RS256" } },
     }),
     oauthProvider({
-      loginPage: "/sign-in",
       consentPage: "/consent",
+      loginPage: "/sign-in",
     }),
     passkey({
       rpName: "Fujimatsu",
@@ -34,14 +35,14 @@ export const config = {
   ] as const,
   secret: "",
   session: {
-    storeSessionInDatabase: true, // for oidc
+    storeSessionInDatabase: true, // For oidc
     // FYI: https://www.better-auth.com/docs/guides/optimizing-for-performance
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60, // 5 minutes
     },
-    expiresIn: 604800, // 7 days
-    updateAge: 86400, // 1 day
+    expiresIn: 604_800, // 7 days
+    updateAge: 86_400, // 1 day
   },
   socialProviders: {
     discord: { clientId: "DISCORD_CLIENT_ID", clientSecret: "DISCORD_CLIENT_SECRET" },
@@ -50,7 +51,7 @@ export const config = {
   trustedOrigins: ["*"],
 } satisfies BetterAuthOptions;
 
-// for better-auth cli generate script config
+// For better-auth cli generate script config
 export const auth: Auth<typeof config> = betterAuth(config);
 
 export const createBetterAuth = <T extends typeof config>(override: T): Auth<T> =>
