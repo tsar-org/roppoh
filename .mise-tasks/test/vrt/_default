@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Run all visual regression tests"
+#MISE depends=["test:vrt:build-container"]
+#MISE depends_post=["test:vrt:neo-fujimatsu", "test:vrt:roppoh", "test:vrt:ura-roppoh"]

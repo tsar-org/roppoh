@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build docker container for visual regression test"
+
+set -euo pipefail
+
+IMAGE="roppoh-playwright:latest"
+
+DOCKER_BUILDKIT=1 docker build \
+  -f .docker/playwright/Dockerfile \
+  -t "$IMAGE" \
+  .
