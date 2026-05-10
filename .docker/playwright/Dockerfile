@@ -10,12 +10,14 @@ WORKDIR /app
 
 COPY package.json bun.lock bunfig.toml ./
 
-COPY apps/neo-fujimatsu/package.json ./apps/neo-fujimatsu/
+COPY apps/emdash/package.json    ./apps/emdash/
 COPY apps/roppoh/package.json        ./apps/roppoh/
 COPY apps/ura-roppoh/package.json    ./apps/ura-roppoh/
-COPY packages/better-auth/package.json ./packages/better-auth/
+COPY apps/neo-fujimatsu/package.json ./apps/neo-fujimatsu/
+
 COPY packages/domain/package.json      ./packages/domain/
 COPY packages/shadcn/package.json      ./packages/shadcn/
+COPY packages/better-auth/package.json ./packages/better-auth/
 
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile

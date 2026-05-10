@@ -9,7 +9,7 @@ IMAGE="roppoh-playwright:latest"
 
 CMD="bun run --filter @roppoh/ura-roppoh test:visual"
 if [ "${usage_update_snapshots:-false}" = "true" ]; then
-  CMD+=" -- --update-snapshots"
+  CMD+=" -- --update"
 fi
 
 docker run --rm \
