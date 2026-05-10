@@ -9,7 +9,7 @@ import { Skeleton } from "@roppoh/shadcn/components/ui/skeleton";
 import { SsgoiTransition } from "@ssgoi/react";
 import { Search } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { lazy, Suspense } from "react";
+import { Suspense, lazy } from "react";
 
 import { SiteHeader } from "@/components/header";
 import { useOidcClients } from "@/hooks/better-auth";
@@ -17,13 +17,13 @@ import { useOidcClients } from "@/hooks/better-auth";
 import { OidcClient } from "./components/oidc-client";
 import { dialogSearchParams } from "./params";
 
-const CreateClientDialog = lazy(() =>
+const CreateClientDialog = lazy(async () =>
   import("./components/create-dialog").then((m) => ({ default: m.CreateClientDialog })),
 );
-const UpdateClientDialog = lazy(() =>
+const UpdateClientDialog = lazy(async () =>
   import("./components/update-dialog").then((m) => ({ default: m.UpdateDialog })),
 );
-const DeleteClientDialog = lazy(() =>
+const DeleteClientDialog = lazy(async () =>
   import("./components/delete-dialog").then((m) => ({ default: m.DeleteClientDialog })),
 );
 
@@ -45,7 +45,7 @@ export default function () {
           <Button
             variant="outline"
             size="lg"
-            onClick={() => void setParams({ dialog: "create", client_id: null })}
+            onClick={() => void setParams({ client_id: null, dialog: "create" })}
           >
             New Client
           </Button>
@@ -58,7 +58,7 @@ export default function () {
           )}
         </ItemGroup>
 
-        {/* dialog */}
+        {/* Dialog */}
         {dialog === "create" && (
           <Suspense fallback={null}>
             <CreateClientDialog />

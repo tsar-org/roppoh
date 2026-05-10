@@ -5,11 +5,9 @@ interface Args {
   page: BrowserPage;
 }
 
-export function setViewPort(args: Args) {
-  switch (args.type) {
-    case "desktop":
-      return args.page.viewport(1280, 720);
-    case "mobile":
-      return args.page.viewport(375, 667);
+export async function setViewPort(args: Args) {
+  if (args.type === "desktop") {
+    return args.page.viewport(1280, 720);
   }
+  return args.page.viewport(375, 667);
 }

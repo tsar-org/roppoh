@@ -19,7 +19,7 @@ export const useUserPasskeys = () => {
   };
 
   return useQuery<Awaited<ReturnType<typeof queryFn>>, BetterAuthError>({
-    queryKey: [USE_USER_PASSKEYS_KEY],
     queryFn,
+    queryKey: [USE_USER_PASSKEYS_KEY],
   });
 };

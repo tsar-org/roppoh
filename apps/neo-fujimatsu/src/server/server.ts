@@ -8,10 +8,10 @@ import { openidConfigurationRoute } from "./routes/.well-known/openid-configurat
 export const app = new Hono()
   .get("/", (c) => c.redirect("/sign-in"))
   .route("/health", health)
-  // middleware
+  // Middleware
   .use("*", injectDependenciesMiddleware)
   .use("*", betterAuthCorsMiddleware)
-  // handler
+  // Handler
   .route("/api/.well-known/openid-configuration", openidConfigurationRoute)
   .route("/.well-known/oauth-authorization-server/api", oauthAuthorizationServerRoute)
   .route("/api/*", betterAuthRoute);

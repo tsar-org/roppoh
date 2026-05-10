@@ -12,8 +12,10 @@ pre-commit:
       run: bun run oxlint
     build:
       run: turbo build
-    type-check:
-      run: bun run type-check && turbo type-check
+    type-check:root:
+      run: bun run type-check
+    type-check:turbo:
+      run: bun run type-check
     cf-typegen:
       stage_fixed: true
       run: turbo cf-typegen

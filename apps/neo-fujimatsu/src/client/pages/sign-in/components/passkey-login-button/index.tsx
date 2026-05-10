@@ -22,7 +22,7 @@ export function PasskeyLoginButton() {
         toast.error(extractErrorMessage(res.error.message) ?? "Failed to sign in with passkey");
         return;
       }
-      window.location.href = callbackURL;
+      globalThis.location.href = callbackURL;
     });
 
   return (

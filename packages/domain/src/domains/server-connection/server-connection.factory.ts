@@ -8,5 +8,5 @@ export interface ServerConnectionFactory {
   create: (args: {
     organizationId: Organization["id"];
     config: ServerConnectionConfig;
-  }) => Effect.Effect<ServerConnection, ExternalDependencyFailureError, never>;
+  }) => Effect.Effect<ServerConnection, ExternalDependencyFailureError>;
 }

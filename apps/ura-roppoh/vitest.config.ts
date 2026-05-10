@@ -21,7 +21,7 @@ export default defineConfig({
           env: VRT_ENV,
           include: ["test/visual-regression/**/*.spec.{ts,tsx}"],
           name: "visual",
-          testTimeout: 10000,
+          testTimeout: 10_000,
         },
       },
     ],

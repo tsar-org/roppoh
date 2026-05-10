@@ -13,12 +13,12 @@ import { sidebarContentList } from "./constant";
 export function SidebarStaticContent() {
   return (
     <>
-      {sidebarContentList.map((item) => (
-        <SidebarGroup key={item.groupTitle}>
-          <SidebarGroupLabel>{item.groupTitle}</SidebarGroupLabel>
+      {sidebarContentList.map((content) => (
+        <SidebarGroup key={content.groupTitle}>
+          <SidebarGroupLabel>{content.groupTitle}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-1">
-              {item.items.map((item) => (
+              {content.items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <NavLink to={item.href}>
                     <SidebarMenuButton>

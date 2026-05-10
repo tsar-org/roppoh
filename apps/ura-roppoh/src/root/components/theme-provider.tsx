@@ -31,12 +31,12 @@ function useThemeProvider() {
   const theme = useAtomValue(themeAtom);
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    const root = globalThis.document.documentElement;
 
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      const systemTheme = globalThis.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
 

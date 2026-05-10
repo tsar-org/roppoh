@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     // package option
-    "baseUrl": ".",
     "lib": ["DOM", "DOM.Iterable", "esnext", "WebWorker"],
     "paths": {
       "@/*": ["./src/*"],

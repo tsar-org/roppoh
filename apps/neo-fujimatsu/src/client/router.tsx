@@ -1,44 +1,56 @@
-import type { JSX } from "react";
+import type { ComponentType } from "react";
+
 import { createBrowserRouter } from "react-router";
+
+const lazyDefault = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => async () => {
+  const module = await importFn();
+  return module.default;
+};
+
+const lazyNamed =
+  <K extends string>(importFn: () => Promise<Record<K, ComponentType<unknown>>>, name: K) =>
+  async () => {
+    const module = await importFn();
+    return module[name];
+  };
 
 export const router = createBrowserRouter([
   {
     children: [
       {
-        path: "/sign-in",
         lazy: {
-          Component: async () => (await import("./pages/sign-in/page")).default,
+          Component: lazyDefault(async () => import("./pages/sign-in/page")),
         },
+        path: "/sign-in",
       },
       {
         children: [
           {
-            path: "/account",
             lazy: {
-              Component: async () => (await import("./pages/account/page")).default,
+              Component: lazyDefault(async () => import("./pages/account/page")),
             },
+            path: "/account",
           },
         ],
         lazy: {
-          Component: async () =>
-            (await import("./layouts/authenticated-layout")).default as () => JSX.Element,
+          Component: lazyDefault(async () => import("./layouts/authenticated-layout")),
         },
       },
       {
+        lazy: {
+          Component: lazyDefault(async () => import("./pages/consent/page")),
+        },
         path: "/consent",
-        lazy: {
-          Component: async () => (await import("./pages/consent/page")).default,
-        },
       },
       {
-        path: "*",
         lazy: {
-          Component: async () => (await import("./pages/404/page")).default,
+          Component: lazyDefault(async () => import("./pages/404/page")),
         },
+        path: "*",
       },
     ],
     lazy: {
-      Component: async () => (await import("./root")).Root,
+      Component: lazyNamed(async () => import("./root"), "Root"),
     },
   },
 ]);

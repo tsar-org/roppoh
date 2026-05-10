@@ -1,10 +1,24 @@
-import type { JSX } from "react";
+import type { ComponentType } from "react";
+
 import { createBrowserRouter } from "react-router";
 
 import { ErrorBoundary } from "./root/error-boundary";
 
+const lazyDefault = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => async () => {
+  const module = await importFn();
+  return module.default;
+};
+
+const lazyNamed =
+  <K extends string>(importFn: () => Promise<Record<K, ComponentType<unknown>>>, name: K) =>
+  async () => {
+    const module = await importFn();
+    return module[name];
+  };
+
 export const router = createBrowserRouter([
   {
+    ErrorBoundary,
     children: [
       {
         children: [
@@ -13,60 +27,58 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 lazy: {
-                  Component: async () => (await import("./pages/index/page")).default,
+                  Component: lazyDefault(async () => import("./pages/index/page")),
                 },
               },
               {
                 lazy: {
-                  Component: async () => (await import("./pages/organization/page")).default,
+                  Component: lazyDefault(async () => import("./pages/organization/page")),
                 },
                 path: "/organization",
               },
               {
                 lazy: {
-                  Component: async () => (await import("./pages/user/page")).default,
+                  Component: lazyDefault(async () => import("./pages/user/page")),
                 },
                 path: "/user",
               },
               {
                 lazy: {
-                  Component: async () => (await import("./pages/oidc-client/page")).default,
+                  Component: lazyDefault(async () => import("./pages/oidc-client/page")),
                 },
                 path: "/oidc-client",
               },
             ],
             lazy: {
-              Component: async () => (await import("./layouts/sidebar-layout")).default,
+              Component: lazyDefault(async () => import("./layouts/sidebar-layout")),
             },
           },
         ],
         lazy: {
-          Component: async () =>
-            (await import("./layouts/authenticated-layout")).default as () => JSX.Element,
+          Component: lazyDefault(async () => import("./layouts/authenticated-layout")),
         },
       },
       {
         lazy: {
-          Component: async () => (await import("./pages/login/page")).default,
+          Component: lazyDefault(async () => import("./pages/login/page")),
         },
         path: "/login",
       },
       {
         lazy: {
-          Component: async () => (await import("./pages/callback/page")).default,
+          Component: lazyDefault(async () => import("./pages/callback/page")),
         },
         path: "/callback",
       },
       {
         lazy: {
-          Component: async () => (await import("./pages/consent/page")).default,
+          Component: lazyDefault(async () => import("./pages/consent/page")),
         },
         path: "/consent",
       },
     ],
-    ErrorBoundary: ErrorBoundary,
     lazy: {
-      Component: async () => (await import("./root")).Root,
+      Component: lazyNamed(async () => import("./root"), "Root"),
     },
   },
 ]);

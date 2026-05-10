@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 type ExternalContractType = "response-schema";
 
 export interface ExternalContractViolationError extends Error {

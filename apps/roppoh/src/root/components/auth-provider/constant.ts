@@ -10,7 +10,11 @@ export const PKCE_CODE_CHALLENGE_METHOD = "S256";
 
 const isTokenExpired = (token: string): boolean => {
   try {
-    const payload = JSON.parse(atob(token.split(".")[1]!));
+    const splited = token.split(".");
+    if (!splited[1]) {
+      return true;
+    }
+    const payload = JSON.parse(atob(splited[1]));
     return typeof payload.exp === "number" ? payload.exp * 1000 < Date.now() : false;
   } catch {
     return true;
@@ -27,9 +31,12 @@ export type OidcStoredState = v.InferInput<typeof OidcStoredStateSchema>;
 
 const isValidOidcState = (value: unknown): value is OidcStoredState => {
   const result = v.safeParse(OidcStoredStateSchema, value);
-  if (!result.success) return false;
-  if (typeof result.output.idToken === "string" && isTokenExpired(result.output.idToken))
+  if (!result.success) {
     return false;
+  }
+  if (typeof result.output.idToken === "string" && isTokenExpired(result.output.idToken)) {
+    return false;
+  }
   return true;
 };
 

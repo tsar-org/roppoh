@@ -12,8 +12,16 @@ export class BetterAuthError extends Error {
 
   public constructor(error: BetterAuthErrorObject) {
     super(error.message);
+    this.name = "BetterAuthError";
     this.code = error.code;
     this.status = error.status;
     this.statusText = error.statusText;
+  }
+}
+
+export class MissingQueryParameterError extends Error {
+  public constructor(parameterName: string) {
+    super(`Required query parameter '${parameterName}' is missing`);
+    this.name = "MissingQueryParameterError";
   }
 }

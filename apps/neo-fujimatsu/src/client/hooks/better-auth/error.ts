@@ -13,8 +13,14 @@ interface BetterAuthErrorObject {
 export const extractErrorMessage = (
   message: string | RawMessage | undefined,
 ): string | undefined => {
-  if (message == null) return undefined;
-  if (typeof message === "string") return message;
+  if (!message) {
+    return undefined;
+  }
+
+  if (typeof message === "string") {
+    return message;
+  }
+
   return message.message;
 };
 
@@ -25,8 +31,16 @@ export class BetterAuthError extends Error {
 
   public constructor(error: BetterAuthErrorObject) {
     super(extractErrorMessage(error.message));
+    this.name = "BetterAuthError";
     this.code = error.code;
     this.status = error.status;
     this.statusText = error.statusText;
+  }
+}
+
+export class MissingQueryParameterError extends Error {
+  public constructor(parameterName: string) {
+    super(`Required query parameter '${parameterName}' is missing`);
+    this.name = "MissingQueryParameterError";
   }
 }

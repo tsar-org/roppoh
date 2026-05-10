@@ -20,5 +20,5 @@ export interface User {
   readonly role: UserRole | undefined;
 
   // Association
-  organization?: () => Effect.Effect<Organization, never, never>;
+  organization?: () => Effect.Effect<Organization>;
 }

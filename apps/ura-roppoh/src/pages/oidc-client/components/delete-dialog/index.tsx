@@ -13,7 +13,7 @@ export const DeleteClientDialog = () => {
   const { data, isPending } = useOidcClient({ client_id });
 
   return (
-    <Dialog open={true} onOpenChange={() => void setParams({ dialog: null, client_id: null })}>
+    <Dialog open={true} onOpenChange={() => void setParams({ client_id: null, dialog: null })}>
       <DialogContent className="sm:max-w-sm">
         {isPending || !data ? (
           <div className="space-y-4 py-4">

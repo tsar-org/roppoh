@@ -9,12 +9,18 @@ export default function () {
   const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
-    if (isPending) return;
-    if (session) return;
+    if (isPending) {
+      return;
+    }
+    if (session) {
+      return;
+    }
     const redirectTo = location.pathname + location.search + location.hash;
-    navigate(`/sign-in?redirect=${encodeURIComponent(redirectTo)}`);
+    void navigate(`/sign-in?redirect=${encodeURIComponent(redirectTo)}`);
   }, [session, isPending]);
 
-  if (isPending || !session) return null;
+  if (isPending || !session) {
+    return null;
+  }
   return <Outlet />;
 }

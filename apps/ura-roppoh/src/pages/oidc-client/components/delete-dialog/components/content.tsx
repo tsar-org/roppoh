@@ -13,16 +13,16 @@ import { toast } from "sonner";
 import { useDeleteClientMutation, type useOidcClient } from "@/hooks/better-auth";
 import { dialogSearchParams } from "@/pages/oidc-client/params";
 
-type Props = {
+interface Props {
   client: NonNullable<ReturnType<typeof useOidcClient>["data"]>;
-};
+}
 
 export const Content = (props: Props) => {
   const [, setParams] = useQueryStates(dialogSearchParams);
 
   const { mutateAsync, isPending } = useDeleteClientMutation({
     onError: () => void toast.error("Failed delete OIDC client mutation."),
-    onSuccess: () => void setParams({ dialog: null, client_id: null }),
+    onSuccess: () => void setParams({ client_id: null, dialog: null }),
   });
 
   const handleDelete = async () => await mutateAsync({ client_id: props.client.client_id });

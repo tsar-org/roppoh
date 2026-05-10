@@ -11,7 +11,7 @@ export const UpdateDialog = () => {
   const [{ client_id }, setParams] = useQueryStates(dialogSearchParams);
   const { data, isPending } = useOidcClient({ client_id });
 
-  const handleClose = () => void setParams({ dialog: null, client_id: null });
+  const handleClose = () => void setParams({ client_id: null, dialog: null });
 
   return (
     <Dialog open={true} onOpenChange={handleClose}>

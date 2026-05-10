@@ -29,11 +29,11 @@ export const useAddPasskeyMutation = (args: Args) => {
   return useMutation({
     mutationFn,
     onError: async (error, variables, onMutateResult, context) => {
-      console.error({ error, variables, onMutateResult, context });
+      console.error({ context, error, onMutateResult, variables });
       await args.onError?.({ error, variables });
     },
     onSuccess: async (_data, variables) => {
-      query.invalidateQueries({ queryKey: [USE_USER_PASSKEYS_KEY] });
+      await query.invalidateQueries({ queryKey: [USE_USER_PASSKEYS_KEY] });
       await args.onSuccess?.({ variables });
     },
   });

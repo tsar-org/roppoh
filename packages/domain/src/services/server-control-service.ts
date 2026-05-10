@@ -7,13 +7,13 @@ export interface ServerControlService {
   start: (args: {
     server: Server;
     serverConnection: ServerConnection;
-  }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
+  }) => Effect.Effect<void, ExternalDependencyFailureError>;
   stop: (args: {
     server: Server;
     serverConnection: ServerConnection;
-  }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
+  }) => Effect.Effect<void, ExternalDependencyFailureError>;
   reStart: (args: {
     server: Server;
     serverConnection: ServerConnection;
-  }) => Effect.Effect<void, ExternalDependencyFailureError, never>;
+  }) => Effect.Effect<void, ExternalDependencyFailureError>;
 }

@@ -15,14 +15,16 @@ export function DiscordLoginButton() {
 
   const signIn = async () =>
     startTransition(async () => {
-      // oauthProvider 方式: /sign-in?client_id=...&sig=... で来た場合は consent URL を再構築
-      // authenticated-layout 方式: /sign-in?redirect=/consent?... で来た場合はそのまま使用
+      // OauthProvider 方式: /sign-in?client_id=...&sig=... で来た場合は consent URL を再構築
+      // Authenticated-layout 方式: /sign-in?redirect=/consent?... で来た場合はそのまま使用
       const callbackURL = resolveRedirectUrl(searchParams);
       const res = await authClient.signIn.social({
         callbackURL,
         provider: "discord",
       });
-      if (res.error) toast.error(res.error.statusText);
+      if (res.error) {
+        toast.error(res.error.statusText);
+      }
     });
 
   return (

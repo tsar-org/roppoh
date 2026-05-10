@@ -16,8 +16,9 @@ export default function () {
   const [params] = useQueryStates(consentPageParams);
 
   useEffect(() => {
-    if (!params.client_id || !params.redirect_uri || !params.scope)
-      return void navigate("/sign-in");
+    if (!params.client_id || !params.redirect_uri || !params.scope) {
+      void navigate("/sign-in");
+    }
   }, [params]);
 
   const { data: session } = authClient.useSession();

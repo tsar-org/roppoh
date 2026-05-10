@@ -9,13 +9,12 @@ export function LogoutButton() {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const handleLogout = async () =>
-    await Promise.all([
-      auth.signOut({
-        fetchOptions: { onSuccess: () => navigate(`/login`) },
-      }),
-      logout(),
-    ]);
+  const handleLogout = async () => {
+    logout();
+    await auth.signOut({
+      fetchOptions: { onSuccess: async () => await navigate(`/login`) },
+    });
+  };
 
   return (
     <DropdownMenuItem onClick={handleLogout}>

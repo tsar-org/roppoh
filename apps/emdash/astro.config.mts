@@ -1,20 +1,37 @@
+import type { PluginDescriptor } from "emdash";
+
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import { cloudflareCache, d1, r2, sandbox } from "@emdash-cms/cloudflare";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import { webhookNotifierPlugin } from "@emdash-cms/plugin-webhook-notifier";
 import { defineConfig, fontProviders } from "astro/config";
-import type { PluginDescriptor } from "emdash";
 import emdash from "emdash/astro";
 
 export default defineConfig({
-  output: "server",
   adapter: cloudflare(),
+  devToolbar: { enabled: false },
   experimental: {
     cache: {
       provider: cloudflareCache(),
     },
   },
+  fonts: [
+    {
+      cssVariable: "--font-sans",
+      fallbacks: ["sans-serif"],
+      name: "Inter",
+      provider: fontProviders.google(),
+      weights: [400, 500, 600, 700],
+    },
+    {
+      cssVariable: "--font-mono",
+      fallbacks: ["monospace"],
+      name: "JetBrains Mono",
+      provider: fontProviders.google(),
+      weights: [400, 500],
+    },
+  ],
   image: {
     layout: "constrained",
     responsiveStyles: true,
@@ -24,27 +41,12 @@ export default defineConfig({
     emdash({
       database: d1({ binding: "DB", session: "auto" }),
       storage: r2({ binding: "MEDIA" }),
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
       plugins: [formsPlugin() as PluginDescriptor],
       sandboxed: [webhookNotifierPlugin()],
       sandboxRunner: sandbox(),
       marketplace: "https://marketplace.emdashcms.com",
     }),
   ],
-  fonts: [
-    {
-      provider: fontProviders.google(),
-      name: "Inter",
-      cssVariable: "--font-sans",
-      weights: [400, 500, 600, 700],
-      fallbacks: ["sans-serif"],
-    },
-    {
-      provider: fontProviders.google(),
-      name: "JetBrains Mono",
-      cssVariable: "--font-mono",
-      weights: [400, 500],
-      fallbacks: ["monospace"],
-    },
-  ],
-  devToolbar: { enabled: false },
+  output: "server",
 });

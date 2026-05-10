@@ -1,4 +1,5 @@
 import type { OAuthClient } from "@better-auth/oauth-provider";
+
 import { Button } from "@roppoh/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -26,13 +27,13 @@ export const DropDown = (props: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => void setParams({ dialog: "edit", client_id: props.client.client_id })}
+          onClick={() => void setParams({ client_id: props.client.client_id, dialog: "edit" })}
         >
           Update
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => void setParams({ dialog: "delete", client_id: props.client.client_id })}
+          onClick={() => void setParams({ client_id: props.client.client_id, dialog: "delete" })}
         >
           Delete
         </DropdownMenuItem>

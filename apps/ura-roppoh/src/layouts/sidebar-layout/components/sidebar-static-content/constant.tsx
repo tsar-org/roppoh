@@ -1,13 +1,14 @@
-import { Building, Users, Key } from "lucide-react";
 import type { JSX } from "react";
+
+import { Building, Key, Users } from "lucide-react";
 
 interface SidebarContent {
   groupTitle: string;
-  items: Array<{
+  items: {
     icon: () => JSX.Element;
     title: string;
     href: string;
-  }>;
+  }[];
 }
 
 export const sidebarContentList = [
@@ -31,4 +32,4 @@ export const sidebarContentList = [
       },
     ],
   },
-] as const satisfies Array<SidebarContent>;
+] as const satisfies SidebarContent[];

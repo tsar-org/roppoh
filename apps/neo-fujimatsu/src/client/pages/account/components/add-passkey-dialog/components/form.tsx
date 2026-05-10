@@ -48,7 +48,7 @@ export const Form = () => {
       toast.error("Name is required");
       return;
     }
-    await mutateAsync({ name: trimmed, authenticatorAttachment: attachment });
+    await mutateAsync({ authenticatorAttachment: attachment, name: trimmed });
   };
 
   return (
@@ -76,7 +76,15 @@ export const Form = () => {
 
         <Field>
           <Label htmlFor="passkey-attachment">Authenticator</Label>
-          <Select value={attachment} onValueChange={(value) => setAttachment(value as Attachment)}>
+          <Select
+            value={attachment}
+            onValueChange={(value) => {
+              const option = ATTACHMENT_OPTIONS.find((o) => o === value);
+              if (option) {
+                setAttachment(option);
+              }
+            }}
+          >
             <SelectTrigger id="passkey-attachment" className="w-full">
               <SelectValue />
             </SelectTrigger>

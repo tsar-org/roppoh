@@ -1,6 +1,7 @@
 import type { OAuthClient } from "@better-auth/oauth-provider";
-import { withNuqsTestingAdapter } from "nuqs/adapters/testing";
 import type { ReactNode } from "react";
+
+import { withNuqsTestingAdapter } from "nuqs/adapters/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
@@ -10,26 +11,26 @@ import { auth } from "@/libs/better-auth";
 import Page from "@/pages/oidc-client/page";
 
 import { textMatrix } from "../constant";
-import { createRootRouteStub, type RouteChildren } from "../helpers/route-stub";
+import { type RouteChildren, createRootRouteStub } from "../helpers/route-stub";
 import { setTheme } from "../helpers/theme";
 import { setViewPort } from "../helpers/view-port";
 
 // NuqsTestingAdapter を使うため、react-router adapter を no-op に差し替える
 vi.mock("nuqs/adapters/react-router/v7", () => ({
-  NuqsAdapter: ({ children }: { children: ReactNode }) => children,
+  NuqsAdapter: ({ children }: { children: ReactNode }): ReactNode => children,
 }));
 
 vi.mock("@/libs/better-auth", () => ({
   auth: {
+    oauth2: {
+      getClient: vi.fn(),
+      getClients: vi.fn(),
+    },
     useSession: vi.fn().mockReturnValue({
       data: null,
-      isPending: false,
       error: null,
+      isPending: false,
     }),
-    oauth2: {
-      getClients: vi.fn(),
-      getClient: vi.fn(),
-    },
   },
 }));
 
@@ -45,25 +46,25 @@ const mockClients: OAuthClient[] = [
   {
     client_id: "client-1-id",
     client_name: "Test Client 1",
+    client_secret: "secret-1",
     disabled: false,
     redirect_uris: ["http://localhost:3000/callback"],
-    client_secret: "secret-1",
   },
   {
     client_id: "client-2-id",
     client_name: undefined,
+    client_secret: "secret-2",
     disabled: true,
     redirect_uris: ["http://localhost:4000/callback"],
-    client_secret: "secret-2",
   },
 ];
 
 const mockClient: OAuthClient = {
   client_id: "client-1-id",
   client_name: "Test Client 1",
+  client_secret: "secret-1",
   disabled: false,
   redirect_uris: ["http://localhost:3000/callback"],
-  client_secret: "secret-1",
 };
 
 describe("VRT oidc-client page - with clients data", async () => {
@@ -156,7 +157,7 @@ describe("VRT oidc-client page - update dialog - with client data", async () => 
     // Act
     const { container } = await render(<Stub initialEntries={[PATH]} />, {
       wrapper: withNuqsTestingAdapter({
-        searchParams: { dialog: "edit", client_id: "client-1-id" },
+        searchParams: { client_id: "client-1-id", dialog: "edit" },
       }),
     });
 
@@ -183,7 +184,7 @@ describe("VRT oidc-client page - update dialog - skeleton loading", async () => 
     // Act
     const { container } = await render(<Stub initialEntries={[PATH]} />, {
       wrapper: withNuqsTestingAdapter({
-        searchParams: { dialog: "edit", client_id: "client-1-id" },
+        searchParams: { client_id: "client-1-id", dialog: "edit" },
       }),
     });
 
@@ -213,7 +214,7 @@ describe("VRT oidc-client page - delete dialog - with client data", async () => 
     // Act
     const { container } = await render(<Stub initialEntries={[PATH]} />, {
       wrapper: withNuqsTestingAdapter({
-        searchParams: { dialog: "delete", client_id: "client-1-id" },
+        searchParams: { client_id: "client-1-id", dialog: "delete" },
       }),
     });
 
@@ -240,7 +241,7 @@ describe("VRT oidc-client page - delete dialog - skeleton loading", async () => 
     // Act
     const { container } = await render(<Stub initialEntries={[PATH]} />, {
       wrapper: withNuqsTestingAdapter({
-        searchParams: { dialog: "delete", client_id: "client-1-id" },
+        searchParams: { client_id: "client-1-id", dialog: "delete" },
       }),
     });
 

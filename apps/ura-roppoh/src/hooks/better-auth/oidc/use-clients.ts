@@ -19,7 +19,7 @@ export const useOidcClients = () => {
   };
 
   return useQuery<Awaited<ReturnType<typeof queryFn>>, BetterAuthError>({
-    queryKey: [USE_OIDC_CLIENTS_KEY],
     queryFn,
+    queryKey: [USE_OIDC_CLIENTS_KEY],
   });
 };

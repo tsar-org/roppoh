@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { auth } from "@/libs/better-auth";
 
-import { BetterAuthError } from "../error";
+import { BetterAuthError, MissingQueryParameterError } from "../error";
 
 const USE_OIDC_CLIENT_KEY = "better-auth-use-oidc-client" as const;
 
@@ -12,8 +12,11 @@ interface Args {
 
 export const useOidcClient = (args: Args) => {
   const queryFn = async () => {
+    if (!args.client_id) {
+      throw new MissingQueryParameterError("client_id");
+    }
     const { data, error } = await auth.oauth2.getClient({
-      query: { client_id: args.client_id! },
+      query: { client_id: args.client_id },
     });
 
     if (error) {
@@ -25,8 +28,8 @@ export const useOidcClient = (args: Args) => {
   };
 
   return useQuery<Awaited<ReturnType<typeof queryFn>>, BetterAuthError>({
-    queryKey: [USE_OIDC_CLIENT_KEY, args.client_id],
+    enabled: Boolean(args.client_id),
     queryFn,
-    enabled: !!args.client_id,
+    queryKey: [USE_OIDC_CLIENT_KEY, args.client_id],
   });
 };
