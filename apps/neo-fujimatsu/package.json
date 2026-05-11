@@ -23,7 +23,7 @@
     "better-auth": "catalog:",
     "drizzle-orm": "0.45.2",
     "hono": "4.12.18",
-    "jotai": "2.19.1",
+    "jotai": "2.20.0",
     "lucide-react": "1.14.0",
     "nuqs": "2.8.9",
     "react": "catalog:",
